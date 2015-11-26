@@ -1,0 +1,71 @@
+
+.login__mhe-logo {
+  position:absolute;
+	padding:12px;
+  height:42px;
+}
+
+.login__help-icon {
+	position:absolute;
+	padding:12px;
+	right:0;
+}
+
+.login__creds {
+	height:100%;
+	button {
+		width:285px;
+	}
+}
+
+.login__container {
+   width: 300px;
+   overflow: visible;
+   md-divider {
+    border-top-width: 2px;
+   }
+   button {
+    width: 300px;
+    height: 45px;
+    border-radius: 0;
+    margin: 0;
+  }
+  .md-button.md-raised:not([disabled]),
+  .md-button.md-raised {
+    box-shadow: none;
+  }
+  md-input-container .md-input {
+    width: 288px;
+    height: 25px;
+    margin: 0 0 0 -2px;
+  }
+}
+
+.login__title {
+	padding:12px;
+	font-size: 1.125rem;
+}
+
+.login__dal {
+	margin-top: 8px;
+	font-size: 4.625rem;
+}
+
+.login__copyright {
+	position: absolute;
+  	bottom: 0;
+  	width: 100%;
+  	text-align: center;
+  	padding:12px;
+}
+
+.login__progress-container{
+	min-height:104px;
+}
+
+.login__error-message{
+	color: #000000;
+  padding: 3px;
+  background: yellow;
+	font-size: 16px;
+}

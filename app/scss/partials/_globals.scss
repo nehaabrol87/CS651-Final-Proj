@@ -1,0 +1,93 @@
+body {
+  font-family: 'Proxima Nova Soft', Helvetica, Arial, sans-serif !important;
+  overflow: hidden;
+}
+
+button, select, html, textarea, input {
+  font-family: 'Proxima Nova Soft', Helvetica, Arial, sans-serif !important;
+}
+
+*:focus {
+  outline: 0;
+}
+
+.clearfix:after {
+  content: "";
+  clear: both;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+ul.unstyled {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+  &.indent {
+    li {
+      margin-left: 25px;
+      padding-bottom: 8px;
+    }
+  }
+}
+
+.container {
+  height: 100%;
+}
+
+.background-container {
+  height: 100%;
+  width: 100%;
+  background: url("img/background.png") no-repeat center center fixed !important;
+}
+
+img, div {
+  outline: none;
+  border: 0;
+}
+
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+/*
+  the following rule is to fix a flexbox bug in chrome.
+  hopefully we can remove it one day, see link for more details
+  https://code.google.com/p/chromium/issues/detail?id=506893
+*/
+
+* {
+  min-width: 0;
+  min-height: 0;
+}
+
+.dal-green-text {
+  color: $dal-green;
+}
+
+button.md-primary.md-raised.dal-button:not([disabled]) {
+  color: $white;
+}
+
+img.disabled {
+  opacity: 0.3;
+}
+
+md-select-value span {
+  font-family: 'MHE_DAL_IconFont' !important;
+}
+
+md-sidenav.dal-sidenav {
+  z-index: $drawer;
+}

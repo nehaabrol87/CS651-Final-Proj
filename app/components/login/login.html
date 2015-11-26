@@ -1,0 +1,37 @@
+<div class='background-container'>
+  <system-notification></system-notification>
+  <img class="login__mhe-logo" src="img/logos/mhe-logo.jpg">
+  <img class="login__help-icon" src="img/icons/42x42/mint/42x42-help-desk.png" ui-sref="faq" title="DAL Help" />
+  <form ng-submit="login.login()" class="login__creds" layout="column" layout-align="center center">
+     <md-content class="login__container">
+  		<div class="login__dal" layout="row" layout-align="center">
+  			Healthy Humans
+  		</div>
+  		<md-divider style="color:white;background-color:#45ba8e;"></md-divider>
+  		<div class="login__title" layout="row" layout-align="center">
+  			Being Healthy and Fit isn't a fad or a trend instead its a Lifestyle
+  		</div>
+  		<md-input-container>
+  		    <label>Username</label>
+  		    <input ng-model="login.user.loginName" type="text">
+  		</md-input-container>
+  		<md-input-container>
+  		    <label>Password</label>
+  		    <input ng-model="login.user.password" type="password" autocomplete="off">
+  		</md-input-container>
+  		<md-button class="md-raised" style="color:white;background-color:#45ba8e;" ng-disabled="login.loginRequestObject.requestOut">
+  			LOGIN
+  		</md-button>
+  		<div class="login__progress-container" layout="row" layout-align="center">
+  			<md-progress-circular md-mode="indeterminate" ng-if="login.loginRequestObject.requestOut"></md-progress-circular>
+  			<p class="login__error-message" ng-show="login.loginRequestObject.lastRequestHasErrors">
+  				Please check your login name and password and try again. Please note that username and password is case sensitive.
+  			</p>
+  		</div>
+  	</md-content>
+  </form>
+</div>
+
+<div class="login__copyright">
+  © {{login.currentYear}} Neha Abrol. All Rights Reserved
+</div>

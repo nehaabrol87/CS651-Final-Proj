@@ -1,0 +1,21 @@
+@import "partials/login";
+@import "partials/vars";
+@import "partials/globals";
+
+@mixin font-face($family, $src, $style: normal, $weight: normal) {
+  @font-face {
+    font-family: $family;
+    src: url("font/proximanovasoft-regular-webfont.eot");
+
+    // IE9 compat
+    src: url("font/proximanovasoft-regular-webfont.eot?#iefix") format("embedded-opentype"), url("font/proximanovasoft-regular-webfont.woff") format("woff"), url("font/proximanovasoft-regular-webfont.ttf") format("truetype"), url("font/proximanovasoft-regular-webfont.svg##{$family}") format("svg");
+
+    // legacy iOS
+    font-style: $style;
+    font-weight: $weight;
+  }
+}
+
+@include font-face("Proxima Nova Soft", "../font/proximanovasoft-regular-webfont");
+
+@include font-face("MHE_DAL_IconFont", "../font/icons/MHE_DAL_IconFont");
