@@ -5,7 +5,6 @@
  - TypeScript 1.5.0-alpha
  - Angular2 Router / UI-Router 
  - Gulp
- - Babel
  - Jspm for package management (Node modules are only used for gulp plugins)
  - Express.js - Used as a development server with proxy
 
