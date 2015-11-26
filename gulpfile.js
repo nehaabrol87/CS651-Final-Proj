@@ -185,5 +185,13 @@ gulp.task('dev-proxy', ['dev-no-watch'], function () {
     gulp.start('watch');
 });
 
+gulp.task('build', ['dev-no-watch'], function () {
+    //gulp.start('tslint');
+    del('./dist');
+    gulp.start('dist-index-html');
+    gulp.start('dist-js');
+    gulp.start('dist-templates');
+});
+
 
 

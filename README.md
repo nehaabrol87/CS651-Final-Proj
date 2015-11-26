@@ -25,6 +25,9 @@
   # then install type definitions
   tsd reinstall or tsd install whichever works 
 
+  #Running first time (To generate System.Js files and dist files)
+  gulp build
+
   # Run actual app
   gulp dev-proxy
 

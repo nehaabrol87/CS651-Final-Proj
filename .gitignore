@@ -1,0 +1,9 @@
+jspm_packages
+dist
+.tmp
+node_modules
+.idea
+reports
+*.log
+typings
+.DS_Store
