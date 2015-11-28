@@ -91,3 +91,38 @@ md-select-value span {
 md-sidenav.dal-sidenav {
   z-index: $drawer;
 }
+
+.pointer {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+
+div {
+  md-input-container label {
+    color: $black;
+  }
+}
+
+.error {
+  color :$red;
+}
+
+.progress__dialog {
+  background-color: transparent;
+  box-shadow : none;
+}
+
+div.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  div.shady {
+    opacity: .85;
+    background-color: black;
+  }
