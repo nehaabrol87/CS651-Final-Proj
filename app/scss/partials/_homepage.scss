@@ -1,0 +1,127 @@
+.homepage__bodynav {
+  background: blueviolet;
+  height: 275px;
+  color: $white;
+  font-size: 24px;
+  text-transform: uppercase;
+  padding: 0 200px;
+}
+
+.homepager__header {
+  background: blueviolet;
+  color:$white;
+  min-height: 100px;
+  margin-bottom: 15px;
+  font-size: 30px;
+  font-style: italic;
+}
+
+.homepage__header-hh-logo {
+  height:60px;
+  width: 60px;
+}
+
+
+.homepage__welcome-message,{
+  text-align: center;
+  font-size: 30px;
+  padding: 20px;
+  color: blueviolet;
+  font-style: italic;
+}
+
+.homepage__header{
+  font-size: 40px;
+} 
+
+.homepage__image-list {
+  position: relative;
+  min-height: 375px;
+  display: flex;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  max-height: 100%;
+  flex-direction: row;
+}
+
+.homepage__image-tile {
+  position: absolute;
+  max-height: 375px;
+    min-width: auto;
+    min-height: auto;
+    background-color: $black;
+
+  img {
+    max-height: 375px;
+    min-height: 375px;
+  }
+}
+
+.homepage__carousel-previous-arrow-mouse-in ,.homepage__carousel-previous-arrow-mouse-out{
+  font-size: 100px;
+  top: 130px;
+  position: absolute;
+  z-index: 1;
+  outline: none;
+  border: 0;
+  left: 50px;
+  width: 64px;
+  height: 64px; 
+
+  &:hover {
+    cursor: pointer
+  }
+}
+
+.homepage__carousel-previous-arrow-mouse-in {
+  background: url(img/icons/mint/64X64/64x64-arrow-left.png) no-repeat 0 0;
+  background-size: 64px 54px;
+}
+
+.homepage__carousel-previous-arrow-mouse-out {
+  background: url(img/icons/white/64X64/64x64-arrow-left.png) no-repeat 0 0;
+  background-size: 64px 54px;
+}
+
+
+.homepage__carousel-next-arrow-mouse-in ,.homepage__carousel-next-arrow-mouse-out{
+  font-size: 100px;
+  top: 130px;
+  right: 50px;
+  position: absolute;
+  z-index: 1;
+  outline: none;
+  border: 0;
+  width: 64px;
+  height: 64px; 
+
+  &:hover {
+    cursor: pointer
+  }
+}
+
+.homepage__carousel-next-arrow-mouse-in {
+  background: url(img/icons/mint/64X64/64x64-arrow-right.png) no-repeat 0 0;
+  background-size: 64px 54px;
+}
+
+.homepage__carousel-next-arrow-mouse-out {
+  background: url(img/icons/white/64X64/64x64-arrow-right.png) no-repeat 0 0;
+  background-size: 64px 54px;
+}
+
+.homepage__copyright {
+  position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding:12px;
+    color:$white;
+}
+
+.homepage__sign-up-form {
+  color:$white;
+  font-size: 15px;
+}
+
+

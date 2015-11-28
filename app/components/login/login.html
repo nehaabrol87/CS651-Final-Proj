@@ -1,37 +1,36 @@
-<div class='background-container'>
-  <system-notification></system-notification>
-  <img class="login__mhe-logo" src="img/logos/mhe-logo.jpg">
-  <img class="login__help-icon" src="img/icons/42x42/mint/42x42-help-desk.png" ui-sref="faq" title="DAL Help" />
-  <form ng-submit="login.login()" class="login__creds" layout="column" layout-align="center center">
-     <md-content class="login__container">
-  		<div class="login__dal" layout="row" layout-align="center">
-  			Healthy Humans
-  		</div>
-  		<md-divider style="color:white;background-color:#45ba8e;"></md-divider>
-  		<div class="login__title" layout="row" layout-align="center">
-  			Being Healthy and Fit isn't a fad or a trend instead its a Lifestyle
-  		</div>
-  		<md-input-container>
-  		    <label>Username</label>
-  		    <input ng-model="login.user.loginName" type="text">
-  		</md-input-container>
-  		<md-input-container>
-  		    <label>Password</label>
-  		    <input ng-model="login.user.password" type="password" autocomplete="off">
-  		</md-input-container>
-  		<md-button class="md-raised" style="color:white;background-color:#45ba8e;" ng-disabled="login.loginRequestObject.requestOut">
-  			LOGIN
-  		</md-button>
-  		<div class="login__progress-container" layout="row" layout-align="center">
-  			<md-progress-circular md-mode="indeterminate" ng-if="login.loginRequestObject.requestOut"></md-progress-circular>
-  			<p class="login__error-message" ng-show="login.loginRequestObject.lastRequestHasErrors">
-  				Please check your login name and password and try again. Please note that username and password is case sensitive.
-  			</p>
-  		</div>
-  	</md-content>
-  </form>
-</div>
-
-<div class="login__copyright">
-  © {{login.currentYear}} Neha Abrol. All Rights Reserved
-</div>
+<md-dialog>
+	<form name="loginForm" ng-submit="vm.submit(loginForm)" novalidate class="homepage__sign-up-form">
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<h2>Login</h2>
+				<span flex></span>
+				<md-button class="md-icon-button" type="button" ng-click="vm.closeDialog()">
+					<img src="img/icons/white/24X24/24x24-close-delete.png" aria-label="Close dialog" />
+				</md-button>
+			</div>
+		</md-toolbar>
+		<md-dialog-content style="width:300px">
+			<md-input-container>
+				<label>Email Id</label>
+				<input name="userName" ng-model="vm.loginRequest.userName" type="text" required>
+				<div ng-messages="loginForm.userName.$error">
+					<div ng-if='loginForm.userName.$touched && loginForm.userName.$error.required' ng-message="required">Required</div>
+				</div>
+			</md-input-container>
+			<md-input-container>
+				<label>Password</label>
+				<input name="password" ng-model="vm.loginRequest.password" type="password" autocomplete="off" required>
+				<div ng-messages="loginForm.password.$error">
+					<div ng-if='loginForm.password.$touched && loginForm.password.$error.required' ng-message="required">Required</div>
+				</div>
+			</md-input-container>
+			<md-button class="md-raised md-primary dal-button" ng-disabled="signUp.signUpRequestObject.requestOut">Submit
+			</md-button>
+			<div ng-if="vm.requestOut" class="overlay shady"></div>
+			<div ng-if="vm.requestOut" class="overlay" layout="row" layout-align="center center">
+				<md-progress-circular md-mode="indeterminate"></md-progress-circular>
+			</div>
+			<span class="error" ng-if="vm.hasError">{{vm.errorMsg}}</span>
+		</md-dialog-content>
+	</form>
+</md-dialog>

@@ -2,13 +2,13 @@
 
 var applicationConfig = function($stateProvider: ng.ui.IStateProvider, $urlRouterProvider: ng.ui.IUrlRouterProvider, $mdThemingProvider, localStorageServiceProvider) {
   $stateProvider
-    .state('login', {
-      url: '/login',
-      templateUrl: 'components/login/login.html',
-      controller: 'LoginController as login'
+    .state('home', {
+      url: '/home',
+      templateUrl: 'components/homepage/homepage.html',
+      controller: 'HomepageController as homepage'
     })
     
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/home');
 
   setButtonsTheme($mdThemingProvider);
 
@@ -17,8 +17,8 @@ var applicationConfig = function($stateProvider: ng.ui.IStateProvider, $urlRoute
 applicationConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$mdThemingProvider','localStorageServiceProvider'];
 
 function setButtonsTheme($mdThemingProvider) {
-  var dalGreenHex = '45ba8e';
-  var dalGreenMap = $mdThemingProvider.extendPalette('green',{
+  var dalGreenHex = 'rgb(0, 141, 255';
+  var dalGreenMap = $mdThemingProvider.extendPalette('blue',{
     '50': dalGreenHex,
     '100': dalGreenHex,
     '200': dalGreenHex,
