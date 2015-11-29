@@ -1,6 +1,8 @@
 @import "partials/vars";
 @import "partials/globals";
 @import "partials/homepage";
+@import "partials/profile";
+@import "partials/blogs";
 
 @mixin font-face($family, $src, $style: normal, $weight: normal) {
   @font-face {

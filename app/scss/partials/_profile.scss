@@ -1,0 +1,137 @@
+.profile__user-info-panel {
+  display: none;
+  background-color: blueviolet;
+  position: absolute;
+  top: 100px;
+  right: 0;
+  z-index: $dialog;
+  height: 100px;
+  width: 100px;
+  padding: 10px;
+
+  button {
+    position: absolute;
+    bottom: 25px;
+    width: 50px;
+    font-weight: bold;
+  }
+}
+
+.profile__user-logo {
+    height:60px;
+    width: 60px;
+    font-style: normal;
+
+   &:hover {
+    cursor: pointer
+  }
+}
+
+.profile__username {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    top: 5px;
+    font-size: 40px;
+
+    &:hover {
+    cursor: pointer
+  }
+}
+
+
+.profile__userinfo {
+  font-weight: bold;
+  text-transform: lowercase;
+
+  > div:first-letter {
+    text-transform: uppercase;
+  }
+
+  &:hover div > user-info-panel, user-info-panel:hover {
+    font-weight: normal;
+    display: block;
+  }
+}
+
+.profile__showSidenav {
+  button {
+    background: green;
+  }
+}
+
+.profile_sideNav-subheadings {
+  margin: 0px;
+  padding: 5px;
+  background:   blueviolet;
+  margin-bottom: 10px;
+  min-width: 45px;
+  color:white;
+  font-weight: bold;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+}
+.profile_sideNav-headings {
+  margin-top: 5px;
+  margin-right: 2px;
+  padding:5px;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+  background-color : rgb(0, 141, 255);
+  color:white;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+button.profile__hideSidenav {
+    margin :0px;
+    padding:0px;
+    min-width: 45px;
+}
+
+.profile__accordian_down {
+  background: url("img/icons/down.png") no-repeat 0 0;
+  background-size: 20px 20px; 
+  height: 20px;
+  width: 20px;
+  padding-right: 20px
+}
+
+.profile__accordian_up {
+  background: url("img/icons/up.png") no-repeat 0 0;
+  background-size: 20px 20px; 
+  height: 20px;
+  width: 20px;
+  padding-right: 20px
+}
+
+.profile__fruits_section {
+  padding:5px;
+}
+
+.profile___meal_planner{
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.profile__accordian_sub_headings_down {
+  background: url("img/icons/down.png") no-repeat 0 0;
+  background-size: 20px 20px; 
+  height: 20px;
+  width: 20px;
+  padding-right: 20px
+}
+
+.profile__accordian_sub_headings_up {
+  background: url("img/icons/up.png") no-repeat 0 0;
+  background-size: 20px 20px; 
+  height: 20px;
+  width: 20px;
+  padding-right: 20px;
+}

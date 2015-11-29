@@ -33,3 +33,17 @@
 
   
   Open a browser window at http://localhost:8080
+
+  #WCF Service
+
+  Is the Web Service for fetching data from database (Healthy humans) and serving the website.
+
+  a)It has "Allow cross origin requests so if it is hosted on IIS (localhost) and website is run on localhost:8080 it can cater requests"
+
+  #Database Healthy Humans
+  SQL DB with following tables
+  When you are restoring the DB. You might face access issues.
+  Make sure you right click the Default Application Pool in (Security ---> Logins)
+  and make sure User Mapping for Healthy Humans has db_owner checkboxed
+
+  a)Users (User related information)

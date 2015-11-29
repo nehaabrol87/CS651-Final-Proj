@@ -134,7 +134,7 @@ public class Service : IService
                 da.InsertCommand = new SqlCommand(sql, sqlCon);
                 da.InsertCommand.ExecuteNonQuery();
                 response.status = "success";
-                response.message = "Inserted Successfully";
+                response.message = "User created";
             }
             catch (Exception ex)
             {

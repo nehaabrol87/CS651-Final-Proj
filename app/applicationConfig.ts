@@ -7,10 +7,16 @@ var applicationConfig = function($stateProvider: ng.ui.IStateProvider, $urlRoute
       templateUrl: 'components/homepage/homepage.html',
       controller: 'HomepageController as homepage'
     })
+    .state('profile', {
+      url: '/profile',
+      templateUrl: 'components/profile/profile.html',
+      controller: 'ProfileController as profile'
+    })
     
   $urlRouterProvider.otherwise('/home');
 
   setButtonsTheme($mdThemingProvider);
+  setStorageType(localStorageServiceProvider);
 
 };
 
@@ -39,5 +45,8 @@ function setButtonsTheme($mdThemingProvider) {
     .primaryPalette('dalGreen');
 }
 
+function setStorageType(localStorageServiceProvider) {
+  localStorageServiceProvider.setStorageType('sessionStorage');
+}
 
 export default applicationConfig;
