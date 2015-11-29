@@ -7,11 +7,13 @@ export class LoginController {
 	public errorMsg = " ";
 	private requestOut: boolean = false;
 	public startTimer;
+	public isLoggedIn = false;
 
 
-	static $inject = ['$window', '$mdDialog', '$timeout', '$http', '$rootScope'];
-	constructor(private $window, private $mdDialog, private $timeout, private $http, private $rootScope) {
-    }
+	static $inject = ['$window', '$mdDialog', '$timeout', '$http', '$rootScope', 'localStorageService' , '$state'];
+	constructor(private $window, private $mdDialog, private $timeout, private $http, private $rootScope, private localStorageService , private $state) {
+		
+  }
 
 	private closeDialog() {
 		this.$mdDialog.hide();
@@ -28,6 +30,10 @@ export class LoginController {
 				this.$http.post('http://localhost/finalservice/Service.svc/login', payload).then((res) => {
 					if (res.data.status == "success") {
 						this.requestOut = false;
+						this.isLoggedIn = true;
+						this.localStorageService.set('userName', this.loginRequest.userName);
+						this.localStorageService.set('isLoggedIn', this.isLoggedIn);
+						this.$state.go('profile');
 					} else {
 						this.requestOut = false;
 						this.$timeout.cancel(this.startTimer);

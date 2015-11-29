@@ -1,6 +1,6 @@
 var runBlock = function($mdDialog, $rootScope) {
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-		$mdDialog.cancel();
+	  $mdDialog.cancel();
 	});
 	$rootScope.SuccessError = " ";
 };

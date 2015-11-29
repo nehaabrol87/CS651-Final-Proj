@@ -126,3 +126,31 @@ div.overlay {
     opacity: .85;
     background-color: black;
   }
+
+  div.clickable {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .icon {
+    height:100px;
+    width:100px;
+  }
+
+  .icon_small {
+    height:30px;
+    width:30px;
+    padding-right: 5px;
+  }
+
+  .icon_small_text {
+     font-size: 30px;
+     padding-right: 5px;
+  }
+
+  .icon_small_text_green {
+     font-size: 30px;
+     padding-right: 5px;
+     color:$dal-green;
+  }

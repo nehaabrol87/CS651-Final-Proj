@@ -1,28 +1,32 @@
-<div layout='row' class="homepager__header" layout-align="center center">
-    <div> Welcome to Healthy Humans</div>
+<div layout='row' class="homepager__header" layout-align="space-between center">
+		<img src="img\icons\home.png" title="home" class="homepage__header-logo">
+		<div> Welcome to Healthy Humans</div>
+		<img src="img\icons\info.png" title="info" class="homepage__header-logo">
 </div>
 <div class="carousel" flex>
-    <div class="homepage__image-list" flex>
-        <div ng-click="homepage.previousSlide()" title="Back" ng-mouseover=" previousArrowMouseIn = true" ng-mouseout=" previousArrowMouseIn = false" ng-init="previousArrowMouseIn = false" ng-class="{'homepage__carousel-previous-arrow-mouse-in' : previousArrowMouseIn ,
-    'homepage__carousel-previous-arrow-mouse-out' : !previousArrowMouseIn }">
-        </div>
-        <div id="a{{image.split('.')[0]}}" ng-repeat="image in homepage.updatedCarouselImages" class="homepage__image-tile" flex layout-align="center center">
-            <img ng-src="img/carousel/{{image}}" ng-click="homepage.searchAsset(image.assetId)" flex />
-        </div>
-        <div ng-click="homepage.nextSlide()" title="Forward" ng-mouseover=" nextArrowMouseIn = true" ng-mouseout=" nextArrowMouseIn = false" ng-init="nextArrowMouseIn = false" ng-class="{'homepage__carousel-next-arrow-mouse-in' : nextArrowMouseIn ,
-    'homepage__carousel-next-arrow-mouse-out' : !nextArrowMouseIn }">
-        </div>
-    </div>
-    <div class="welcome-section">
-        <div class="homepage__welcome-message">Happiness lies, first of all, in health- George William Curtis</div>
-        <div class="homepage__bodynav">
-            <div layout="row" layout-align="center center">
-                <md-button class="md-raised md-primary dal-button" ng-click="homepage.signUp()">Sign up</md-button>
-                <md-button class="md-raised md-primary dal-button" ng-click="homepage.login()">Login</md-button>
-            </div>
-        </div>
-    </div>
-    <div class="homepage__copyright">
-        © {{login.currentYear}} Neha Abrol. All Rights Reserved
-    </div>
+		<div class="homepage__image-list" flex>
+				<div ng-click="homepage.previousSlide()" title="Back" ng-mouseover=" previousArrowMouseIn = true" ng-mouseout=" previousArrowMouseIn = false" ng-init="previousArrowMouseIn = false" ng-class="{'homepage__carousel-previous-arrow-mouse-in' : previousArrowMouseIn ,
+		'homepage__carousel-previous-arrow-mouse-out' : !previousArrowMouseIn }">
+				</div>
+				<div id="a{{image.split('.')[0]}}" ng-repeat="image in homepage.updatedCarouselImages" class="homepage__image-tile" flex layout-align="center center">
+						<img ng-src="img/carousel/{{image}}" ng-click="homepage.searchAsset(image.assetId)" flex />
+				</div>
+				<div ng-click="homepage.nextSlide()" title="Forward" ng-mouseover=" nextArrowMouseIn = true" ng-mouseout=" nextArrowMouseIn = false" ng-init="nextArrowMouseIn = false" ng-class="{'homepage__carousel-next-arrow-mouse-in' : nextArrowMouseIn ,
+		'homepage__carousel-next-arrow-mouse-out' : !nextArrowMouseIn }">
+				</div>
+		</div>
+		<div class="welcome-section">
+				<div ng-if="!homepage.isLoggedIn" class="homepage__welcome-message">Happiness lies, first of all, in health- George William Curtis</div>
+        <div ng-if="homepage.isLoggedIn" class="homepage__welcome-message">Welcome , {{homepage.userName}}</div>
+				<div class="homepage__bodynav">
+						<div layout="row" layout-align="center center">
+								<md-button ng-if="!homepage.isLoggedIn" class="md-raised md-primary dal-button" ng-click="homepage.signUp()">Sign up</md-button>
+								<md-button ng-if="!homepage.isLoggedIn" class="md-raised md-primary dal-button" ng-click="homepage.login()">Login</md-button>
+                <md-button ng-if="homepage.isLoggedIn" class="md-raised md-primary dal-button" ng-click="homepage.goToProfile()">Go To Profile Page</md-button>
+						</div>
+				</div>
+		</div>
+		<div class="homepage__copyright">
+				© {{login.currentYear}} Neha Abrol. All Rights Reserved
+		</div>
 </div>

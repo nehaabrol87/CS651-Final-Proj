@@ -16,21 +16,29 @@ export class HomepageController {
   public startCarrousel : any;
   public widthOfLeftSideOfCarousel : number = 0;
   private keyword = "";
+  public isLoggedIn = false;
+  public userName = " ";
 
   static $inject = ['$window',
     '$scope',
     '$interval',
     '$state',
-    '$mdDialog'
+    '$mdDialog',
+    'localStorageService'
   ];
   constructor(
     private $window,
     private $scope,
     private $interval,
     private $state,
-    private $mdDialog
+    private $mdDialog,
+    private localStorageService
   ) 
   {   
+    this.isLoggedIn = this.localStorageService.get('isLoggedIn') || false;
+    this.userName = this.localStorageService.get('userName') || " ";
+
+    this.userName = this.userName[0].toUpperCase() + this.userName.slice(1); 
     this.carouselImages = ['1.png','2.jpg','3.png','4.jpg','5.png','6.png','7.png','8.png'];
     this.setCarousel();
     $scope.$watch(
@@ -212,6 +220,10 @@ export class HomepageController {
       controllerAs: 'vm',
       bindToController: true
     });
+  }
+
+  private goToProfile() {
+    this.$state.go('profile');
   }
 
   private login() {

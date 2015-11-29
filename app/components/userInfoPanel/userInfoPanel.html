@@ -1,0 +1,9 @@
+<div>
+  <p class="icon"><img ng-src="{{ ::vm.getRoleIcon() }}"></p>
+  <p class="username">{{ ::vm.getFullName() }}</p>
+  <md-divider></md-divider>
+  <md-button ng-click='vm.logout()'
+  ng-disabled="vm.logoutRequestObject.requestOut"
+  class='md-primary md-raised dal-button'>Logout
+  </md-button>
+</div>
