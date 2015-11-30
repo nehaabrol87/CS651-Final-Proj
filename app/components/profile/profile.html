@@ -2,7 +2,7 @@
   <img src="img\icons\home.png" title="home" class="homepage__header-logo" ng-click="profile.goToHome()">
   <div> Welcome to Healthy Humans</div>
   <div layout='row' class="profile__userinfo" layout="row" layout-align="center center" style="min-height:100px">
-    <div class="profile__username">{{profile.userName}}</div>
+    <div class="profile__username">{{profile.userDetails.firstName}}</div>
     <div>
       <img ng-src='img/icons/user.png' class="profile__user-logo" />
     </div>
@@ -15,62 +15,7 @@
   <nav class="profile__nav" layout="row">
     <md-sidenav class="hh-sidenav md-sidenav-left ng-isolate-scope" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" layout="column" ng-show="!profile.isSideNavVisible && !profile.default">
       <md-content flex>
-        <div layout='column'>
-          <div class="profile_sideNav-headings" layout="row" ng-click="profile.toggleMeals()">
-            <div ng-class="{'profile__accordian_down' : profile.mealsDown ,
-				 'profile__accordian_up' : !profile.mealsDown}"></div>
-            <div>Plan your Meals</div>
-          </div>
-          <div layout="column" ng-if="profile.mealsDown">
-            <div class="profile_sideNav-subheadings" layout="row" ng-click="profile.toggleFruits()">
-              <div ng-class="{'profile__accordian_sub_headings_down' : profile.fruitsDown ,
-						'profile__accordian_sub_headings_up' : !profile.fruitsDown}"></div>
-              <div>Fruits</div>
-            </div>
-            <div ng-if="!profile.fruitsDown" layout="column">
-              <md-input-container style="width:250px;">
-                <label>Select Person(Cups per day)</label>
-                <md-select ng-model="profile.personType"  ng-change="profile.doCalculations()">
-                  <md-option value="children">Children(1 cup)</md-option>
-                  <md-option value="girls">Girls(1.5 cups)</md-option>
-                  <md-option value="boys">Boys(2 cups)</md-option>
-                  <md-option value="men">Men(2.5 cups)</md-option>
-                  <md-option value="women">Women(1.75 cups)</md-option>
-                </md-select>
-              </md-input-container>
-              <md-input-container style="width:250px;">
-                <label>Select Fruis(1 cup contains)</label>
-                <md-select ng-model="profile.fruitType" ng-change="profile.doCalculations()">
-                  <md-option value="apple">Apple(2.5" diameter</md-option>
-                  <md-option value="orange">Orange(3" diameter)</md-option>
-                  <md-option value="peach">Peach (5" diameter)</md-option>
-                  <md-option value="grape">Grape (32 seedless)</md-option>
-                  <md-option value="banana">Banana(8 inches)</md-option>
-                </md-select>
-              </md-input-container>
-            </div>
-            <div class="profile_sideNav-subheadings" layout="row">
-              <div ng-class="{'profile__accordian_sub_headings_down' : profile.veggiesDown ,
-						'profile__accordian_sub_headings_up' : !profile.veggiesDown}"></div>
-              <div>Vegetable</div>
-            </div>
-            <div class="profile_sideNav-subheadings" layout="row">
-              <div ng-class="{'profile__accordian_sub_headings_down' : profile.grainsDown ,
-						'profile__accordian_sub_headings_up' : !profile.grainsDown}"></div>
-              <div>Grains</div>
-            </div>
-            <div class="profile_sideNav-subheadings" layout="row">
-              <div ng-class="{'profile__accordian_sub_headings_down' : profile.proteinsDown ,
-						'profile__accordian_sub_headings_up' : !profile.proteinsDown}"></div>
-              <div>Proteins</div>
-            </div>
-            <div class="profile_sideNav-subheadings" layout="row">
-              <div ng-class="{'profile__accordian_sub_headings_down' : profile.dairyDown ,
-						'profile__accordian_sub_headings_up' : !profile.dairyDown}"></div>
-              <div>Dairy</div>
-            </div>
-          </div>
-        </div>
+      <ng-include src="'components/profile/partials/meals.html'"></ng-include>
       </md-content>
     </md-sidenav>
   </nav>
@@ -93,52 +38,8 @@
         </div>
       </div>
     </div>
-    <div ng-if="profile.meal" layout="column" flex layout-align="start center">
-      <img src="img/icons/profile/general/meal_page.png" class="icon">
-      <br>
-      <md-button class=" md-raised md-primary" ng-click="profile.goToDefault()">Defaults</md-button>
-      <br>
-      <div class="profile___meal_planner">Plan your Meal For {{profile.personType[0].toUpperCase() + profile.personType.slice(1)}}</div>
-      <br>
-      <div layout="row" layout-align="space-between center">
-        <form>
-          <md-datepicker id='date-picker' name='mealDate' ng-model="vm.lightboxModel.expiryDate" md-placeholder="*Meal Date" ng-disabled="vm.requestPending" required md-min-date="vm.minDate" md-max-date="vm.maxDate">
-          </md-datepicker>
-        </form>
-        </div>
-        <div layout="column">
-        	 <div layout="row" style="padding-bottom:10px;">
-        	    <img ng-if='profile.fruitValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
-        	    <img ng-if='profile.fruitValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
-        	    <img src="img/icons/profile/general/apple.png" class="icon_small">
-        	    <div class="icon_small_text">Fruits</div>
-        	    <div class="icon_small_text_green">{{profile.fruitValue}}</div>
-        	 </div>
-        	 <div layout="row" style="padding-bottom:10px;">
-        	    <img src="img/icons/profile/general/cross.png" class="icon_small">
-        	    <img src="img/icons/profile/general/grains.png" class="icon_small">
-        	    <div class="icon_small">Grains</div>
-        	    <div class="icon_small">{{profile.grainsValue}}</div>
-        	 </div>
-        	 <div layout="row" style="padding-bottom:10px;">
-        	    <img src="img/icons/profile/general/cross.png" class="icon_small">
-        	    <img src="img/icons/profile/general/proteins.png" class="icon_small">
-        	    <div class="icon_small">Proteins</div>
-        	    <div class="icon_small">{{profile.proteinsValue}}</div>
-        	 </div>
-        	 <div layout="row" style="padding-bottom:10px;">
-        	    <img src="img/icons/profile/general/cross.png" class="icon_small">
-        	    <img src="img/icons/profile/general/veggie.png" class="icon_small">
-        	    <div class="icon_small">Veggies</div>
-        	    <div class="icon_small">{{profile.veggieValue}}</div>
-        	 </div>
-        	 <div layout="row" style="padding-bottom:10px;">
-        	    <img src="img/icons/profile/general/cross.png" class="icon_small">
-        	    <img src="img/icons/profile/general/dairy.png" class="icon_small">
-        	    <div class="icon_small">Dairy</div>
-        	    <div class="icon_small">{{profile.dairyValue}}</div>
-        	 </div>
-        </div>    
+    <div ng-if="profile.meal" layout="column" flex layout-align="start center"> 
+       <ng-include src="'components/profile/partials/mealsDisplaySection.html'"></ng-include>
     </div>
   </md-content>
 </main>

@@ -1,0 +1,57 @@
+<div><img src="img/icons/profile/general/meal_page.png" class="icon"></div>
+<md-button class=" md-raised md-primary" ng-click="profile.goToDefault()">Defaults</md-button>
+<div layout="row">
+  <md-input-container style="width:250px;">
+    <label>Select Person Type</label>
+    <md-select ng-model="profile.personType" ng-change="profile.displayIntakeData()">
+      <md-option value="children">Children</md-option>
+      <md-option value="girls">Girls</md-option>
+      <md-option value="boys">Boys</md-option>
+      <md-option value="men">Men</md-option>
+      <md-option value="women">Women</md-option>
+    </md-select>
+  </md-input-container>
+  <form>
+    <md-datepicker id='date-picker' name='mealDate' ng-model="profile.mealDate" md-placeholder="*Meal Date" md-min-date="profile.minDate">
+    </md-datepicker>
+  </form>
+</div>
+<div layout="column">
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.fruitValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.fruitValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/apple.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :77px;">Fruits</div>
+    <div class="icon_small_text_green">{{profile.fruitValue}}</div>
+  </div>
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.veggiesValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.veggiesValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/veggie.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :96px;">Veggies</div>
+    <div class="icon_small_text_green">{{profile.veggiesValue}}</div>
+  </div>
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.grainsValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.grainsValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/grains.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :75px;">Grains</div>
+    <div class="icon_small_text_green">{{profile.grainsValue}}</div>
+  </div>
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.proteinsValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.proteinsValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/proteins.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :96px;">Proteins</div>
+    <div class="icon_small_text_green">{{profile.proteinsValue}}</div>
+  </div>
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.dairyValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.dairyValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/dairy.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :66px;">Dairy</div>
+    <div class="icon_small_text_green">{{profile.dairyValue}}</div>
+  </div>
+</div>
+<md-button class=" md-raised md-primary" ng-click="profile.submit()">Submit Meal Plan</md-button>
+<span class="error" ng-if="profile.hasError">{{profile.errorMsg}}</span>

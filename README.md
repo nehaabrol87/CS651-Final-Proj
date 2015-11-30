@@ -32,7 +32,7 @@
   gulp dev-proxy
 
   
-  Open a browser window at http://localhost:8080
+  Open a browser window at http://localhost:8080/#/
 
   #WCF Service
 

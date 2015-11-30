@@ -30,7 +30,7 @@
 			<div ng-if="vm.requestOut" class="overlay" layout="row" layout-align="center center">
 				<md-progress-circular md-mode="indeterminate"></md-progress-circular>
 			</div>
-			<span class="error" ng-if="vm.hasError">{{vm.errorMsg}}</span>
+			<div class="error" ng-if="vm.hasError">{{vm.errorMsg}}</div>
 		</md-dialog-content>
 	</form>
 </md-dialog>

@@ -1,0 +1,59 @@
+<md-dialog>
+  <form name="updateProfileForm" ng-submit="vm.submit(updateProfileForm)" novalidate class="homepage__sign-up-form">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Need some Info before you access this page!!!</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" type="button">
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="width:300px">
+      <md-datepicker id='date-picker' name='dob' ng-model="vm.updateProfileRequest.dob" md-placeholder="*Date of Birth" md-min-date="vm.minDate" md-max-date="vm.maxDate" required>
+      </md-datepicker>
+      <div ng-messages="updateProfileForm.dob.$error">
+        <div ng-if='updateProfileForm.dob.$touched && updateProfileForm.dob.$error.required' ng-message="required" style='color:red'>*Required</div>
+      </div>
+      <md-radio-group ng-model="vm.updateProfileRequest.gender" style="color:black;">
+        <md-radio-button class="md-primary" value="male">Male</md-radio-button>
+        <md-radio-button class="md-primary" value="female">Female</md-radio-button>
+      </md-radio-group>
+      <div layout="row">
+        <md-input-container style="width:40%;">
+          <label>Height (Ft)</label>
+          <input name="height_ft" ng-model="vm.updateProfileRequest.height_ft" maxlength="2" type="number" required>
+          <div ng-messages="updateProfileForm.height_ft.$error">
+            <div ng-if='updateProfileForm.height_ft.$touched && updateProfileForm.height_ft.$error.required' ng-message="required">Required</div>
+             <div ng-if='updateProfileForm.height_ft.$touched && updateProfileForm.height_ft.$error.number' ng-message="number">Number Only</div>
+            <div ng-if='updateProfileForm.height_ft.$touched && updateProfileForm.height_ft.$error.maxlength' ng-message="maxlength">Max 2 nos</div>
+          </div>
+        </md-input-container>
+        <md-input-container style="width:40%;">
+          <label>Height (Inches)</label>
+          <input name="height_in" ng-model="vm.updateProfileRequest.height_in" maxlength="2" type="number" required >
+          <div ng-messages="updateProfileForm.height_in.$error">
+            <div ng-if='updateProfileForm.height_in.$touched && updateProfileForm.height_in.$error.required' ng-message="required">Required</div>
+            <div ng-if='updateProfileForm.height_in.$touched && updateProfileForm.height_in.$error.number' ng-message="number">Number Only</div>
+            <div ng-if='updateProfileForm.height_in.$touched && updateProfileForm.height_in.$error.maxlength' ng-message="maxlength">Max 2 nos</div>
+          </div>
+        </md-input-container>
+      </div>
+      <md-input-container>
+        <label>Weight in Lbs</label>
+        <input name="weight" ng-model="vm.updateProfileRequest.weight" maxlength="5" type="number" required>
+        <div ng-messages="updateProfileForm.weight.$error">
+          <div ng-if='updateProfileForm.weight.$touched && updateProfileForm.weight.$error.required' ng-message="required">Required</div>
+           <div ng-if='updateProfileForm.weight.$touched && updateProfileForm.weight.$error.number' ng-message="number">Number Only</div>
+            <div ng-if='updateProfileForm.weight.$touched && updateProfileForm.weight.$error.maxlength' ng-message="maxlength">Max 5 nos</div>
+        </div>
+      </md-input-container>
+      <md-button class="md-raised md-primary dal-button" ng-disabled="signUp.signUpRequestObject.requestOut">Submit
+      </md-button>
+      <div ng-if="vm.requestOut" class="overlay shady"></div>
+      <div ng-if="vm.requestOut" class="overlay" layout="row" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
+      <div class="error" ng-if="vm.hasError">{{vm.errorMsg}}</div>
+    </md-dialog-content>
+  </form>
+</md-dialog>
