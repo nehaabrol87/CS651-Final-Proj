@@ -17,7 +17,7 @@
 		</div>
 		<div class="welcome-section">
 				<div ng-if="!homepage.isLoggedIn" class="homepage__welcome-message">Happiness lies, first of all, in health- George William Curtis</div>
-        <div ng-if="homepage.isLoggedIn" class="homepage__welcome-message">Welcome , {{homepage.userName}}</div>
+        <div ng-if="homepage.isLoggedIn" class="homepage__welcome-message">Welcome , {{homepage.userDetails.firstName}}</div>
 				<div class="homepage__bodynav">
 						<div layout="row" layout-align="center center">
 								<md-button ng-if="!homepage.isLoggedIn" class="md-raised md-primary dal-button" ng-click="homepage.signUp()">Sign up</md-button>

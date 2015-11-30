@@ -18,6 +18,7 @@ export class HomepageController {
   private keyword = "";
   public isLoggedIn = false;
   public userName = " ";
+  public userDetails = {};
 
   static $inject = ['$window',
     '$scope',
@@ -36,9 +37,8 @@ export class HomepageController {
   ) 
   {   
     this.isLoggedIn = this.localStorageService.get('isLoggedIn') || false;
-    this.userName = this.localStorageService.get('userName') || " ";
+    this.userDetails = this.localStorageService.get('userDetails') || " ";
 
-    this.userName = this.userName[0].toUpperCase() + this.userName.slice(1); 
     this.carouselImages = ['1.png','2.jpg','3.png','4.jpg','5.png','6.png','7.png','8.png'];
     this.setCarousel();
     $scope.$watch(

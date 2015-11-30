@@ -1,43 +1,50 @@
 <md-dialog>
-    <form name="signUpForm" ng-submit="vm.submit(signUpForm)" novalidate class="homepage__sign-up-form">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <h2>Sign Up Form</h2>
-                <span flex></span>
-                <md-button class="md-icon-button" type="button" ng-click="vm.closeDialog()">
-                    <img src="img/icons/white/24X24/24x24-close-delete.png" aria-label="Close dialog" />
-                </md-button>
-            </div>
-        </md-toolbar>
-        <md-dialog-content style="width:300px">
-            <md-input-container>
-                <label>Email Id</label>
-                <input name="userName" ng-model="vm.signUpRequest.userName" type="text" required>
-                <div ng-messages="signUpForm.userName.$error">
-                    <div ng-if='signUpForm.userName.$touched && signUpForm.userName.$error.required' ng-message="required">Required</div>
-                </div>
-            </md-input-container>
-            <md-input-container>
-                <label>Choose Password</label>
-                <input name="password1" ng-model="vm.signUpRequest.password1" type="password" autocomplete="off" required>
-                <div ng-messages="signUpForm.password1.$error">
-                    <div ng-if='signUpForm.password1.$touched && signUpForm.password1.$error.required' ng-message="required">Required</div>
-                </div>
-            </md-input-container>
-            <md-input-container>
-                <label>Reenter Password</label>
-                <input name="password2" ng-model="vm.signUpRequest.password2" type="password" autocomplete="off" required>
-                <div ng-messages="signUpForm.password2.$error">
-                    <div ng-if='signUpForm.password2.$touched && signUpForm.password2.$error.required' ng-message="required">Required</div>
-                </div>
-            </md-input-container>
-            <md-button class="md-raised md-primary dal-button" ng-disabled="signUp.signUpRequestObject.requestOut">Submit
-            </md-button>
-            <div ng-if="vm.requestOut" class="overlay shady"></div>
-            <div ng-if="vm.requestOut" class="overlay" layout="row" layout-align="center center">
-                <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-            </div>
-            <span class="error" ng-if="vm.hasError">{{vm.errorMsg}}</span>
-        </md-dialog-content>
-    </form>
+  <form name="signUpForm" ng-submit="vm.submit(signUpForm)" novalidate class="homepage__sign-up-form">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Sign Up Form</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" type="button" ng-click="vm.closeDialog()">
+          <img src="img/icons/white/24X24/24x24-close-delete.png" aria-label="Close dialog" />
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="width:300px">
+      <md-input-container>
+        <label>Firstname</label>
+        <input name="firstName" ng-model="vm.signUpRequest.firstName" type="text" required maxlength="10">
+        <div ng-messages="signUpForm.firstName.$error">
+          <div ng-if='signUpForm.firstName.$touched && signUpForm.firstName.$error.required' ng-message="required">Required</div>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <label>Email Id</label>
+        <input name="userName" ng-model="vm.signUpRequest.userName" type="text" required>
+        <div ng-messages="signUpForm.userName.$error">
+          <div ng-if='signUpForm.userName.$touched && signUpForm.userName.$error.required' ng-message="required">Required</div>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <label>Choose Password</label>
+        <input name="password1" ng-model="vm.signUpRequest.password1" type="password" autocomplete="off" required>
+        <div ng-messages="signUpForm.password1.$error">
+          <div ng-if='signUpForm.password1.$touched && signUpForm.password1.$error.required' ng-message="required">Required</div>
+        </div>
+      </md-input-container>
+      <md-input-container>
+        <label>Reenter Password</label>
+        <input name="password2" ng-model="vm.signUpRequest.password2" type="password" autocomplete="off" required>
+        <div ng-messages="signUpForm.password2.$error">
+          <div ng-if='signUpForm.password2.$touched && signUpForm.password2.$error.required' ng-message="required">Required</div>
+        </div>
+      </md-input-container>
+      <md-button class="md-raised md-primary dal-button" ng-disabled="signUp.signUpRequestObject.requestOut">Submit
+      </md-button>
+      <div ng-if="vm.requestOut" class="overlay shady"></div>
+      <div ng-if="vm.requestOut" class="overlay" layout="row" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+      </div>
+      <div class="error" ng-if="vm.hasError">{{vm.errorMsg}}</div>
+    </md-dialog-content>
+  </form>
 </md-dialog>

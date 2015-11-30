@@ -7,11 +7,12 @@ export class SignUpController {
 	public errorMsg = " ";
 	private requestOut: boolean = false;
 	public startTimer;
+	public isEmailIdValid = false;
+	public EMAIL_REGEXP = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
 
-
-	static $inject = ['$window', '$mdDialog', '$timeout', '$http', 'successErrorService','$rootScope'];
-	constructor(private $window, private $mdDialog, private $timeout, private $http, private successErrorService ,private $rootScope) {
-    }
+	static $inject = ['$mdDialog', '$timeout', '$http', 'successErrorService','$rootScope'];
+	constructor(private $mdDialog, private $timeout, private $http, private successErrorService ,private $rootScope) {
+  }
 
   private closeDialog() {
     this.$mdDialog.hide();
@@ -19,13 +20,19 @@ export class SignUpController {
 
   private submit(signUpForm) {
 	  if (signUpForm.$valid) {
+		  this.isEmailIdValid = this.EMAIL_REGEXP.test(this.signUpRequest.userName);
 		if (this.signUpRequest.password1 != this.signUpRequest.password2) {
 			this.$timeout.cancel(this.startTimer);
 			this.showErrorMsg("Passwords need to be same.");  
-		} else {
+		} else if (!this.isEmailIdValid) {
+			this.$timeout.cancel(this.startTimer);
+			this.showErrorMsg("Email id is not valid.");  
+		} 
+		else {
 				var payload = {
 					'UserName': this.signUpRequest.userName,
-					'Password': this.signUpRequest.password1
+					'Password': this.signUpRequest.password1,
+					'FirstName' : this.signUpRequest.firstName
 				};
 		
 				this.requestOut = true;
@@ -76,5 +83,4 @@ export class SignUpController {
 	  });
 	  return fields;
   }
-
 }  

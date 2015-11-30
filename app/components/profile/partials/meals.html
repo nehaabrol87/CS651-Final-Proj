@@ -1,0 +1,88 @@
+<div layout='column'>
+  <div class="profile_sideNav-headings" layout="row" ng-click="profile.toggleMeals()">
+    <div ng-class="{'profile__accordian_down' : profile.mealsDown ,
+         'profile__accordian_up' : !profile.mealsDown}"></div>
+    <div>Plan your Meals</div>
+  </div>
+  <div layout="column" ng-if="profile.mealsDown">
+    <div class="profile_sideNav-subheadings" layout="row" ng-click="profile.toggleFruits()">
+      <div ng-class="{'profile__accordian_sub_headings_down' : profile.fruitsDown ,
+            'profile__accordian_sub_headings_up' : !profile.fruitsDown}"></div>
+      <div>Fruits {{profile.fruitIntake}}</div>
+    </div>
+    <div ng-if="!profile.fruitsDown" layout="column">
+      <md-input-container style="width:250px;">
+        <label>Select Fruis(1 cup contains)</label>
+        <md-select ng-model="profile.fruitType" ng-change="profile.doFruitCalculations()">
+          <md-option value="apple">Apple(2.5" diameter)</md-option>
+          <md-option value="orange">Orange(3" diameter)</md-option>
+          <md-option value="peach">Peach (5" diameter)</md-option>
+          <md-option value="grape">Grape (32 seedless)</md-option>
+          <md-option value="banana">Banana(8 inches)</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div class="profile_sideNav-subheadings" layout="row" ng-click="profile.toggleVeggies()">
+      <div ng-class="{'profile__accordian_sub_headings_down' : profile.veggiesDown ,
+            'profile__accordian_sub_headings_up' : !profile.veggiesDown}"></div>
+      <div>Vegetable {{profile.veggiesIntake}}</div>
+    </div>
+    <div ng-if="!profile.veggiesDown" layout="column">
+      <md-input-container style="width:250px;">
+        <label>Select Veggie(1 cup contains)</label>
+        <md-select ng-model="profile.veggiesType" ng-change="profile.doVeggiesCalculations()">
+          <md-option value="tomato">Tomato(1 medium tomato)</md-option>
+          <md-option value="carrot">Carrot(1 medium carrot)</md-option>
+          <md-option value="potato">Potato (1 large potato)</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div class="profile_sideNav-subheadings" layout="row" ng-click="profile.toggleGrains()">
+      <div ng-class="{'profile__accordian_sub_headings_down' : profile.grainsDown ,
+            'profile__accordian_sub_headings_up' : !profile.grainsDown}"></div>
+      <div>Grains {{profile.grainsIntake}}</div>
+    </div>
+    <div ng-if="!profile.grainsDown" layout="column">
+      <md-input-container style="width:250px;">
+        <label>Select Grains(1 serving contains)</label>
+        <md-select ng-model="profile.grainsType" ng-change="profile.doGrainsCalculations()">
+          <md-option value="bagel">Bagel(1 inch mini Bagel)</md-option>
+          <md-option value="biscuit">Bicuit(2 inch diameter)</md-option>
+          <md-option value="bread">Bread(1 slice)</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div class="profile_sideNav-subheadings" layout="row" ng-click="profile.toggleProteins()">
+      <div ng-class="{'profile__accordian_sub_headings_down' : profile.proteinsDown ,
+            'profile__accordian_sub_headings_up' : !profile.proteinsDown}"></div>
+      <div>Proteins {{profile.proteinsIntake}}</div>
+    </div>
+    <div ng-if="!profile.proteinsDown" layout="column">
+      <md-input-container style="width:250px;">
+        <label>Select Proteins(1 serving contains)</label>
+        <md-select ng-model="profile.proteinsType" ng-change="profile.doProteinsCalculations()">
+          <md-option value="meat">Meat(1 Ounce)</md-option>
+          <md-option value="cooked beans">Cooked Beans(.25 cup)</md-option>
+          <md-option value="egg">Egg(1)</md-option>
+          <md-option value="peanut butter">Peanut Butter(1 tbsp)</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div class="profile_sideNav-subheadings" layout="row" ng-click="profile.toggleDairy()">
+      <div ng-class="{'profile__accordian_sub_headings_down' : profile.dairyDown ,
+            'profile__accordian_sub_headings_up' : !profile.dairyDown}"></div>
+      <div>Dairy {{profile.dairyIntake}}</div>
+    </div>
+     <div ng-if="!profile.dairyDown" layout="column">
+      <md-input-container style="width:250px;">
+        <label>Select Dairy(1 serving contains)</label>
+        <md-select ng-model="profile.dairyType" ng-change="profile.doDairyCalculations()">
+          <md-option value="milk">Milk(1 Cup)</md-option>
+          <md-option value="yoghurt">Yoghurt(1 Cup)</md-option>
+          <md-option value="processed cheese">Proceesed Cheese(2 ounces)</md-option>
+          <md-option value="natural cheese">Natural Cheese(1.5 ounces)</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+  </div>
+</div>

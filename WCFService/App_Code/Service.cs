@@ -3,10 +3,11 @@ using System.Web.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using System.Web;
-
+using System.Net.Mail;
 using System.Collections;
 using System.Linq;
 using System;
+using System.Text;
 
 [System.ServiceModel.ServiceBehavior(IncludeExceptionDetailInFaults = true)]
 // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service" in code, svc and config file together.
@@ -27,13 +28,73 @@ public class Service : IService
         return response;
     }
 
+    public Result verifyUser(User userInput)
+    {
+        verify(userInput);
+        return response;
+    }
+
+    public void verify(User userInput)
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            String userId = userInput.UserId;
+            String token = userInput.Token;
+            string sql = "SELECT UserId FROM Users WHERE UserId = '" + userId + "' and token = '" + token + "' and verified = 'N'";
+
+            sqlCon.Open();
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            DataRow dr = dt.NewRow();
+            response.message = dt.ToString();
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                updateVerificationStatus(userId, token);
+            }
+            else
+            {
+                response.status = "error";
+                response.message = "This user has already been verified or this is an incorrect link";
+            }
+            sqlCon.Close();
+        }
+    }
+
+    public void updateVerificationStatus(String userId, String token)
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            string sql = "Update Users SET verified = 'Y' WHERE UserId = '" + userId + "' and token = '" + token + "'";
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            try
+            {
+                sqlCon.Open();
+                da.UpdateCommand = new SqlCommand(sql, sqlCon);
+                da.UpdateCommand.ExecuteNonQuery();
+                response.status = "success";
+                response.message = "User activated successfully.Login to access profile";
+            }
+            catch (Exception ex)
+            {
+                response.status = "error";
+                response.message = "There was an error activating your account" + ex;
+            }
+            sqlCon.Close();
+        }
+
+    }
+
     public void loginUser(User userInput)
     {
         using (SqlConnection sqlCon = new SqlConnection(connectionstring))
         {
             String userName = userInput.UserName;
             String password = userInput.Password;
-            string sql = "SELECT UserId FROM Users WHERE Email = '" + userName + "' and Password = '" + password + "'";
+            string sql = "SELECT FirstName,PersonalData FROM Users WHERE Email = '" + userName + "' and Password = '" + password + "' and verified = 'Y'";
 
             sqlCon.Open();
 
@@ -42,18 +103,19 @@ public class Service : IService
             DataTable dt = new DataTable();
             da.Fill(dt);
             DataRow dr = dt.NewRow();
-            response.message = dt.ToString();
             if (dt != null && dt.Rows.Count > 0) //Passwords match 
             {
+                DataRow row = dt.Rows[0];
                 response.status = "success";
-                response.message = "Correct";
+                response.personalData = row[1].ToString();
+                response.message = row[0].ToString();
             }
             else
             {
                 response.status = "error";
-                response.message = "Email id or Pwd do not match";
+                response.message = "Email id or Pwd do not match.Make sure Email is verified";
             }
-
+            sqlCon.Close();
         }
     }
 
@@ -62,11 +124,8 @@ public class Service : IService
         using (SqlConnection sqlCon = new SqlConnection(connectionstring))
         {
             String userName = userInput.UserName;
-            string sql = "SELECT UserId FROM Users WHERE Email = '"+ userName +"'";
-
-           
+            string sql = "SELECT UserId FROM Users WHERE Email = '" + userName + "'";
             sqlCon.Open();
-
             SqlCommand command = new SqlCommand(sql, sqlCon);
             SqlDataAdapter da = new SqlDataAdapter(command);
             DataTable dt = new DataTable();
@@ -77,10 +136,47 @@ public class Service : IService
             {
                 response.status = "error";
                 response.message = "Email id already exits";
-            } else
+            }
+            else
             {
                 int id = getLastInsertedUserId();
-                doInsert(userInput, (id + 1));
+                String token = generateUniqueToken();
+                if (token != "error")
+                {
+                    doInsert(userInput, (id + 1), token);
+                }
+                else
+                {
+                    response.status = "error";
+                    response.message = "There was an error processing your request";
+
+                }
+                sqlCon.Close();
+            }
+        }
+    }
+
+    public String generateUniqueToken()
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            string sql = "SELECT NEWID()";
+            sqlCon.Open();
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            DataRow dr = dt.NewRow();
+            response.message = dt.ToString();
+            if (dt != null && dt.Rows.Count > 0) // Email id is  duplicate
+            {
+                DataRow row = dt.Rows[0];
+                return row[0].ToString();
+            }
+            else
+            {
+                return "error";
             }
         }
     }
@@ -98,10 +194,9 @@ public class Service : IService
             DataTable dt = new DataTable();
             da.Fill(dt);
             DataRow dr = dt.NewRow();
-
-            if(dt!= null) // Means match was found
+            if (dt != null) // Means match was found
             {
-                DataRow row = dt.Rows[0];   
+                DataRow row = dt.Rows[0];
                 string userId = row[0].ToString();
                 if (userId == "")
                     return 0;
@@ -110,21 +205,24 @@ public class Service : IService
                     id = int.Parse(userId);
                     return id;
                 }
-            } else
+            }
+            else
             {
                 return 0;
-            }        
+            }
+
         }
     }
 
-    public void doInsert(User userInput,int id)
+    public void doInsert(User userInput, int id, String token)
     {
         String userName = userInput.UserName;
         String password = userInput.Password;
+        String firstName = userInput.FirstName;
 
         using (SqlConnection sqlCon = new SqlConnection(connectionstring))
         {
-            string sql = "INSERT INTO Users (UserId,Email,Password) VALUES ('"+id+"', '" + userName + "' , '" + password + " ')";
+            string sql = "INSERT INTO Users (FirstName,UserId,Email,Password,PersonalData,Verified,Token) VALUES ('" + firstName + "','" + id + "', '" + userName + "' , '" + password + " ','N','N','" + token + "')";
 
             SqlDataAdapter da = new SqlDataAdapter();
             SqlCommand command = new SqlCommand(sql, sqlCon);
@@ -133,15 +231,39 @@ public class Service : IService
                 sqlCon.Open();
                 da.InsertCommand = new SqlCommand(sql, sqlCon);
                 da.InsertCommand.ExecuteNonQuery();
+                sendEmail(userName, firstName, token, id);
                 response.status = "success";
-                response.message = "User created";
+                response.message = "User created.Please verify email to activate user";
             }
             catch (Exception ex)
             {
                 response.status = "error";
-                response.message = "There was an error inserting"+ ex;
+                response.message = "There was an error inserting" + ex;
             }
+            sqlCon.Close();
         }
+    }
+
+    public void sendEmail(String userName, String firstName, String token, int id)
+    {
+        String msgBody = "";
+        msgBody = "Hi " + firstName + ",\n \n Please click on below link to activate your account \n \n" +
+            "http://localhost:8080/#/activate?userId=" + id + "&token=" + token
+            + "\n \n Regards, \n \n Healthy Humans";
+        SmtpClient client = new SmtpClient();
+        client.Port = 587;
+        client.Host = "smtp.gmail.com";
+        client.EnableSsl = true;
+        client.Timeout = 20000;
+        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+        client.UseDefaultCredentials = false;
+        client.Credentials = new System.Net.NetworkCredential("healthyhumans123@gmail.com", "dotnetproject");
+
+        MailMessage mm = new MailMessage("donotreply@domain.com", userName, "Welcome to Healthy Humans", msgBody);
+        mm.BodyEncoding = UTF8Encoding.UTF8;
+        mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+
+        client.Send(mm);
     }
 }
 
@@ -149,6 +271,45 @@ public class User
 {
     private string userName;
     private string password;
+    private string firstName;
+    private string userId;
+    private string token;
+
+    public string Token
+    {
+        get
+        {
+            return token;
+        }
+        set
+        {
+            token = value;
+        }
+    }
+
+    public string UserId
+    {
+        get
+        {
+            return userId;
+        }
+        set
+        {
+            userId = value;
+        }
+    }
+
+    public string FirstName
+    {
+        get
+        {
+            return firstName;
+        }
+        set
+        {
+            firstName = value;
+        }
+    }
 
     public string UserName
     {
@@ -179,6 +340,7 @@ public class Result
 {
     public string status;
     public string message;
+    public string personalData;
 }
 
 

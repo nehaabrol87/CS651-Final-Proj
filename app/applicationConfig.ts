@@ -12,7 +12,13 @@ var applicationConfig = function($stateProvider: ng.ui.IStateProvider, $urlRoute
       templateUrl: 'components/profile/profile.html',
       controller: 'ProfileController as profile'
     })
-    
+
+    .state('activate', {
+     url: '/activate?userId&token',
+     templateUrl: 'components/activate/activate.html',
+     controller: 'ActivateController as activate'
+    })
+
   $urlRouterProvider.otherwise('/home');
 
   setButtonsTheme($mdThemingProvider);
