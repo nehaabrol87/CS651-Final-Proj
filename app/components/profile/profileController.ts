@@ -5,6 +5,7 @@ export class ProfileController {
 	public isSideNavVisible = false;
 	public hideShow = "HIDE";
 	private userDetails : any;
+	private userName;
 	public mealsDown = true;
 	public default = true;
 	public fruitsDown = true;
@@ -33,6 +34,7 @@ export class ProfileController {
 	public minDate :Date;
 	public mealDate: Date ;
 	public errorMsg = "";
+	public isProfileUpdated = false;
 	public hasError = false;
 	public startTimer;
   private girlsIntake = {
@@ -115,25 +117,18 @@ export class ProfileController {
 	constructor(private $http, private $rootScope, private localStorageService, private $state, private $scope, private $timeout, private $mdDialog) {
 		this.isLoggedIn = this.localStorageService.get('isLoggedIn') || false;
 		this.userDetails = this.localStorageService.get('userDetails');
-
 		if (!this.isLoggedIn) {
 			$state.go('home');
-		} else if (this.userDetails.personalData == "N") {
-			this.updateUserProfile();
 		} else {	
+			if (this.localStorageService.get('personalData') == 'Y') {
+				this.isProfileUpdated = true;
+			} else {
+				this.isProfileUpdated = false;
+			}
 			this.displayIntakeData();
 			this.minDate = new Date();
-			this.userDetails = this.localStorageService.get('userDetails');
+			this.userName = this.userDetails.userName;
 		} 
-	}
-
-	private updateUserProfile() {
-		this.$mdDialog.show({
-			templateUrl: 'components/updateProfile/updateProfile.html',
-			controller: 'UpdateProfileController',
-			controllerAs: 'vm',
-			bindToController: true
-		});
 	}
 
 	private displayIntakeData() {

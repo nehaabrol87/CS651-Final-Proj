@@ -34,6 +34,54 @@ public class Service : IService
         return response;
     }
 
+    public Result updateProfile(User userInput)
+    {
+        updateUser(userInput);
+        return response;
+    }
+
+    public void updateUser(User userInput)
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            string dob = userInput.Dob;
+            string gender = userInput.Gender;
+            int height_ft = userInput.Height_ft;
+            int height_in = userInput.Height_in;
+            int weight = userInput.Weight;
+            string userName = userInput.UserName;
+
+            string sql = "Update Users SET PersonalData = 'Y',Dob = '"+ dob +"', Gender = '"+ gender +" ', Height_ft = '"+ height_ft+ "', Height_in = '"+ height_in + "', Weight = '"+ weight +"'  WHERE Email = '" + userName + "' and PersonalData = 'N'";
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            try
+            {
+                sqlCon.Open();
+                da.UpdateCommand = new SqlCommand(sql, sqlCon);
+                int noOfRows = da.UpdateCommand.ExecuteNonQuery();
+                if (noOfRows > 0)
+                {
+                    response.status = "success";
+                    response.message = "User updated successfully.You will be redirected to your profile";
+                } else
+                {
+                    response.status = "error";
+                    response.message = "There was an error updating your Profile";
+
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                response.status = "error";
+                response.message = "There was an error updating your Profile" + ex;
+            }
+            sqlCon.Close();
+        }
+
+    }
+
     public void verify(User userInput)
     {
         using (SqlConnection sqlCon = new SqlConnection(connectionstring))
@@ -74,9 +122,19 @@ public class Service : IService
             {
                 sqlCon.Open();
                 da.UpdateCommand = new SqlCommand(sql, sqlCon);
-                da.UpdateCommand.ExecuteNonQuery();
-                response.status = "success";
-                response.message = "User activated successfully.Login to access profile";
+                int noOfRows= da.UpdateCommand.ExecuteNonQuery();
+
+                if (noOfRows>0)
+                {
+                    response.status = "success";
+                    response.message = "User activated successfully.Login to access profile";
+                } else
+                {
+                    response.status = "error";
+                    response.message = "There was an error activating your account";
+
+                }
+                
             }
             catch (Exception ex)
             {
@@ -85,7 +143,6 @@ public class Service : IService
             }
             sqlCon.Close();
         }
-
     }
 
     public void loginUser(User userInput)
@@ -230,10 +287,19 @@ public class Service : IService
             {
                 sqlCon.Open();
                 da.InsertCommand = new SqlCommand(sql, sqlCon);
-                da.InsertCommand.ExecuteNonQuery();
-                sendEmail(userName, firstName, token, id);
-                response.status = "success";
-                response.message = "User created.Please verify email to activate user";
+                int noOfRows=da.InsertCommand.ExecuteNonQuery();
+
+                if (noOfRows > 0)
+                {
+                    sendEmail(userName, firstName, token, id);
+                    response.status = "success";
+                    response.message = "User created.Please verify email to activate user";
+                } else
+                {
+                    response.status = "error";
+                    response.message = "There was an error inserting";
+                }
+                
             }
             catch (Exception ex)
             {
@@ -274,6 +340,11 @@ public class User
     private string firstName;
     private string userId;
     private string token;
+    private int height_in;
+    private int height_ft;
+    private int weight;
+    private string dob;
+    private string gender;
 
     public string Token
     {
@@ -332,6 +403,66 @@ public class User
         set
         {
             password = value;
+        }
+    }
+
+    public string Dob
+    {
+        get
+        {
+            return dob;
+        }
+        set
+        {
+            dob = value;
+        }
+    }
+
+    public string Gender
+    {
+        get
+        {
+            return gender;
+        }
+        set
+        {
+            gender = value;
+        }
+    }
+
+    public int Height_ft
+    {
+        get
+        {
+            return height_ft;
+        }
+        set
+        {
+            height_ft = value;
+        }
+    }
+
+    public int Height_in
+    {
+        get
+        {
+            return height_in;
+        }
+        set
+        {
+            height_in = value;
+        }
+    }
+
+    public int Weight
+    {
+        get
+        {
+            return weight;
+        }
+        set
+        {
+            weight = value;
         }
     }
 }
