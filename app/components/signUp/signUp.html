@@ -38,13 +38,14 @@
           <div ng-if='signUpForm.password2.$touched && signUpForm.password2.$error.required' ng-message="required">Required</div>
         </div>
       </md-input-container>
-      <md-button class="md-raised md-primary dal-button" ng-disabled="signUp.signUpRequestObject.requestOut">Submit
+      <md-button class="md-raised md-primary dal-button" ng-disabled="signUp.signUpRequestObject.requestOut || vm.isSuccessFul">Submit
       </md-button>
       <div ng-if="vm.requestOut" class="overlay shady"></div>
       <div ng-if="vm.requestOut" class="overlay" layout="row" layout-align="center center">
         <md-progress-circular md-mode="indeterminate"></md-progress-circular>
       </div>
       <div class="error" ng-if="vm.hasError">{{vm.errorMsg}}</div>
+      <div class="success" ng-if="vm.isSuccessFul">{{vm.successMsg}}</div>
     </md-dialog-content>
   </form>
 </md-dialog>

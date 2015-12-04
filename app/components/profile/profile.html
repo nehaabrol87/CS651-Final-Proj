@@ -1,25 +1,28 @@
 <div layout='row' class="homepager__header" style="margin-bottom: 0px;" layout-align="space-between center">
   <img src="img\icons\home.png" title="home" class="homepage__header-logo" ng-click="profile.goToHome()">
   <div> Welcome to Healthy Humans</div>
-  <div layout='row' class="profile__userinfo" layout="row" layout-align="center center" style="min-height:100px">
-    <div class="profile__username">{{profile.userDetails.firstName}}</div>
-    <div>
-      <img ng-src='img/icons/user.png' class="profile__user-logo" />
+  <div layout="row">
+    <div layout='row' class="profile__userinfo" layout="row" layout-align="center center" style="min-height:100px">
+      <div class="profile__username">{{profile.userDetails.firstName}}</div>
+      <div>
+        <img ng-src='img/icons/user.png' class="profile__user-logo" />
+      </div>
+      <div>
+        <user-info-panel class='profile__user-info-panel'></user-info-panel>
+      </div>
     </div>
-    <div>
-      <user-info-panel class='profile__user-info-panel'></user-info-panel>
-    </div>
+    <div> <img src="img\icons\info.png" title="info" class="homepage__info-logo"></div>
   </div>
 </div>
 <main layout="row" ng-cloak flex>
   <nav class="profile__nav" layout="row">
     <md-sidenav class="hh-sidenav md-sidenav-left ng-isolate-scope" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" layout="column" ng-show="!profile.isSideNavVisible && !profile.default">
       <md-content flex>
-      <ng-include src="'components/profile/partials/meals.html'"></ng-include>
+        <ng-include src="'components/profile/partials/meals.html'"></ng-include>
       </md-content>
     </md-sidenav>
   </nav>
-  <md-content class="profile__main_section" flex layout="row">
+  <md-content ng-if="profile.isProfileUpdated" class="profile__main_section" flex layout="row">
     <md-button ng-if="!profile.default" class="profile__hideSidenav md-raised md-primary" ng-click="profile.toggleSideNav()">{{profile.hideShow}}</md-button>
     <div ng-if="profile.default" layout="column" flex layout-align="start center">
       <h2 style="color:blueviolet;">Select an option From Below</h2>
@@ -38,9 +41,11 @@
         </div>
       </div>
     </div>
-    <div ng-if="profile.meal" layout="column" flex layout-align="start center"> 
-       <ng-include src="'components/profile/partials/mealsDisplaySection.html'"></ng-include>
+    <ng-include src="'components/profile/partials/mealsDisplaySection.html'" ng-if="profile.meal" layout="column" flex layout-align="start center"></ng-include>
     </div>
+  </md-content>
+  <md-content ng-if="!profile.isProfileUpdated" class="profile__main_section" flex layout="row">
+    <update-profile user-name="profile.userName" flex layout="row" layout-align="center center"></update-profile>
   </md-content>
 </main>
 <div class="blogs__bar" resizable r-directions="['top']" layout="column" layout-align=" start center">

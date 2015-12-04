@@ -10,7 +10,8 @@ var applicationConfig = function($stateProvider: ng.ui.IStateProvider, $urlRoute
     .state('profile', {
       url: '/profile',
       templateUrl: 'components/profile/profile.html',
-      controller: 'ProfileController as profile'
+      controller: 'ProfileController as profile',
+      cache: false
     })
 
     .state('activate', {

@@ -16,13 +16,18 @@
   font-style: italic;
 }
 
-.homepage__header-logo {
+.homepage__header-logo ,.homepage__info-logo {
   height:60px;
   width: 60px;
 
    &:hover {
     cursor: pointer
   }
+}
+
+.homepage__info-logo {
+  position: relative;
+  top:18px;
 }
 
 

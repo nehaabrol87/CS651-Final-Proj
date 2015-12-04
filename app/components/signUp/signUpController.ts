@@ -4,14 +4,17 @@ import * as _ from 'lodash';
 export class SignUpController {
 	public signUpRequest: SignUpRequest = new SignUpRequest();
 	public hasError = false;
+	public isSuccessFul = false;
+	public successMsg = " ";
 	public errorMsg = " ";
+	public startErrorTimer;
+	public startSuccessTimer;
 	private requestOut: boolean = false;
-	public startTimer;
 	public isEmailIdValid = false;
 	public EMAIL_REGEXP = /^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
 
-	static $inject = ['$mdDialog', '$timeout', '$http', 'successErrorService','$rootScope'];
-	constructor(private $mdDialog, private $timeout, private $http, private successErrorService ,private $rootScope) {
+	static $inject = ['$mdDialog', '$timeout', '$http', 'successErrorService'];
+	constructor(private $mdDialog, private $timeout, private $http, private successErrorService) {
   }
 
   private closeDialog() {
@@ -22,10 +25,10 @@ export class SignUpController {
 	  if (signUpForm.$valid) {
 		  this.isEmailIdValid = this.EMAIL_REGEXP.test(this.signUpRequest.userName);
 		if (this.signUpRequest.password1 != this.signUpRequest.password2) {
-			this.$timeout.cancel(this.startTimer);
+			this.$timeout.cancel(this.startErrorTimer);
 			this.showErrorMsg("Passwords need to be same.");  
 		} else if (!this.isEmailIdValid) {
-			this.$timeout.cancel(this.startTimer);
+			this.$timeout.cancel(this.startErrorTimer);
 			this.showErrorMsg("Email id is not valid.");  
 		} 
 		else {
@@ -39,11 +42,13 @@ export class SignUpController {
 				this.$http.post('http://localhost/finalservice/Service.svc/signup', payload).then((res) => {
 					if (res.data.status == "success") {
 						this.requestOut = false;
-						this.$rootScope.SuccessError = res.data.message;
-						this.successErrorService.showDialog();
+						this.$timeout.cancel(this.startSuccessTimer);
+						this.$timeout.cancel(this.startErrorTimer);
+						this.showSuccessMsg(res.data.message);
 					} else {
 						this.requestOut = false;
-						this.$timeout.cancel(this.startTimer);
+						this.$timeout.cancel(this.startSuccessTimer);
+						this.$timeout.cancel(this.startErrorTimer);
 						this.showErrorMsg(res.data.message);  
 					}
 				});
@@ -53,11 +58,23 @@ export class SignUpController {
 	  }
   }
 
+  private showSuccessMsg(msg) {
+	  this.isSuccessFul = true;
+	  this.successMsg = msg;
+
+	  this.startSuccessTimer = this.$timeout(() => {
+		  this.successMsg = " ";
+		  this.isSuccessFul = false;
+		  this.$mdDialog.hide();
+	  },5000);
+  }
+
+
   private showErrorMsg(msg) {
 	  this.hasError = true;
 	  this.errorMsg = msg;
 	    
-	    this.startTimer = this.$timeout(() => {
+	    this.startErrorTimer = this.$timeout(() => {
 		  this.errorMsg = " ";
 		  this.hasError = false;
 	  }, 5000);

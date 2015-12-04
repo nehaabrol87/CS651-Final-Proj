@@ -21,6 +21,10 @@ public interface IService
     [OperationContract]
     [WebInvoke(UriTemplate = "verifyUser/{request}", Method = "GET")]
     Result verifyUser(User request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "updateProfile/{request}", Method = "GET")]
+    Result updateProfile(User request);
 }
 
 internal class WebInvokeAttribute : Attribute

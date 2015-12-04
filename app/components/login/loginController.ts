@@ -10,8 +10,7 @@ export class LoginController {
   public isLoggedIn = false;
   public userDetails= {
     'firstName' : " ",
-    'userName'  : " ",
-    'personalData' : " "
+    'userName'  : " "
   }
 
   static $inject = ['$window', '$mdDialog', '$timeout', '$http', '$rootScope', 'localStorageService' , '$state'];
@@ -37,9 +36,9 @@ export class LoginController {
           this.isLoggedIn = true;
           this.userDetails.firstName = res.data.message[0].toUpperCase() + res.data.message.slice(1); 
           this.userDetails.userName = this.loginRequest.userName;
-          this.userDetails.personalData = res.data.personalData;
           this.localStorageService.set('userDetails', this.userDetails);
           this.localStorageService.set('isLoggedIn', this.isLoggedIn);
+          this.localStorageService.set('personalData', res.data.personalData);
           this.$state.go('profile');
           } else {
           this.requestOut = false;

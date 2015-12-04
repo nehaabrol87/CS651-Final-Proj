@@ -17,7 +17,7 @@ import { ProfileController } from "./components/profile/profileController";
 import { ProgressIndicatorService } from "./services/progressIndicatorService";
 import { UserInfoPanel } from "./components/userInfoPanel/userInfoPanel";
 import { ActivateController } from "./components/activate/activateController";
-import { UpdateProfileController } from "./components/updateProfile/updateProfileController";
+import { UpdateProfile } from "./components/updateProfile/updateProfile";
 
 
 import applicationConfig from './applicationConfig';
@@ -36,4 +36,4 @@ app.controller('LoginController', LoginController);
 app.controller('ProfileController', ProfileController);
 app.directive('userInfoPanel', UserInfoPanel);
 app.controller('ActivateController', ActivateController);
-app.controller('UpdateProfileController', UpdateProfileController);
+app.directive('updateProfile', UpdateProfile);
