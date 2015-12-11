@@ -40,6 +40,12 @@ public class Service : IService
         return response;
     }
 
+    public Result submitMealPlan(Meal userInput)
+    {
+        submitMeal(userInput);
+        return response;
+    }
+
     public void updateUser(User userInput)
     {
         using (SqlConnection sqlCon = new SqlConnection(connectionstring))
@@ -211,6 +217,52 @@ public class Service : IService
                 sqlCon.Close();
             }
         }
+    }
+
+    public void submitMeal(Meal request)
+    {
+        string mealDate = request.Date;
+        string fruits = request.Fruits;
+        string veggies = request.Veggies;
+        string grains = request.Grains;
+        string dairy = request.Dairy;
+        string proteins = request.Proteins;
+        string email = request.Email;
+        string completedDiet = request.CompletedDiet;
+
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            string sql = "INSERT INTO Meals (Date,Fruit,Vegetable,Grain,Dairy,Proteins,Email,CompletedDiet) VALUES ('" + mealDate + "','" + fruits + "', '" + veggies + "' , '" + grains + " ', '"+ dairy  + "','" + proteins + "' , '"+email +"','N')";
+
+            SqlDataAdapter da = new SqlDataAdapter();
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            try
+            {
+                sqlCon.Open();
+                da.InsertCommand = new SqlCommand(sql, sqlCon);
+                int noOfRows = da.InsertCommand.ExecuteNonQuery();
+
+                if (noOfRows > 0)
+                {
+      
+                    response.status = "success";
+                    response.message = "Meal plan created.";
+                }
+                else
+                {
+                    response.status = "error";
+                    response.message = "There was an error adding your mealPlan";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.status = "error";
+                response.message = "There was an error inserting" + ex;
+            }
+            sqlCon.Close();
+        }
+
     }
 
     public String generateUniqueToken()
@@ -472,6 +524,116 @@ public class Result
     public string status;
     public string message;
     public string personalData;
+}
+
+public class Meal
+{
+    private string date;
+    private string fruits;
+    private string veggies;
+    private string grains;
+    private string dairy;
+    private string grocery;
+    private string proteins;
+    private string completedDiet;
+    private string email;
+
+    public string Date
+    {
+        get
+        {
+            return date;
+        }
+        set
+        {
+            date = value;
+        }
+    }
+
+    public string Fruits
+    {
+        get
+        {
+            return fruits;
+        }
+        set
+        {
+            fruits = value;
+        }
+    }
+
+    public string Veggies
+    {
+        get
+        {
+            return veggies;
+        }
+        set
+        {
+            veggies = value;
+        }
+    }
+
+    public String Grains
+    {
+        get
+        {
+            return grains;
+        }
+        set
+        {
+            grains = value;
+        }
+    }
+
+    public string Proteins
+    {
+        get
+        {
+            return proteins;
+        }
+        set
+        {
+            proteins = value;
+        }
+    }
+
+    public string Dairy
+    {
+        get
+        {
+            return dairy;
+        }
+        set
+        {
+            dairy = value;
+        }
+    }
+
+    public string CompletedDiet
+    {
+        get
+        {
+            return completedDiet;
+        }
+        set
+        {
+            completedDiet = value;
+        }
+    }
+
+    public string Email
+    {
+        get
+        {
+            return email;
+        }
+        set
+        {
+            email = value; 
+        }
+    }
+
 }
 
 

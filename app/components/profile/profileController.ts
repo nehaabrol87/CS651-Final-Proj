@@ -33,10 +33,16 @@ export class ProfileController {
 	public dairyIntake = " ";
 	public minDate :Date;
 	public mealDate: Date ;
-	public errorMsg = "";
 	public isProfileUpdated = false;
-	public hasError = false;
 	public startTimer;
+	public hasError = false;
+	public isSuccessFul = false;
+	public successMsg = " ";
+	public errorMsg = " ";
+	public startErrorTimer;
+	public startSuccessTimer;
+	public requestCanceler: any;
+
   private girlsIntake = {
     'fruit' : '1.5 cups' ,
     'veggies' : '2 cups',
@@ -112,9 +118,25 @@ export class ProfileController {
 	};
 
 
-	static $inject = ['$http', '$rootScope', 'localStorageService', '$state', '$scope', '$timeout','$mdDialog'];
+	static $inject = ['$http', 
+	  '$rootScope',
+	  'localStorageService', 
+	  '$state', 
+	  '$scope', 
+	  '$timeout',
+	  '$mdDialog',
+	  'progressIndicatorService',
+	  '$q'];
 
-	constructor(private $http, private $rootScope, private localStorageService, private $state, private $scope, private $timeout, private $mdDialog) {
+	constructor(private $http, 
+		private $rootScope, 
+		private localStorageService, 
+		private $state,
+	  private $scope, 
+	  private $timeout, 
+	  private $mdDialog,
+	  private progressIndicatorService,
+	  private $q) {
 		this.isLoggedIn = this.localStorageService.get('isLoggedIn') || false;
 		this.userDetails = this.localStorageService.get('userDetails');
 		if (!this.isLoggedIn) {
@@ -228,6 +250,7 @@ export class ProfileController {
 	}
 
 	private submit() {
+		var payload;
 		if(this.mealDate == undefined) {
 			this.$timeout.cancel(this.startTimer);
 			this.showErrorMsg("You need to enter a Date"); 
@@ -237,13 +260,57 @@ export class ProfileController {
 			{
 			this.$timeout.cancel(this.startTimer);
 			this.showErrorMsg("You need to select at least one food item from each group");
+		} else {
+      payload = {
+		  'Date': this.getServerFormattedDate(this.mealDate),
+        'Fruits' : this.fruitValue,
+        'Veggies' : this.veggiesValue,
+        'Grains' : this.grainsValue,
+        'Dairy' : this.dairyValue,
+        'Proteins' : this.proteinsValue,
+        'CompletedDiet' : 'N',
+        'Email': this.userName
+      };
+	this.requestCanceler = this.$q.defer();
+	this.progressIndicatorService.showDialog();
+	this.$http.post('http://localhost/finalservice/Service.svc/submitMealPlan', payload, 
+		   { timeout: this.requestCanceler.promise }).then((res) => {
+		  if (res.data.status == "success") {
+			  this.$timeout.cancel(this.startSuccessTimer);
+			  this.$timeout.cancel(this.startErrorTimer);
+			  this.showSuccessMsg(res.data.message);
+			  this.progressIndicatorService.hideDialog();
+		  } else {
+			  this.$timeout.cancel(this.startSuccessTimer);
+			  this.$timeout.cancel(this.startErrorTimer);
+			  this.showErrorMsg(res.data.message);
+			  this.progressIndicatorService.hideDialog();
+		  }
+	  });
 		}
 	}
+
+	private getServerFormattedDate(date: Date) {
+		return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+	}
+
+	private showSuccessMsg(msg) {
+		this.isSuccessFul = true;
+		this.successMsg = msg;
+
+		this.startSuccessTimer = this.$timeout(() => {
+			this.successMsg = " ";
+			this.isSuccessFul = false;
+			this.$mdDialog.hide();
+		}, 5000);
+	}
+
 
 	private showErrorMsg(msg) {
 		this.hasError = true;
 		this.errorMsg = msg;
-		this.startTimer = this.$timeout(() => {
+
+		this.startErrorTimer = this.$timeout(() => {
 			this.errorMsg = " ";
 			this.hasError = false;
 		}, 5000);
