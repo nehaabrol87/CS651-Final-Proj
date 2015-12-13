@@ -1,20 +1,17 @@
-import { LoginRequest } from "models/LoginRequest";
+import { User } from "models/User";
 import * as _ from 'lodash';
 
 export class LoginController {
-  public loginRequest: LoginRequest = new LoginRequest();
+  public loginRequest: User = new User();
   public hasError = false;
   public errorMsg = " ";
   private requestOut: boolean = false;
   public startTimer;
   public isLoggedIn = false;
-  public userDetails= {
-    'firstName' : " ",
-    'userName'  : " "
-  }
+  public userDetails: User = new User();
 
-  static $inject = ['$window', '$mdDialog', '$timeout', '$http', '$rootScope', 'localStorageService' , '$state'];
-  constructor(private $window, private $mdDialog, private $timeout, private $http, private $rootScope, private localStorageService , private $state) {
+  static $inject = ['$mdDialog', '$timeout', 'localStorageService' , '$state','userService'];
+  constructor(private $mdDialog, private $timeout, private localStorageService , private $state ,private userService) {
     
   }
 
@@ -22,33 +19,63 @@ export class LoginController {
     this.$mdDialog.hide();
   }
 
-  private submit(signUpForm) {
+  private login(signUpForm) {
     if (signUpForm.$valid) {
       var payload = {
         'UserName': this.loginRequest.userName,
-        'Password': this.loginRequest.password
+        'Password': this.loginRequest.password,
+        'Date': this.getServerFormattedDate(this.getDate(1))
       };
-
       this.requestOut = true;
-      this.$http.post('http://localhost/finalservice/Service.svc/login', payload).then((res) => {
-        if (res.data.status == "success") {
-          this.requestOut = false;
-          this.isLoggedIn = true;
-          this.userDetails.firstName = res.data.message[0].toUpperCase() + res.data.message.slice(1); 
-          this.userDetails.userName = this.loginRequest.userName;
-          this.localStorageService.set('userDetails', this.userDetails);
-          this.localStorageService.set('isLoggedIn', this.isLoggedIn);
-          this.localStorageService.set('personalData', res.data.personalData);
-          this.$state.go('profile');
-          } else {
-          this.requestOut = false;
-          this.$timeout.cancel(this.startTimer);
-          this.showErrorMsg(res.data.message);
-          }
-        });
-      } else {
+      this.userService.login(payload)
+      .then(this.onLoginSuccess.bind(this), this.onLoginFailure.bind(this))
+     } else {
       this.touchFormFields(signUpForm);
     }
+  }
+
+  private getServerFormattedDate(date) {
+    return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+  }
+
+  private getDate(daysAgo) {
+    var date = new Date();
+    date = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + 1
+    );
+    return date;
+  }
+
+  private onLoginSuccess(successCb){
+    if(successCb.data.status === "success") {
+      this.requestOut = false;
+      this.isLoggedIn = true;
+      this.userDetails.firstName = successCb.data.firstName[0].toUpperCase() + successCb.data.firstName.slice(1);
+      this.userDetails.userName = this.loginRequest.userName;
+      this.userDetails.personalData = successCb.data.personalData;
+      this.userDetails.mealPlanEnteredForTomorrow = successCb.data.mealPlanEnteredForTomorrow;
+      this.userDetails.dob = successCb.data.dob;
+      this.userDetails.gender = successCb.data.gender;
+      this.userDetails.height_ft = successCb.data.height_ft;
+      this.userDetails.height_in = successCb.data.height_in;
+      this.userDetails.weight = successCb.data.weight;
+      this.userDetails.personType = successCb.data.personType;
+      this.localStorageService.set('userDetails', this.userDetails);
+      this.localStorageService.set('isLoggedIn', this.isLoggedIn);
+      this.$state.go('profile');
+    } else {
+      this.requestOut = false;
+      this.$timeout.cancel(this.startTimer);
+      this.showErrorMsg(successCb.data.message);
+    }    
+  }
+
+  private onLoginFailure(failureCb) {
+    this.requestOut = false;
+    this.$timeout.cancel(this.startTimer);
+    this.showErrorMsg(failureCb.data.message);
   }
 
   private showErrorMsg(msg) {

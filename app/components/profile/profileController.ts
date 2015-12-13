@@ -1,39 +1,43 @@
 import * as _ from 'lodash';
+import { User } from "../../models/User";
+import { Meal } from "../../models/Meal";
 
 export class ProfileController {
 	public isLoggedIn = false;
 	public isSideNavVisible = false;
 	public hideShow = "HIDE";
-	private userDetails : any;
-	private userName;
-	public mealsDown = true;
+	public userDetails: User = new User();
+	public mealDetails: Meal = new Meal();
+	public mealDetailsForToday: Meal = new Meal();
+	public mealsDown;
+	public fruitsDown;
+	public veggiesDown;
+	public dairyDown;
+	public grainsDown;
+	public proteinsDown;
 	public default = true;
-	public fruitsDown = true;
-	public veggiesDown = true;
-	public dairyDown = true;
-	public grainsDown = true;
-	public proteinsDown = true;
 	public meal = false;
 	public personalData;
-	public personType = "children";
+	public personType;
 	public fruitType;
 	public veggiesType;
 	public dairyType;
 	public proteinsType;
 	public grainsType;
-	public fruitValue = "";
-	public veggiesValue = "";
-	public dairyValue = "";
-	public proteinsValue = "";
-	public grainsValue ="";
-	public fruitIntake = " ";
-	public veggiesIntake = " ";
-	public grainsIntake = " ";
-	public proteinsIntake = " ";
-	public dairyIntake = " ";
-	public minDate :Date;
+	public fruitValue;
+	public veggiesValue;
+	public dairyValue;
+	public proteinsValue;
+	public grainsValue;
+	public fruitIntake;
+	public veggiesIntake;
+	public grainsIntake;
+	public proteinsIntake;
+	public dairyIntake;
 	public mealDate: Date ;
 	public isProfileUpdated = false;
+	public isMealPlanSubmittedForTomorrow = false;
+	public isMealPlanSubmittedForToday = false;
 	public startTimer;
 	public hasError = false;
 	public isSuccessFul = false;
@@ -42,6 +46,7 @@ export class ProfileController {
 	public startErrorTimer;
 	public startSuccessTimer;
 	public requestCanceler: any;
+	public planForSelf = false;
 
   private girlsIntake = {
     'fruit' : '1.5 cups' ,
@@ -126,7 +131,9 @@ export class ProfileController {
 	  '$timeout',
 	  '$mdDialog',
 	  'progressIndicatorService',
-	  '$q'];
+	  'mealService',
+	  '$q'
+	  ];
 
 	constructor(private $http, 
 		private $rootScope, 
@@ -136,25 +143,27 @@ export class ProfileController {
 	  private $timeout, 
 	  private $mdDialog,
 	  private progressIndicatorService,
-	  private $q) {
+	  private mealService,
+	  private $q
+	  ) {
+
 		this.isLoggedIn = this.localStorageService.get('isLoggedIn') || false;
 		this.userDetails = this.localStorageService.get('userDetails');
+
 		if (!this.isLoggedIn) {
 			$state.go('home');
 		} else {	
-			if (this.localStorageService.get('personalData') == 'Y') {
+			if (this.userDetails.personalData === 'Y') {
 				this.isProfileUpdated = true;
 			} else {
 				this.isProfileUpdated = false;
 			}
-			this.displayIntakeData();
-			this.minDate = new Date();
-			this.userName = this.userDetails.userName;
+			this.restoreDefaults();
 		} 
 	}
 
-	private displayIntakeData() {
-		switch (this.personType) {
+	private displayIntakeData(personType) {
+		switch (personType) {
 			case 'girls': this.fruitIntake = " --- " + this.girlsIntake['fruit'];
 				this.proteinsIntake = " --- " + this.girlsIntake['proteins'];
 				this.dairyIntake = " --- " + this.girlsIntake['dairy'];
@@ -227,9 +236,164 @@ export class ProfileController {
 		this.meal = false;
 	}
 
-	private goToMeals() {
+	private goToMealsForFamily() {
+		this.restoreDefaults();
+		this.personType = "children";
+		this.displayIntakeData(this.personType);
+		this.planForSelf = false;
 		this.default = false;
 		this.meal = true;
+	}
+
+	private goToMealsForSelf() {
+		var payload1;
+		var payload2;
+		this.restoreDefaults();
+		this.displayIntakeData(this.userDetails.personType);
+		this.mealDate = this.getDate(1);
+		this.userDetails = this.localStorageService.get('userDetails');
+		this.planForSelf = true;
+		this.default = false;
+		this.meal = true;
+		this.getProgressFor7Days();
+
+		payload1 = {
+			'Email': this.userDetails.userName,
+			'Date': this.getServerFormattedDate(new Date())
+		}
+		this.mealService.getMealPlanForToday(payload1)
+			.then(this.onMealPlanForTodayRetrieveSuccess.bind(this), this.onMealPlanForTodayRetrieveFailure.bind(this));
+
+		if(this.userDetails.mealPlanEnteredForTomorrow == 'Y') {
+			payload2 = {
+        'Email' : this.userDetails.userName,
+        'Date': this.getServerFormattedDate(this.getDate(1))
+			};
+			this.progressIndicatorService.showDialog();
+			this.mealService.getMealPlan(payload2)
+				.then(this.onMealPlanRetrieveSuccess.bind(this), this.onMealPlanRetrieveFailure.bind(this));
+		}
+	}
+
+	private onMealPlanRetrieveSuccess(successCb){
+	  if(successCb.data.status == "success"){
+		  this.progressIndicatorService.hideDialog();
+		  this.mealDetails.fruit = successCb.data.fruit;
+		  this.mealDetails.veggies = successCb.data.veggies;
+		  this.mealDetails.grains = successCb.data.grain;
+		  this.mealDetails.proteins = successCb.data.proteins;
+		  this.mealDetails.dairy = successCb.data.dairy;
+	  } else {
+		  this.$timeout.cancel(this.startSuccessTimer);
+		  this.$timeout.cancel(this.startErrorTimer);
+		  this.progressIndicatorService.hideDialog();
+		  this.showErrorMsg(successCb.data.message);
+	  }
+	}
+
+	private onMealPlanRetrieveFailure(failureCb) {
+		this.$timeout.cancel(this.startSuccessTimer);
+		this.$timeout.cancel(this.startErrorTimer);
+		this.progressIndicatorService.hideDialog();
+		this.showErrorMsg(failureCb.data.message);
+	}
+
+	private onMealPlanForTodayRetrieveSuccess(successCb){
+		if (successCb.data.status == "success") {
+			this.isMealPlanSubmittedForToday = true;
+			this.mealDetailsForToday.fruit = successCb.data.fruit;
+			this.mealDetailsForToday.veggies = successCb.data.veggies;
+			this.mealDetailsForToday.grains = successCb.data.grain;
+			this.mealDetailsForToday.proteins = successCb.data.proteins;
+			this.mealDetailsForToday.dairy = successCb.data.dairy;
+		} else {
+			this.isMealPlanSubmittedForToday = false
+		}
+	}
+
+	private onMealPlanForTodayRetrieveFailure(failureCb){
+		this.isMealPlanSubmittedForToday = false;
+	}
+
+	private emailMealPlan() {
+		var payload = {
+			'Email': this.userDetails.userName,
+			'Fruits' : this.mealDetails.fruit,
+			'Veggies' : this.mealDetails.veggies,
+			'Proteins' : this.mealDetails.proteins,
+			'Grains' : this.mealDetails.grains,
+			'Dairy' :this.mealDetails.dairy,
+			'Date': this.getServerFormattedDate(this.getDate(1))
+		};
+		this.progressIndicatorService.showDialog();
+		this.mealService.sendMealPlanByMail(payload)
+			.then(this.onSendEmailSuccess.bind(this), this.onSendEmailFailure.bind(this));
+	}
+
+	private onSendEmailSuccess(successCb) {
+		this.progressIndicatorService.hideDialog();
+		if(successCb.data.status == "success"){
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.progressIndicatorService.hideDialog();
+			this.showSuccessMsg(successCb.data.message);
+		} else {
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.progressIndicatorService.hideDialog();
+			this.showErrorMsg(successCb.data.message);
+		}
+	}
+
+	private onSendEmailFailure(failureCb) {
+		this.progressIndicatorService.hideDialog();
+		this.$timeout.cancel(this.startSuccessTimer);
+		this.$timeout.cancel(this.startErrorTimer);
+		this.progressIndicatorService.hideDialog();
+		this.showErrorMsg(failureCb.data.message);
+	}
+
+	private getProgressFor7Days() {
+		var payload = {
+			'Email' : this.userDetails.userName,
+			'StartDate' :this.getServerFormattedDate(this.getDate(-7)),
+			'EndDate' : this.getServerFormattedDate(this.getDate(-1))
+		}
+		this.mealService.getProgressFor7Days(payload)
+			.then(this.onProgressRetrieveSuccess.bind(this), this.onProgressRetrieveFailure.bind(this));
+	}
+
+	private onProgressRetrieveSuccess(successCb){
+
+	}
+ 
+
+	private onProgressRetrieveFailure(failureCb){
+
+	}
+	private restoreDefaults(){
+		this.fruitValue = "";
+		this.proteinsValue = "";
+		this.grainsValue = "";
+		this.fruitValue = "";
+		this.dairyValue = "";
+		this.veggiesValue = "";
+		this.veggiesType = "";
+		this.fruitType = "";
+		this.dairyType ="";
+		this.grainsType = "";
+		this.proteinsType = "";
+		this.dairyIntake = "";
+		this.grainsIntake = "";
+		this.proteinsIntake = "";
+		this.fruitIntake = "";
+		this.veggiesIntake = "";
+		this.mealsDown = true;
+	  this.fruitsDown = true;
+	  this.veggiesDown = true;
+	  this.dairyDown = true;
+	  this.grainsDown = true;
+	  this.proteinsDown = true;
 	}
 
 	private toggleMeals() {
@@ -249,45 +413,67 @@ export class ProfileController {
 		}
 	}
 
-	private submit() {
+	private submitMealPlan() {
 		var payload;
-		if(this.mealDate == undefined) {
-			this.$timeout.cancel(this.startTimer);
-			this.showErrorMsg("You need to enter a Date"); 
-		} else 
-			if (this.fruitValue.length == 0 || this.grainsValue.length == 0 || this.veggiesValue.length == 0
-				|| this.proteinsValue.length == 0 || this.dairyValue.length == 0)
-			{
+		if (this.fruitValue.length == 0 || this.grainsValue.length == 0 || this.veggiesValue.length == 0
+			|| this.proteinsValue.length == 0 || this.dairyValue.length == 0) {
 			this.$timeout.cancel(this.startTimer);
 			this.showErrorMsg("You need to select at least one food item from each group");
 		} else {
-      payload = {
-		  'Date': this.getServerFormattedDate(this.mealDate),
-        'Fruits' : this.fruitValue,
-        'Veggies' : this.veggiesValue,
-        'Grains' : this.grainsValue,
-        'Dairy' : this.dairyValue,
-        'Proteins' : this.proteinsValue,
-        'CompletedDiet' : 'N',
-        'Email': this.userName
-      };
-	this.requestCanceler = this.$q.defer();
-	this.progressIndicatorService.showDialog();
-	this.$http.post('http://localhost/finalservice/Service.svc/submitMealPlan', payload, 
-		   { timeout: this.requestCanceler.promise }).then((res) => {
-		  if (res.data.status == "success") {
-			  this.$timeout.cancel(this.startSuccessTimer);
-			  this.$timeout.cancel(this.startErrorTimer);
-			  this.showSuccessMsg(res.data.message);
-			  this.progressIndicatorService.hideDialog();
-		  } else {
-			  this.$timeout.cancel(this.startSuccessTimer);
-			  this.$timeout.cancel(this.startErrorTimer);
-			  this.showErrorMsg(res.data.message);
-			  this.progressIndicatorService.hideDialog();
-		  }
-	  });
+			payload = {
+				'Date': this.getServerFormattedDate(this.mealDate),
+				'Fruits': this.fruitValue + ' ,Daily requirement is ' + this.fruitIntake,
+				'Veggies': this.veggiesValue + ' ,Daily requirement is ' + this.veggiesIntake,
+				'Grains': this.grainsValue + ' ,Daily requirement is ' + this.grainsIntake,
+				'Dairy': this.dairyValue + ' ,Daily requirement is' + this.dairyIntake,
+				'Proteins': this.proteinsValue + ',Daily requirement is' + this.proteinsIntake,
+				'CompletedDiet': 'N',
+				'Email': this.userDetails.userName
+			};
+			this.progressIndicatorService.showDialog();
+			this.mealService.submitMealPlan(payload)
+				.then(this.onMealPlanSubmitSuccess.bind(this), this.onMealPlanSubmitFailure.bind(this));
 		}
+	}
+
+	private onMealPlanSubmitSuccess(successCb){
+		if(successCb.data.status == "success"){
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.userDetails = this.localStorageService.get('userDetails');
+			this.userDetails.mealPlanEnteredForTomorrow = 'Y';
+			this.localStorageService.set('userDetails', this.userDetails);
+			this.progressIndicatorService.hideDialog();
+			this.showSuccessMsg(successCb.data.message);
+			this.isMealPlanSubmittedForTomorrow = true;
+			this.restoreDefaults();
+			this.displayIntakeData(this.userDetails.personType);
+			this.$state.go('profile');
+			this.goToMealsForSelf();
+		} else {
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.progressIndicatorService.hideDialog();
+			this.showErrorMsg(successCb.data.message);
+
+		}
+	}
+
+	private onMealPlanSubmitFailure(failureCb){
+		this.$timeout.cancel(this.startSuccessTimer);
+		this.$timeout.cancel(this.startErrorTimer);
+		this.progressIndicatorService.hideDialog();
+		this.showErrorMsg(failureCb.data.message);
+	}
+
+	private getDate(days){
+		var date = new Date();
+		date = new Date(
+			date.getFullYear(),
+			date.getMonth(),
+			date.getDate() + days 
+		);
+		return date;
 	}
 
 	private getServerFormattedDate(date: Date) {

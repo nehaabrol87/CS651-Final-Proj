@@ -8,15 +8,20 @@ import 'checklist-model';
 import 'Reklino/angular-resizable';
 import 'angular-local-storage';
 
+//Controllers
 import { HomepageController } from './components/homepage/homepageController';
 import { SignUpController } from './components/signUp/signUpController';
-import { SuccessErrorService } from './services/successErrorService';
-import { SuccessErrorController } from './components/successError/successErrorController';
 import { LoginController } from "./components/login/loginController";
 import { ProfileController } from "./components/profile/profileController";
-import { ProgressIndicatorService } from "./services/progressIndicatorService";
-import { UserInfoPanel } from "./components/userInfoPanel/userInfoPanel";
 import { ActivateController } from "./components/activate/activateController";
+
+//Services
+import { UserService }  from "./services/userService";
+import { ProgressIndicatorService } from "./services/progressIndicatorService";
+import { MealService } from './services/mealService';
+
+//Directives
+import { UserInfoPanel } from "./components/userInfoPanel/userInfoPanel";
 import { UpdateProfile } from "./components/updateProfile/updateProfile";
 
 
@@ -27,13 +32,19 @@ var app: ng.IModule = angular.module('app', ['ngMaterial', 'ui.router', 'templat
 
 app.config(applicationConfig);
 app.run(runBlock);
+
+//Controllers
 app.controller('HomepageController', HomepageController);
 app.controller('SignUpController', SignUpController);
-app.service('progressIndicatorService', ProgressIndicatorService);
-app.service('successErrorService', SuccessErrorService);
-app.controller('SuccessErrorController', SuccessErrorController);
 app.controller('LoginController', LoginController);
 app.controller('ProfileController', ProfileController);
-app.directive('userInfoPanel', UserInfoPanel);
 app.controller('ActivateController', ActivateController);
+
+//Services
+app.service('progressIndicatorService', ProgressIndicatorService);
+app.service('userService', UserService);
+app.service('mealService', MealService);
+
+//Directives
+app.directive('userInfoPanel', UserInfoPanel);
 app.directive('updateProfile', UpdateProfile);

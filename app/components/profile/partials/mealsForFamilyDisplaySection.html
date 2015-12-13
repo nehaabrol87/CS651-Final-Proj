@@ -1,0 +1,56 @@
+<div layout="row">
+   <img src="img\icons\back.jpg" title="Back to Defaults" class="homepage__header-logo" ng-click="profile.goToDefault()">
+  <h2 style="color:black;">Meal options for Family
+  <span style="color:blueviolet; font-size:15px;">Select an item from each Food group(Toggle accordian on Sidenav) to know food intake required per day</span>
+  </h2>
+</div>
+<div><img src="img/icons/profile/general/mealForFamily.jpg" width="300px" height="175px"></div>
+<div layout="row">
+  <md-input-container style="width:250px;">
+    <label>Select Person Type</label>
+    <md-select ng-model="profile.personType" ng-change="profile.displayIntakeData(profile.personType)">
+      <md-option value="children">Children</md-option>
+      <md-option value="girls">Girls</md-option>
+      <md-option value="boys">Boys</md-option>
+      <md-option value="men">Men</md-option>
+      <md-option value="women">Women</md-option>
+    </md-select>
+  </md-input-container>
+</div>
+<div layout="column">
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.fruitValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.fruitValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/apple.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :77px;">Fruits</div>
+    <div class="icon_small_text_green">{{profile.fruitValue}}</div>
+  </div>
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.veggiesValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.veggiesValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/veggie.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :96px;">Veggies</div>
+    <div class="icon_small_text_green">{{profile.veggiesValue}}</div>
+  </div>
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.grainsValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.grainsValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/grains.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :75px;">Grains</div>
+    <div class="icon_small_text_green">{{profile.grainsValue}}</div>
+  </div>
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.proteinsValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.proteinsValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/proteins.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :96px;">Proteins</div>
+    <div class="icon_small_text_green">{{profile.proteinsValue}}</div>
+  </div>
+  <div layout="row" style="padding-bottom:10px;">
+    <img ng-if='profile.dairyValue.length === 0' src="img/icons/profile/general/cross.png" class="icon_small">
+    <img ng-if='profile.dairyValue.length > 0' src="img/icons/profile/general/correct.png" class="icon_small">
+    <img src="img/icons/profile/general/dairy.png" class="icon_small">
+    <div class="icon_small_text" style="min-width :66px;">Dairy</div>
+    <div class="icon_small_text_green">{{profile.dairyValue}}</div>
+  </div>
+</div>

@@ -1,11 +1,11 @@
-<form name="updateProfileForm" ng-submit="vm.submit(updateProfileForm)" novalidate class="profile__update-profile-form">
+<form name="updateProfileForm" ng-submit="vm.updateProfile(updateProfileForm)" novalidate class="profile__update-profile-form">
   <md-toolbar style="border: 1px solid black;">
     <div class="md-toolbar-tools">
       <h2>Need some Info before you access this page!!!</h2>
     </div>
   </md-toolbar>
   <md-content style="border: 1px solid black;">
-    <md-datepicker id='date-picker' name='dob' ng-model="vm.updateProfileRequest.dob" md-placeholder="*Date of Birth" md-min-date="vm.minDate" md-max-date="vm.maxDate" required>
+    <md-datepicker id='date-picker' name='dob' ng-model="vm.userEnteredDob" md-placeholder="*Date of Birth" md-min-date="vm.minDate" md-max-date="vm.maxDate" required>
     </md-datepicker>
     <div ng-messages="updateProfileForm.dob.$error">
       <div ng-if='updateProfileForm.dob.$touched && updateProfileForm.dob.$error.required' ng-message="required" style='color:red'>*Required</div>
@@ -43,8 +43,21 @@
         <div ng-if='updateProfileForm.weight.$touched && updateProfileForm.weight.$error.maxlength' ng-message="maxlength">Max 5 nos</div>
       </div>
     </md-input-container>
+     <md-input-container style="width:250px;">
+    <label>Select Person Type</label>
+    <md-select name="personType" ng-model="vm.updateProfileRequest.personType" required>
+      <md-option value="children">Child(1-8 yrs)</md-option>
+      <md-option value="girls">Girls(9-18 yrs)</md-option>
+      <md-option value="boys">Boys(9-18 yrs)</md-option>
+      <md-option value="men">Men(18+)</md-option>
+      <md-option value="women">Women(18+)</md-option>
+    </md-select>
+    <div ng-messages="updateProfileForm.personType.$error">
+        <div ng-if='updateProfileForm.personType.$touched && updateProfileForm.personType.$error.required' ng-message="required">Required</div>
+      </div>
+  </md-input-container>
     <div layout="row">
-      <md-button class="md-raised md-primary dal-button" ng-disabled="signUp.signUpRequestObject.requestOut">Submit
+      <md-button class="md-raised md-primary dal-button" ng-disabled="vm.disableButton">Update Profile
       </md-button>
     </div>
     <div ng-if="vm.requestOut" class="overlay shady"></div>

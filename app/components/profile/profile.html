@@ -16,24 +16,28 @@
 </div>
 <main layout="row" ng-cloak flex>
   <nav class="profile__nav" layout="row">
-    <md-sidenav class="hh-sidenav md-sidenav-left ng-isolate-scope" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" layout="column" ng-show="!profile.isSideNavVisible && !profile.default">
+    <md-sidenav class="hh-sidenav md-sidenav-left ng-isolate-scope" md-is-locked-open="$mdMedia('gt-sm')" md-component-id="left" layout="column" ng-show="!profile.isSideNavVisible && !profile.default && (profile.userDetails.mealPlanEnteredForTomorrow == 'N' ||  !profile.planForSelf) ">
       <md-content flex>
         <ng-include src="'components/profile/partials/meals.html'"></ng-include>
       </md-content>
     </md-sidenav>
   </nav>
   <md-content ng-if="profile.isProfileUpdated" class="profile__main_section" flex layout="row">
-    <md-button ng-if="!profile.default" class="profile__hideSidenav md-raised md-primary" ng-click="profile.toggleSideNav()">{{profile.hideShow}}</md-button>
+    <md-button ng-if="!profile.default && (profile.userDetails.mealPlanEnteredForTomorrow == 'N' ||  !profile.planForSelf)" class="profile__hideSidenav md-raised md-primary" ng-click="profile.toggleSideNav()">{{profile.hideShow}}</md-button>
     <div ng-if="profile.default" layout="column" flex layout-align="start center">
       <h2 style="color:blueviolet;">Select an option From Below</h2>
       <div layout="row">
-        <div class="clickable" style="padding-right:10px;" layout="column" layout-align="center center" ng-click="profile.goToMeals()">
+        <div class="clickable" style="padding-right:10px;" layout="column" layout-align="center center" ng-click="profile.goToMealsForFamily()">
           <img ng-src="img/icons/profile/general/meal.png" height="100px" width="100px;">
-          <h4>Plan your meals</h4>
+          <h4>Healthy meal diet for Family</h4>
+        </div>
+        <div class="clickable" style="padding-right:10px;" layout="column" layout-align="center center" ng-click="profile.goToMealsForSelf()">
+          <img ng-src="img/icons/profile/general/meal_for_self.png" height="100px" width="150px;">
+          <h4>Plan/Track your diet</h4>
         </div>
         <div class="clickable" style="padding-right:10px;" layout="column" layout-align="center center">
           <img ng-src="img/icons/profile/general/workout.png" height="100px" width="100px;">
-          <h4>Plan your workouts</h4>
+          <h4>Plan/Track your workouts</h4>
         </div>
         <div class="clickable" style="padding-right:10px;" layout="column" layout-align="center center">
           <img ng-src="img/icons/profile/general/bmi.png" height="100px" width="100px;">
@@ -41,7 +45,9 @@
         </div>
       </div>
     </div>
-    <ng-include src="'components/profile/partials/mealsDisplaySection.html'" ng-if="profile.meal" layout="column" flex layout-align="start center"></ng-include>
+    <ng-include src="'components/profile/partials/mealsDisplaySection.html'" ng-if="profile.meal &&  profile.planForSelf   && profile.userDetails.mealPlanEnteredForTomorrow == 'N' " layout="column" flex layout-align="start center"></ng-include>
+     <ng-include src="'components/profile/partials/trackMealProgress.html'" ng-if="profile.meal && profile.planForSelf  && profile.userDetails.mealPlanEnteredForTomorrow == 'Y'" layout="column" flex layout-align="start center"></ng-include>
+     <ng-include src="'components/profile/partials/mealsForFamilyDisplaySection.html'" ng-if="profile.meal && !profile.planForSelf" layout="column" flex layout-align="start center"></ng-include>
     </div>
   </md-content>
   <md-content ng-if="!profile.isProfileUpdated" class="profile__main_section" flex layout="row">
@@ -49,5 +55,5 @@
   </md-content>
 </main>
 <div class="blogs__bar" resizable r-directions="['top']" layout="column" layout-align=" start center">
-  <h2>Resize to Share with Friends</h2>
+  <h2>Drag Up to Read Health Blogs</h2>
 </div>

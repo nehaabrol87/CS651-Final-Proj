@@ -1,24 +1,11 @@
 <div layout="row">
    <img src="img\icons\back.jpg" title="Back to Defaults" class="homepage__header-logo" ng-click="profile.goToDefault()">
-  <h2 style="color:blueviolet;">Select an item from each Food group(Toggle accordian on Sidenav)</h2>
+   <h2 style="color:black;">Meal plan for {{profile.userDetails.personType}} ({{profile.userDetails.firstName}}) for tomorrow {{profile.getServerFormattedDate(profile.mealDate)}}
+   {{}}
+  <span style="color:blueviolet; font-size:15px;">Select an item from each Food group(Toggle accordian on Sidenav) to know food intake required per day</span>
+  </h2>
 </div>
-
-<div><img src="img/icons/profile/general/meal_page.png" class="icon"></div>
-<div layout="row">
-  <md-input-container style="width:250px;">
-    <label>Select Person Type</label>
-    <md-select ng-model="profile.personType" ng-change="profile.displayIntakeData()">
-      <md-option value="children">Children</md-option>
-      <md-option value="girls">Girls</md-option>
-      <md-option value="boys">Boys</md-option>
-      <md-option value="men">Men</md-option>
-      <md-option value="women">Women</md-option>
-    </md-select>
-  </md-input-container>
-  <form>
-    <md-datepicker id='date-picker' name='mealDate' ng-model="profile.mealDate" md-placeholder="*Meal Date" md-min-date="profile.minDate">
-    </md-datepicker>
-  </form>
+<img src="img/icons/profile/general/meal.jpg" width="300px" height="175px">
 </div>
 <div layout="column">
   <div layout="row" style="padding-bottom:10px;">
@@ -57,5 +44,6 @@
     <div class="icon_small_text_green">{{profile.dairyValue}}</div>
   </div>
 </div>
-<md-button class=" md-raised md-primary" ng-click="profile.submit()">Submit Meal Plan</md-button>
-<span class="error" ng-if="profile.hasError">{{profile.errorMsg}}</span>
+<md-button ng-if="profile.userDetails.mealPlanEnteredForTomorrow == 'N'" class=" md-raised md-primary" ng-click="profile.submitMealPlan()" ng-disabled="profile.isMealPlanSubmitted">Submit Meal Plan</md-button>
+<div class="error" ng-if="profile.hasError">{{profile.errorMsg}}</div>
+<div class="success" ng-if="profile.isSuccessFul">{{profile.successMsg}}</div>

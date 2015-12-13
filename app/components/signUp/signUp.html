@@ -1,5 +1,5 @@
 <md-dialog>
-  <form name="signUpForm" ng-submit="vm.submit(signUpForm)" novalidate class="homepage__sign-up-form">
+  <form name="signUpForm" ng-submit="vm.signUp(signUpForm)" novalidate class="homepage__sign-up-form">
     <md-toolbar>
       <div class="md-toolbar-tools">
         <h2>Sign Up Form</h2>
@@ -38,7 +38,7 @@
           <div ng-if='signUpForm.password2.$touched && signUpForm.password2.$error.required' ng-message="required">Required</div>
         </div>
       </md-input-container>
-      <md-button class="md-raised md-primary dal-button" ng-disabled="signUp.signUpRequestObject.requestOut || vm.isSuccessFul">Submit
+      <md-button class="md-raised md-primary dal-button" ng-disabled="signUp.signUpRequestObject.requestOut || vm.isSuccessFul">Sign Up
       </md-button>
       <div ng-if="vm.requestOut" class="overlay shady"></div>
       <div ng-if="vm.requestOut" class="overlay" layout="row" layout-align="center center">
