@@ -15,16 +15,38 @@ public interface IService
     Result signUp(User request);
 
     [OperationContract]
-    [WebInvoke(UriTemplate = "login/{request}", Method = "GET")]
+    [WebInvoke(UriTemplate = "login/{request}", Method = "POST")]
     Result login(User request);
 
     [OperationContract]
-    [WebInvoke(UriTemplate = "verifyUser/{request}", Method = "GET")]
+    [WebInvoke(UriTemplate = "verifyUser/{request}", Method = "POST")]
     Result verifyUser(User request);
 
     [OperationContract]
-    [WebInvoke(UriTemplate = "updateProfile/{request}", Method = "GET")]
+    [WebInvoke(UriTemplate = "updateProfile/{request}", Method = "POST")]
     Result updateProfile(User request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "submitMealPlan/{request}", Method = "POST")]
+    Result submitMealPlan(Meal request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "getMealPlan/{request}", Method = "POST")]
+    Result getMealPlan(Meal request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "getMealPlanForToday/{request}", Method = "POST")]
+    Result getMealPlanForToday(Meal request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "sendMealPlanByMail/{request}", Method = "POST")]
+    Result sendMealPlanByMail(Meal request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "getProgressFor7Days/{request}", Method = "POST")]
+    Result getProgressFor7Days(Meal request);
+
+
 }
 
 internal class WebInvokeAttribute : Attribute

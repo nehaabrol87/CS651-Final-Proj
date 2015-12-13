@@ -1,9 +1,24 @@
 <div>
-  <p class="icon"><img ng-src="{{ ::vm.getRoleIcon() }}"></p>
   <p class="username">{{ ::vm.getFullName() }}</p>
-  <md-divider></md-divider>
-  <md-button ng-click='vm.logout()'
-  ng-disabled="vm.logoutRequestObject.requestOut"
-  class='md-primary md-raised dal-button'>Logout
+  <div ng-if='vm.userDetails.personalData == "Y"'>
+    <p style="font-weight:bold;">
+      Height 
+      <span style="font-weight:normal;">{{::vm.getHeight()}} ft</span>
+    </p>
+    <p style="font-weight:bold;">
+      Weight 
+      <span style="font-weight:normal;">{{::vm.getWeight()}} lbs</span>
+    </p>
+     <p style="font-weight:bold;">
+      Dob 
+      <span style="font-weight:normal;">{{::vm.getDob()}}</span>
+    </p>
+     <p style="font-weight:bold;">
+      Gender 
+      <span style="font-weight:normal;">{{::vm.getGender()}}</span>
+    </p>
+    <md-divider></md-divider>
+  </div>
+  <md-button ng-click='vm.logout()' ng-disabled="vm.logoutRequestObject.requestOut" class='md-primary md-raised dal-button'>Logout
   </md-button>
 </div>
