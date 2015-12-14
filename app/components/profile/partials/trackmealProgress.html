@@ -103,17 +103,28 @@
           <p class="bold" style="margin-top: 5px">Meals Completed
           </p>
           <HR style="height:10px;" COLOR="green" width="150px"></HR>
-          <p class ="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsCompleted/7* 100)}} %</p>
+          <p class="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsCompleted/7* 100)}} %</p>
         </div>
         <div layout="row">
           <p class="bold" style="margin-top: 5px">Meals Incomplete</p>
           <HR style="height:10px;" COLOR="blue" width="150px"></HR>
-          <p class ="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsIncomplete/7* 100)}} %</p>
+          <p class="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsIncomplete/7* 100)}} %</p>
         </div>
         <div layout="row">
           <p class="bold" style="padding-right:30px;margin-top: 5px">Meals Missed</p>
           <HR style="height:10px;" COLOR="red" width="150px"></HR>
-           <p class ="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsMissed/7* 100)}} %</p>
+          <p class="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsMissed/7* 100)}} %</p>
+        </div>
+        <div layout="column">
+          <h4 ng-if="(profile.round(profile.mealsProgress.mealsCompleted/7* 100))>=85" style="color:green"> You are awesome 
+            </h4>
+          <h4 ng-if="(profile.round(profile.mealsProgress.mealsCompleted/7* 100))<85
+            &&  (profile.round(profile.mealsProgress.mealsCompleted/7* 100)) >=65" style="color:blue"> Come'on you can do better then this
+            </h4>
+          <h4 ng-if="(profile.round(profile.mealsProgress.mealsCompleted/7* 100))< 65" style="color:red"> Oh my god!!!! It is about time you got serious about your physical wellbeing 
+            </h4>
+          <span style="color:black;">Refer below chart for % of activies to be completed per week</span>
+          <img title="Activity Progress Chart" src="img/icons/profile/general/mealProgress.jpg" width="200px" height="200px">
         </div>
       </div>
     </div>

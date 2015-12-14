@@ -17,8 +17,8 @@ export class ActivityService {
     return this.$http.post('http://localhost/finalservice/Service.svc/sendActivityPlanByMail', activity);
   }
 
-  public getActivityProgressFor7Days(activity) {
-    return this.$http.post('http://localhost/finalservice/Service.svc/getActivityProgressFor7Days', activity);
+  public getActivityProgressFor8Days(activity) {
+    return this.$http.post('http://localhost/finalservice/Service.svc/getActivityProgressFor8Days', activity);
   }
 
   public submitActivityCompletion(activity) {

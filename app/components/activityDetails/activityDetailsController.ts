@@ -13,7 +13,7 @@ export class ActivityDetailsController {
 	public errorMsg = " ";
 	public startErrorTimer;
 	public startSuccessTimer;
-	public activityProgress: any;
+	public activitiesProgress: any;
 
 	static $inject = ['$mdDialog', 'activityService', '$timeout'];
 
@@ -24,7 +24,7 @@ export class ActivityDetailsController {
 		this.$mdDialog.hide();
 	}
 
-	private submitDietCompletion() {
+	private submitActivityCompletion() {
 		var payload = {
 			'Email': this.userDetails.userName,
 			'Date': this.activityDate
@@ -39,8 +39,8 @@ export class ActivityDetailsController {
 		this.requestOut = false;
 		if (successCb.data.status == "success") {
 			this.activityStatus.CompletedActivity = 'Y';
-			this.activityProgress.activitiesCompleted = this.activityProgress.activitiesCompleted + 1;
-			this.activityProgress.activitiesIncomplete = this.activityProgress.activitiesIncomplete - 1;
+			this.activitiesProgress.activitiesCompleted = this.activitiesProgress.activitiesCompleted + 1;
+			this.activitiesProgress.activitiesIncomplete = this.activitiesProgress.activitiesIncomplete - 1;
 			this.$timeout.cancel(this.startSuccessTimer);
 			this.$timeout.cancel(this.startErrorTimer);
 			this.showSuccessMsg(successCb.data.message);

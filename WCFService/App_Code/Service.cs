@@ -81,6 +81,14 @@ public class Service : IService
         return response;
     }
 
+    public Result submitActivityCompletion(Activity userInput)
+    {
+        submitActivityCompletionForUser(userInput);
+        return response;
+    }
+
+
+
     public Result getMealProgressFor8Days(Meal userInput)
     {
         List<Meal> progress = new List<Meal>();
@@ -122,6 +130,49 @@ public class Service : IService
             {
                 response.status = "error";
                 response.message = "No data for last 7 dates";         
+            }
+            sqlCon.Close();
+            return response;
+        }
+    }
+
+    public Result getActivityProgressFor8Days(Activity userInput)
+    {
+        List<Activity> progress = new List<Activity>();
+        DateTime startDate = Convert.ToDateTime(userInput.StartDate);
+        DateTime endDate = Convert.ToDateTime(userInput.EndDate);
+
+
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            string sql = "SELECT * FROM Activity WHERE Email = '" + userInput.Email + "' and Date >='" + startDate + "' and Date <= '" + endDate + "'";
+
+            sqlCon.Open();
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            DataRow dr = dt.NewRow();
+            if (dt != null && dt.Rows.Count > 0) //No activity entered for tomorrow
+            {
+                foreach (DataRow dtRow in dt.Rows)
+                {
+                    progress.Add(new Activity
+                    {
+                        ActivityDetail = dtRow[3].ToString(),
+                        CompletedActivity = dtRow[2].ToString(),
+                        Date = dtRow[0].ToString()
+                    });
+                }
+                response.activityProgress = progress;
+                response.message = "Got rows";
+                response.status = "success";
+            }
+            else
+            {
+                response.status = "error";
+                response.message = "No data for last 7 dates";
             }
             sqlCon.Close();
             return response;
@@ -341,6 +392,46 @@ public class Service : IService
                 {
                     response.status = "error";
                     response.message = "There was an error updating your Meal Plan";
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.status = "error";
+                response.message = "There was an error updating your Meal Plan" + ex;
+            }
+            sqlCon.Close();
+        }
+
+    }
+
+    public void submitActivityCompletionForUser(Activity userInput)
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+
+            string userName = userInput.Email;
+            DateTime activityDate = Convert.ToDateTime(userInput.Date);
+
+            string sql = "Update Activity SET CompletedActivity = 'Y' WHERE Email = '" + userName + "' and Date = '" + activityDate + "'";
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            try
+            {
+                sqlCon.Open();
+                da.UpdateCommand = new SqlCommand(sql, sqlCon);
+                int noOfRows = da.UpdateCommand.ExecuteNonQuery();
+                if (noOfRows > 0)
+                {
+                    response.status = "success";
+                    response.message = "Activity Plan successfully marked as complete";
+                }
+                else
+                {
+                    response.status = "error";
+                    response.message = "There was an error updating your Activity Plan";
 
                 }
 
@@ -1013,6 +1104,7 @@ public class Result
     public string activityDetail;
     public string activityPlanEnteredForTomorrow;
     public List<Meal> mealProgress = new List<Meal>();
+    public List<Activity> activityProgress = new List<Activity>();
 }
 
 public class Meal

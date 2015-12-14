@@ -54,9 +54,15 @@ export class ProfileController {
 	public personTypeForActivity;
 
 	public mealsProgress = {
-		'mealsMissed' :0,
+		'mealsMissed' :7,
 		'mealsCompleted' :0,
 		'mealsIncomplete' :0
+	}
+
+	public activitiesProgress = {
+		'activitiesMissed': 7,
+		'activitiesCompleted': 0,
+		'activitiesIncomplete': 0
 	}
 
   private girlsIntake = {
@@ -278,6 +284,7 @@ export class ProfileController {
 		var year = array[2];
 		var age = this.getAge(month, day, year);
 
+		this.restoreActivityDefaults();
     this.personTypeForActivity = this.getPersonTypeFromDob(age);
 		this.physicalActivity = true;
 		this.default = false;
@@ -285,7 +292,7 @@ export class ProfileController {
 		this.planForSelf = true;
 
 		if (this.userDetails.activityPlanEnteredForTomorrow == 'Y') {
-			this.getActivityProgressFor7Days();
+			this.getActivityProgressFor8Days();
 			var payload = {
 				'Email': this.userDetails.userName,
 				'Date': this.getServerFormattedDate(this.getDate(1))
@@ -347,6 +354,7 @@ export class ProfileController {
 
 	private goToActivityorFamily(){
 		this.physicalActivity = true;
+		this.restoreActivityDefaults();
 		this.default = false;
 		this.meal = false;
 		this.planForSelf = false;
@@ -423,7 +431,7 @@ export class ProfileController {
 	private onProgressRetrieveSuccess(successCb){
 		if(successCb.data.status == "success"){
 			this.mealProgressFor8Days = successCb.data.mealProgress;
-			this.upDateOverAllMealProgress();
+			this.updateOverAllMealProgress();
 		} else {
 			this.$timeout.cancel(this.startSuccessTimer);
 			this.$timeout.cancel(this.startErrorTimer);
@@ -443,14 +451,14 @@ export class ProfileController {
 			'StartDate': this.getServerFormattedDate(this.getDate(-7)),
 			'EndDate': this.getServerFormattedDate(this.getDate(0))
 		}
-		this.activityService.getMealProgressFor8Days(payload)
+		this.activityService.getActivityProgressFor8Days(payload)
 			.then(this.onActivityProgressRetrieveSuccess.bind(this), this.onActivityProgressRetrieveFailure.bind(this));
 	}
 
 	private onActivityProgressRetrieveSuccess(successCb) {
 		if (successCb.data.status == "success") {
-			this.activityProgressFor8Days = successCb.data.mealProgress;
-			this.upDateOverAllMealProgress();
+			this.activityProgressFor8Days = successCb.data.activityProgress;
+			this.updateOverAllActivityProgress();
 		} else {
 			this.$timeout.cancel(this.startSuccessTimer);
 			this.$timeout.cancel(this.startErrorTimer);
@@ -468,10 +476,16 @@ export class ProfileController {
 		return Math.round((count / 7) * 100);
 	}
 
-	private upDateOverAllMealProgress(){
+	private updateOverAllMealProgress(){
 		this.mealsProgress.mealsCompleted = this.getMealsCompleted();
 		this.mealsProgress.mealsIncomplete = this.getMealsIncomplete();
 		this.mealsProgress.mealsMissed = 7 -(this.mealsProgress.mealsCompleted + this.mealsProgress.mealsIncomplete);
+	}
+
+	private updateOverAllActivityProgress(){
+		this.activitiesProgress.activitiesCompleted = this.getActivitiesCompleted();
+		this.activitiesProgress.activitiesIncomplete = this.getActivitiesIncomplete();
+		this.activitiesProgress.activitiesMissed = 7 - (this.activitiesProgress.activitiesCompleted + this.activitiesProgress.activitiesIncomplete);
 	}
 
 	private getMealsCompleted(){
@@ -522,6 +536,77 @@ export class ProfileController {
 		} else {
 			return false;
 		}	
+	}
+
+	private wasActivityPlanEntered(daysAgo) {
+		var activityEntered;
+		var activityDate = this.getServerFormattedDate(this.getDate(daysAgo));
+
+		activityDate = activityDate + " 12:00:00 AM";
+		activityEntered = <Activity>_.findWhere(this.activityProgressFor8Days, { 'Date': activityDate });
+
+		return activityEntered;
+	}
+
+	private wasActivityPlanCompleted(daysAgo) {
+		var activityStatus = {};
+		var activityDate = this.getServerFormattedDate(this.getDate(daysAgo));
+
+		activityDate = activityDate + " 12:00:00 AM";
+		activityStatus = <Activity>_.findWhere(this.activityProgressFor8Days, { 'Date': activityDate });
+
+		if (activityStatus != undefined) {
+			return activityStatus['CompletedActivity'] == 'Y' ? true : false;
+		} else {
+			return false;
+		}
+	}
+
+	private getActivitiesCompleted() {
+		var count = 0;
+		var todaysDate = this.getServerFormattedDate(new Date());
+		todaysDate = todaysDate + " 12:00:00 AM";
+
+		_.each(this.activityProgressFor8Days, (activity) => {
+			if (activity['Date'] != todaysDate && activity['CompletedActivity'] == "Y") {
+				count = count + 1;
+			}
+		});
+		return count;
+	}
+
+	private getActivitiesIncomplete() {
+		var count = 0;
+		var todaysDate = this.getServerFormattedDate(new Date());
+		todaysDate = todaysDate + " 12:00:00 AM";
+
+		_.each(this.activityProgressFor8Days, (activity) => {
+			if (activity['Date'] != todaysDate && activity['CompletedActivity'] == "N") {
+				count = count + 1;
+			}
+		});
+		return count;
+	}
+
+	private showActivityDetailsPopup(daysAgo) {
+		var activityDate = this.getServerFormattedDate(this.getDate(daysAgo));
+		var activityStatus = this.getActivityProgressForDate(daysAgo);
+		var userDetails = this.userDetails;
+		var activitiesProgress = this.activitiesProgress;
+
+		this.$mdDialog.show({
+			templateUrl: 'components/activityDetails/activityDetails.html',
+			controller: 'ActivityDetailsController',
+			clickOutsideToClose: true,
+			bindToController: true,
+			controllerAs: 'vm',
+			locals: {
+				activityStatus,
+				activityDate,
+				userDetails,
+				activitiesProgress
+			}
+		});
 	}
 
 	private showMealDetailsPopup(daysAgo) {
@@ -593,6 +678,17 @@ export class ProfileController {
 		mealStatus = <Meal>_.findWhere(this.mealProgressFor8Days, { 'Date': mealDate });
 
 		return mealStatus;
+	}
+
+	private getActivityProgressForDate(daysAgo) {
+		var activityStatus = {};
+		var activityDate = this.getServerFormattedDate(this.getDate(daysAgo));
+
+		activityDate = activityDate + " 12:00:00 AM";
+
+		activityStatus = <Activity>_.findWhere(this.activityProgressFor8Days, { 'Date': activityDate });
+
+		return activityStatus;
 	}
  
 
@@ -810,15 +906,26 @@ export class ProfileController {
 			this.userDetails.activityPlanEnteredForTomorrow = 'Y';
 			this.localStorageService.set('userDetails', this.userDetails);
 			this.showSuccessMsg(successCb.data.message);
-			//this.restoreActivityDefaults();
+			this.restoreActivityDefaults();
 			this.$state.go('profile');
 			this.goToPhysicalActivityForSelf();
+		} else {
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.showErrorMsg(successCb.data.message);
 		}
 
 	}
 
 	private onActivityPlanSubmitFailure(failureCb){
 		this.progressIndicatorService.hideDialog();
-
+		this.$timeout.cancel(this.startSuccessTimer);
+		this.$timeout.cancel(this.startErrorTimer);
+		this.showErrorMsg(failureCb.data.message);
 	}
-}  
+
+	private restoreActivityDefaults(){
+		this.activityType = "";
+		this.personTypeForActivity = "";
+	}
+}

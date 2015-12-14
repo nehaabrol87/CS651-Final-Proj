@@ -17,6 +17,8 @@ import { ActivateController } from "./components/activate/activateController";
 import { MealDetailsController } from "./components/mealDetails/mealDetailsController";
 import { MealDetailsForTomorrowController } from "./components/mealDetailsForTomorrow/mealDetailsForTomorrowController";
 import { ActivityDetailsForTomorrowController } from "./components/activityDetailsForTomorrow/activityDetailsForTomorrowController";
+import { ActivityDetailsController } from "./components/activityDetails/activityDetailsController";
+
 
 //Services
 import { UserService }  from "./services/userService";
@@ -46,6 +48,7 @@ app.controller('ActivateController', ActivateController);
 app.controller('MealDetailsController', MealDetailsController);
 app.controller('MealDetailsForTomorrowController', MealDetailsForTomorrowController);
 app.controller('ActivityDetailsForTomorrowController', ActivityDetailsForTomorrowController);
+app.controller('ActivityDetailsController', ActivityDetailsController);
 
 //Services
 app.service('progressIndicatorService', ProgressIndicatorService);

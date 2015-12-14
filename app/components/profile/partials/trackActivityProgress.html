@@ -18,77 +18,77 @@
     <div layout="column">
       <div layout="row">
         <div layout="column" style="position:relative;">
-          <img ng-if="!profile.wasMealPlanEntered(-7) && !profile.wasMealPlanCompleted(-7)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-7) && !profile.wasMealPlanCompleted(-7)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-7) && profile.wasMealPlanCompleted(-7)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img ng-if="!profile.wasActivityPlanEntered(-7) && !profile.wasActivityPlanCompleted(-7)" title="No Activity plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-7) && !profile.wasActivityPlanCompleted(-7)" title="Activity plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-7) && profile.wasActivityPlanCompleted(-7)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
           <img src="img/icons/profile/general/day1.png" width="100px" height="100px" ng-class="{
-          'disabled' : !profile.wasMealPlanEntered(-7), 
-          'enabled' : profile.wasMealPlanEntered(-7)}" ng-click="profile.showMealDetailsPopup(-7)">
+          'disabled' : !profile.wasActivityPlanEntered(-7), 
+          'enabled' : profile.wasActivityPlanEntered(-7)}" ng-click="profile.showActivityDetailsPopup(-7)">
           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-7))}}</p>
         </div>
         <div layout="column" style="position:relative;">
-          <img ng-if="!profile.wasMealPlanEntered(-6) && !profile.wasMealPlanCompleted(-6)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-6) && !profile.wasMealPlanCompleted(-6)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-6) && profile.wasMealPlanCompleted(-6)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img ng-if="!profile.wasActivityPlanEntered(-6) && !profile.wasActivityPlanCompleted(-6)" title="No activity plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-6) && !profile.wasActivityPlanCompleted(-6)" title="Activity plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-6) && profile.wasActivityPlanCompleted(-6)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
           <img src="img/icons/profile/general/day2.png" width="100px" height="100px" ng-class="{
-          'disabled' : !profile.wasMealPlanEntered(-6), 
-          'enabled' : profile.wasMealPlanEntered(-6)}" ng-click="profile.showMealDetailsPopup(-6)">
+          'disabled' : !profile.wasActivityPlanEntered(-6), 
+          'enabled' : profile.wasActivityPlanEntered(-6)}" ng-click="profile.showActivityDetailsPopup(-6)">
           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-6))}}</p>
         </div>
         <div layout="column" style="position:relative;">
-          <img ng-if="!profile.wasMealPlanEntered(-5) && !profile.wasMealPlanCompleted(-5)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-5) && !profile.wasMealPlanCompleted(-5)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-5) && profile.wasMealPlanCompleted(-5)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img ng-if="!profile.wasActivityPlanEntered(-5) && !profile.wasActivityPlanCompleted(-5)" title="No activity plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-5) && !profile.wasActivityPlanCompleted(-5)" title="Activity plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-5) && profile.wasActivityPlanCompleted(-5)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
           <img src="img/icons/profile/general/day3.png" width="100px" height="100px" ng-class="{
-          'disabled' : !profile.wasMealPlanEntered(-5), 
-          'enabled' : profile.wasMealPlanEntered(-5)}" ng-click="profile.showMealDetailsPopup(-5)">
+          'disabled' : !profile.wasActivityPlanEntered(-5), 
+          'enabled' : profile.wasActivityPlanEntered(-5)}" ng-click="profile.showActivityDetailsPopup(-5)">
           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-5))}}</p>
         </div>
         <div layout="column" style="position:relative;">
-          <img ng-if="!profile.wasMealPlanEntered(-4) && !profile.wasMealPlanCompleted(-4)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-4) && !profile.wasMealPlanCompleted(-4)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-4) && profile.wasMealPlanCompleted(-4)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img ng-if="!profile.wasActivityPlanEntered(-4) && !profile.wasActivityPlanCompleted(-4)" title="No activity plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-4) && !profile.wasActivityPlanCompleted(-4)" title="Activity plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-4) && profile.wasActivityPlanCompleted(-4)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
           <img src="img/icons/profile/general/day4.png" width="100px" height="100px" ng-class="{
-          'disabled' : !profile.wasMealPlanEntered(-4), 
-          'enabled' : profile.wasMealPlanEntered(-4)}" ng-click="profile.showMealDetailsPopup(-4)">
+          'disabled' : !profile.wasActivityPlanEntered(-4), 
+          'enabled' : profile.wasActivityPlanEntered(-4)}" ng-click="profile.showActivityDetailsPopup(-4)">
           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-4))}}</p>
         </div>
       </div>
       <div layout="row">
         <div layout="column" style="position:relative;">
-          <img ng-if="!profile.wasMealPlanEntered(-3) && !profile.wasMealPlanCompleted(-3)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-3) && !profile.wasMealPlanCompleted(-3)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-3) && profile.wasMealPlanCompleted(-3)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img ng-if="!profile.wasActivityPlanEntered(-3) && !profile.wasActivityPlanCompleted(-3)" title="No activity plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-3) && !profile.wasActivityPlanCompleted(-3)" title="Activity plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-3) && profile.wasActivityPlanCompleted(-3)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
           <img src="img/icons/profile/general/day5.png" width="100px" height="100px" ng-class="{
-          'disabled' : !profile.wasMealPlanEntered(-3), 
-          'enabled' : profile.wasMealPlanEntered(-3)}" ng-click="profile.showMealDetailsPopup(-3)">
+          'disabled' : !profile.wasActivityPlanEntered(-3), 
+          'enabled' : profile.wasActivityPlanEntered(-3)}" ng-click="profile.showActivityDetailsPopup(-3)">
           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-3))}}</p>
         </div>
         <div layout="column" style="position:relative;">
-          <img ng-if="!profile.wasMealPlanEntered(-2) && !profile.wasMealPlanCompleted(-2)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-2) && !profile.wasMealPlanCompleted(-2)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-2) && profile.wasMealPlanCompleted(-2)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img ng-if="!profile.wasActivityPlanEntered(-2) && !profile.wasActivityPlanCompleted(-2)" title="No activity plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-2) && !profile.wasActivityPlanCompleted(-2)" title="Activity plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-2) && profile.wasActivityPlanCompleted(-2)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
           <img src="img/icons/profile/general/day6.png" width="100px" height="100px" ng-class="{
-          'disabled' : !profile.wasMealPlanEntered(-2), 
-          'enabled' : profile.wasMealPlanEntered(-2)}" ng-click="profile.showMealDetailsPopup(-2)">
+          'disabled' : !profile.wasActivityPlanEntered(-2), 
+          'enabled' : profile.wasActivityPlanEntered(-2)}" ng-click="profile.showActivityDetailsPopup(-2)">
           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-2))}}</p>
         </div>
         <div layout="column" style="position:relative;">
-          <img ng-if="!profile.wasMealPlanEntered(-1) && !profile.wasMealPlanCompleted(-1)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-1) && !profile.wasMealPlanCompleted(-1)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(-1) && profile.wasMealPlanCompleted(-1)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img ng-if="!profile.wasActivityPlanEntered(-1) && !profile.wasActivityPlanCompleted(-1)" title="No activity plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-1) && !profile.wasActivityPlanCompleted(-1)" title="Activity plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(-1) && profile.wasActivityPlanCompleted(-1)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
           <img src="img/icons/profile/general/day7.png" width="100px" height="100px" ng-class="{
-          'disabled' : !profile.wasMealPlanEntered(-1), 
-          'enabled' : profile.wasMealPlanEntered(-1)}" ng-click="profile.showMealDetailsPopup(-1)">
+          'disabled' : !profile.wasActivityPlanEntered(-1), 
+          'enabled' : profile.wasActivityPlanEntered(-1)}" ng-click="profile.showActivityDetailsPopup(-1)">
           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-1))}}</p>
         </div>
         <div layout="column" style="position:relative;">
-          <img ng-if="!profile.wasMealPlanEntered(0) && !profile.wasMealPlanCompleted(0)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(0) && !profile.wasMealPlanCompleted(0)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
-          <img ng-if="profile.wasMealPlanEntered(0) && profile.wasMealPlanCompleted(0)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img ng-if="!profile.wasActivityPlanEntered(0) && !profile.wasActivityPlanCompleted(0)" title="No activity plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(0) && !profile.wasActivityPlanCompleted(0)" title="Activity plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasActivityPlanEntered(0) && profile.wasActivityPlanCompleted(0)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
           <img src="img/icons/profile/general/today.png" width="100px" height="100px" ng-class="{
-          'disabled' : !profile.wasMealPlanEntered(0), 
-          'enabled' : profile.wasMealPlanEntered(0)}" ng-click="profile.showMealDetailsPopup(0)">
+          'disabled' : !profile.wasActivityPlanEntered(0), 
+          'enabled' : profile.wasActivityPlanEntered(0)}" ng-click="profile.showActivityDetailsPopup(0)">
           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(0))}}</p>
         </div>
       </div>
@@ -96,25 +96,35 @@
   </div>
   <div layout="column">
     <div style="padding-right :50px">
-      <h4 style="color:blueviolet">Progress Tracker for past 7 days(excluding today)
-    </h4>
+      <h4 style="color:blueviolet">Progress Tracker for past 7 days(excluding today)</h4>
       <div layout="column" style="position:relative;">
         <div layout="row">
-          <p class="bold" style="margin-top: 5px">Meals Completed
+          <p class="bold" style="margin-top: 5px">Activities Completed
           </p>
           <HR style="height:10px;" COLOR="green" width="150px"></HR>
-          <p class ="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsCompleted/7* 100)}} %</p>
+          <p class="bold" style="margin-top: 5px">{{profile.round(profile.activitiesProgress.activitiesCompleted/7* 100)}} %</p>
         </div>
         <div layout="row">
-          <p class="bold" style="margin-top: 5px">Meals Incomplete</p>
+          <p class="bold" style="margin-top: 5px">Activities Incomplete</p>
           <HR style="height:10px;" COLOR="blue" width="150px"></HR>
-          <p class ="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsIncomplete/7* 100)}} %</p>
+          <p class="bold" style="margin-top: 5px">{{profile.round(profile.activitiesProgress.activitiesIncomplete/7* 100)}} %</p>
         </div>
         <div layout="row">
-          <p class="bold" style="padding-right:30px;margin-top: 5px">Meals Missed</p>
+          <p class="bold" style="padding-right:30px;margin-top: 5px">Activities Missed</p>
           <HR style="height:10px;" COLOR="red" width="150px"></HR>
-           <p class ="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsMissed/7* 100)}} %</p>
+          <p class="bold" style="margin-top: 5px">{{profile.round(profile.activitiesProgress.activitiesMissed/7* 100)}} %</p>
         </div>
+        <div layout="column">
+            <h4 ng-if="(profile.round(profile.activitiesProgress.activitiesCompleted/7* 100))>=85" style="color:green"> You are awesome 
+            </h4>
+            <h4 ng-if="(profile.round(profile.activitiesProgress.activitiesCompleted/7* 100))<85
+            &&  (profile.round(profile.activitiesProgress.activitiesCompleted/7* 100)) >=65" style="color:blue"> Come'on you can do better then this
+            </h4>
+            <h4 ng-if="(profile.round(profile.activitiesProgress.activitiesCompleted/7* 100))< 65" style="color:red"> Oh my god!!!! It is about time you got serious about your physical wellbeing 
+            </h4>
+            <span style="color:black;">Refer below chart for % of activies to be completed per week</span>
+             <img title="Activity Progress Chart"  src="img/icons/profile/general/progress.jpg" width="200px" height="200px">
+        </div>   
       </div>
     </div>
   </div>

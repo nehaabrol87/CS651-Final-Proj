@@ -57,6 +57,14 @@ public interface IService
     [OperationContract]
     [WebInvoke(UriTemplate = "sendActivityPlanByMail/{request}", Method = "POST")]
     Result sendActivityPlanByMail(Activity request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "getActivityProgressFor8Days/{request}", Method = "POST")]
+    Result getActivityProgressFor8Days(Activity request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "submitActivityCompletion/{request}", Method = "POST")]
+    Result submitActivityCompletion(Activity request);
 }
 
 internal class WebInvokeAttribute : Attribute
