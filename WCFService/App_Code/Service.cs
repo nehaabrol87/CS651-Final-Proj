@@ -46,15 +46,15 @@ public class Service : IService
         return response;
     }
    
-    public Result getMealPlan(Meal userInput)
+    public Result getMealPlanForDate(Meal userInput)
     {
         getMealForDate(userInput);
         return response;
     }
 
-    public Result getMealPlanForToday(Meal userInput)
+    public Result getActivityPlanForDate(Activity userInput)
     {
-        getMealForDate(userInput);
+        getActivityForDate(userInput);
         return response;
     }
 
@@ -64,10 +64,32 @@ public class Service : IService
         response.status = "success";
         response.message = "Meal plan was mailed successfully";
         return response;
-
     }
 
-    public Result getProgressFor7Days(Meal userInput)
+    public Result sendActivityPlanByMail(Activity userInput)
+    {
+        sendActivityPlanEmail(userInput);
+        response.status = "success";
+        response.message = "Activity plan was mailed successfully";
+        return response;
+    }
+
+
+    public Result submitDietCompletion(Meal userInput)
+    {
+        submitDietCompletionForUser(userInput);
+        return response;
+    }
+
+    public Result submitActivityCompletion(Activity userInput)
+    {
+        submitActivityCompletionForUser(userInput);
+        return response;
+    }
+
+
+
+    public Result getMealProgressFor8Days(Meal userInput)
     {
         List<Meal> progress = new List<Meal>();
         DateTime startDate = Convert.ToDateTime(userInput.StartDate);
@@ -100,7 +122,7 @@ public class Service : IService
                         Date = dtRow[0].ToString()
                     });
                 }
-                response.progress = progress;
+                response.mealProgress = progress;
                 response.message = "Got rows";
                 response.status = "success";
             }
@@ -108,6 +130,49 @@ public class Service : IService
             {
                 response.status = "error";
                 response.message = "No data for last 7 dates";         
+            }
+            sqlCon.Close();
+            return response;
+        }
+    }
+
+    public Result getActivityProgressFor8Days(Activity userInput)
+    {
+        List<Activity> progress = new List<Activity>();
+        DateTime startDate = Convert.ToDateTime(userInput.StartDate);
+        DateTime endDate = Convert.ToDateTime(userInput.EndDate);
+
+
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            string sql = "SELECT * FROM Activity WHERE Email = '" + userInput.Email + "' and Date >='" + startDate + "' and Date <= '" + endDate + "'";
+
+            sqlCon.Open();
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            DataRow dr = dt.NewRow();
+            if (dt != null && dt.Rows.Count > 0) //No activity entered for tomorrow
+            {
+                foreach (DataRow dtRow in dt.Rows)
+                {
+                    progress.Add(new Activity
+                    {
+                        ActivityDetail = dtRow[3].ToString(),
+                        CompletedActivity = dtRow[2].ToString(),
+                        Date = dtRow[0].ToString()
+                    });
+                }
+                response.activityProgress = progress;
+                response.message = "Got rows";
+                response.status = "success";
+            }
+            else
+            {
+                response.status = "error";
+                response.message = "No data for last 7 dates";
             }
             sqlCon.Close();
             return response;
@@ -125,7 +190,7 @@ public class Service : IService
         string proteins = userInput.Proteins;
 
         string msgBody = "";
-        msgBody = "Hi " + userName + ",\n \n Your diet plan for "+ mealDate.ToString("mm/dd/yyyy") + " is \n \n" +
+        msgBody = "Hi " + userName + ",\n \n Your diet plan for "+ userInput.Date + " is \n \n" +
             "Fruit : "+ fruit + "\n\n" +
             "Veggies : " + veggies + "\n\n" +
             "Grains : " + grains + "\n\n" +
@@ -141,12 +206,121 @@ public class Service : IService
         client.UseDefaultCredentials = false;
         client.Credentials = new System.Net.NetworkCredential("healthyhumans123@gmail.com", "dotnetproject");
 
-        MailMessage mm = new MailMessage("donotreply@domain.com", userName, "Your meal plan for " + mealDate.ToString("mm/dd/yyyy"), msgBody);
+        MailMessage mm = new MailMessage("donotreply@domain.com", userName, "Your meal plan for " + userInput.Date, msgBody);
         mm.BodyEncoding = UTF8Encoding.UTF8;
         mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
 
         client.Send(mm);
+    }
 
+
+    public void sendActivityPlanEmail(Activity userInput)
+    {
+        string userName = userInput.Email;
+        DateTime activityDate = Convert.ToDateTime(userInput.Date);
+        string activity = userInput.ActivityDetail;
+
+        string msgBody = "";
+        msgBody = "Hi " + userName + ",\n \n Your activity plan for " + userInput.Date + " is \n \n" +
+            "Activity : " + activity +
+            "\n \n Regards, \n \n Healthy Humans(Happy Working Out!!)";
+        SmtpClient client = new SmtpClient();
+        client.Port = 587;
+        client.Host = "smtp.gmail.com";
+        client.EnableSsl = true;
+        client.Timeout = 20000;
+        client.DeliveryMethod = SmtpDeliveryMethod.Network;
+        client.UseDefaultCredentials = false;
+        client.Credentials = new System.Net.NetworkCredential("healthyhumans123@gmail.com", "dotnetproject");
+
+        MailMessage mm = new MailMessage("donotreply@domain.com", userName, "Your activity plan for " + userInput.Date, msgBody);
+        mm.BodyEncoding = UTF8Encoding.UTF8;
+        mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+
+        client.Send(mm);
+    }
+
+    public Result submitActivityPlan(Activity userInput)
+    {
+        submitActivity(userInput);
+        return response;
+    }
+
+    public void submitActivity(Activity userInput)
+    {
+        DateTime activityDate = Convert.ToDateTime(userInput.Date);
+        string activityDetail = userInput.ActivityDetail;
+        string email = userInput.Email;
+        string completedActivity = userInput.CompletedActivity;
+
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            string sql = "INSERT INTO Activity (Date,Activity,Email,CompletedActivity) VALUES ('" + activityDate + "','" + activityDetail + "', '" + email + "' , 'N')";
+
+            SqlDataAdapter da = new SqlDataAdapter();
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            try
+            {
+                sqlCon.Open();
+                da.InsertCommand = new SqlCommand(sql, sqlCon);
+                int noOfRows = da.InsertCommand.ExecuteNonQuery();
+
+                if (noOfRows > 0)
+                {
+                    response.status = "success";
+                    response.message = "Activity plan created.";
+                    updateActivityPlanEnteredForTomorrowValueForUser(email, 'Y');
+                }
+                else
+                {
+                    response.status = "error";
+                    response.message = "There was an error adding your activityPlan";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.status = "error";
+                response.message = "There was an error inserting" + ex;
+            }
+            sqlCon.Close();
+        }
+
+    }
+
+    public void updateActivityPlanEnteredForTomorrowValueForUser(string email, char mealFlag)
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            string sql = "Update Users SET ActivityPlanEnteredForTomorrow = '" + mealFlag + "' WHERE Email = '" + email + "'";
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            try
+            {
+                sqlCon.Open();
+                da.UpdateCommand = new SqlCommand(sql, sqlCon);
+                int noOfRows = da.UpdateCommand.ExecuteNonQuery();
+                if (noOfRows > 0)
+                {
+                    response.status = "success";
+                    response.message = "Activity plan updated sucesfully";
+                }
+                else
+                {
+                    response.status = "error";
+                    response.message = "There was an error adding your activity plan";
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.status = "error";
+                response.message = "There was an error adding your activityPlan" + ex;
+            }
+            sqlCon.Close();
+        }
     }
 
     public void updateUser(User userInput)
@@ -186,6 +360,86 @@ public class Service : IService
             {
                 response.status = "error";
                 response.message = "There was an error updating your Profile" + ex;
+            }
+            sqlCon.Close();
+        }
+
+    }
+
+    public void submitDietCompletionForUser(Meal userInput)
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+           
+            string userName = userInput.Email;
+            DateTime mealDate = Convert.ToDateTime(userInput.Date);
+
+            string sql = "Update Meals SET CompletedDiet = 'Y' WHERE Email = '" + userName + "' and Date = '"+ mealDate+"'";
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            try
+            {
+                sqlCon.Open();
+                da.UpdateCommand = new SqlCommand(sql, sqlCon);
+                int noOfRows = da.UpdateCommand.ExecuteNonQuery();
+                if (noOfRows > 0)
+                {
+                    response.status = "success";
+                    response.message = "Meal Plan successfully marked as complete";
+                }
+                else
+                {
+                    response.status = "error";
+                    response.message = "There was an error updating your Meal Plan";
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.status = "error";
+                response.message = "There was an error updating your Meal Plan" + ex;
+            }
+            sqlCon.Close();
+        }
+
+    }
+
+    public void submitActivityCompletionForUser(Activity userInput)
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+
+            string userName = userInput.Email;
+            DateTime activityDate = Convert.ToDateTime(userInput.Date);
+
+            string sql = "Update Activity SET CompletedActivity = 'Y' WHERE Email = '" + userName + "' and Date = '" + activityDate + "'";
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            try
+            {
+                sqlCon.Open();
+                da.UpdateCommand = new SqlCommand(sql, sqlCon);
+                int noOfRows = da.UpdateCommand.ExecuteNonQuery();
+                if (noOfRows > 0)
+                {
+                    response.status = "success";
+                    response.message = "Activity Plan successfully marked as complete";
+                }
+                else
+                {
+                    response.status = "error";
+                    response.message = "There was an error updating your Activity Plan";
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.status = "error";
+                response.message = "There was an error updating your Meal Plan" + ex;
             }
             sqlCon.Close();
         }
@@ -261,9 +515,9 @@ public class Service : IService
         {
             string userName = userInput.UserName;
             string password = userInput.Password;
-            DateTime todaysDate = Convert.ToDateTime(userInput.Date);
+            DateTime tomorrowsDate = Convert.ToDateTime(userInput.Date);
     
-            string sql = "SELECT FirstName,PersonalData,MealPlanEnteredForTomorrow,Dob,Height_ft,Height_in,Weight,Gender,PersonType FROM Users WHERE Email = '" + userName + "' and Password = '" + password + "' and verified = 'Y'";
+            string sql = "SELECT FirstName,PersonalData,MealPlanEnteredForTomorrow,Dob,Height_ft,Height_in,Weight,Gender,PersonType,ActivityPlanEnteredForTomorrow FROM Users WHERE Email = '" + userName + "' and Password = '" + password + "' and verified = 'Y'";
 
             sqlCon.Open();
 
@@ -285,8 +539,10 @@ public class Service : IService
                 response.gender = row[7].ToString();
                 response.personType = row[8].ToString();
                 response.firstName = row[0].ToString();
+                response.activityPlanEnteredForTomorrow = row[9].ToString();
                 response.message = "Email and password match";
-                checkIfMealHasBeenEnteredForToday(userName,todaysDate);
+                checkIfMealHasBeenEnteredForTomorrow(userName, tomorrowsDate);
+                checkIfActivityHasBeenEnteredForTomorrow(userName, tomorrowsDate);
             }
             else
             {
@@ -304,11 +560,11 @@ public class Service : IService
         return (long)(datetime - sTime).TotalSeconds;
     }
 
-    public void checkIfMealHasBeenEnteredForToday(string userName,DateTime todaysDate)
+    public void checkIfMealHasBeenEnteredForTomorrow(string userName,DateTime tomorrowsDate)
     {
         using (SqlConnection sqlCon = new SqlConnection(connectionstring))
         {
-            string sql = "SELECT * FROM Meals WHERE Email = '" + userName + "' and Date = '" + todaysDate + "'";
+            string sql = "SELECT * FROM Meals WHERE Email = '" + userName + "' and Date = '" + tomorrowsDate + "'";
 
             sqlCon.Open();
 
@@ -325,6 +581,34 @@ public class Service : IService
             {
                 updateMealPlanEnteredForTomorrowValueForUser(userName,'N');
                 response.mealPlanEnteredForTomorrow = "N";
+
+            }
+            sqlCon.Close();
+        }
+
+    }
+
+    public void checkIfActivityHasBeenEnteredForTomorrow(string userName, DateTime tomorrowsDate)
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            string sql = "SELECT * FROM Activity WHERE Email = '" + userName + "' and Date = '" + tomorrowsDate + "'";
+
+            sqlCon.Open();
+
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            DataRow dr = dt.NewRow();
+            if (dt != null && dt.Rows.Count > 0) //No meal entered for tomorrow
+            {
+                //Do nothing
+            }
+            else
+            {
+                updateActivityPlanEnteredForTomorrowValueForUser(userName, 'N');
+                response.activityPlanEnteredForTomorrow = "N";
 
             }
             sqlCon.Close();
@@ -517,7 +801,7 @@ public class Service : IService
 
         using (SqlConnection sqlCon = new SqlConnection(connectionstring))
         {
-            string sql = "INSERT INTO Users (FirstName,UserId,Email,Password,PersonalData,Verified,Token,MealPlanEnteredForTomorrow,dob,gender,height_ft,height_in,weight) VALUES ('" + firstName + "','" + id + "', '" + userName + "' , '" + password + " ','N','N','" + token + "','N','','',0,0,0)";
+            string sql = "INSERT INTO Users (FirstName,UserId,Email,Password,PersonalData,Verified,Token,MealPlanEnteredForTomorrow,dob,gender,height_ft,height_in,weight,ActivityPlanEnteredForTomorrow) VALUES ('" + firstName + "','" + id + "', '" + userName + "' , '" + password + " ','N','N','" + token + "','N','','',0,0,0,'N')";
 
             SqlDataAdapter da = new SqlDataAdapter();
             SqlCommand command = new SqlCommand(sql, sqlCon);
@@ -604,6 +888,38 @@ public class Service : IService
             sqlCon.Close();
             }
         }
+
+
+    public void getActivityForDate(Activity userInput)
+    {
+        using (SqlConnection sqlCon = new SqlConnection(connectionstring))
+        {
+            String userName = userInput.Email;
+            DateTime activityDate = Convert.ToDateTime(userInput.Date);
+
+            string sql = "SELECT * FROM Activity WHERE Email = '" + userName + "' and Date = '" + activityDate + "'";
+            sqlCon.Open();
+            SqlCommand command = new SqlCommand(sql, sqlCon);
+            SqlDataAdapter da = new SqlDataAdapter(command);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            DataRow dr = dt.NewRow();
+            if (dt != null && dt.Rows.Count > 0) //Activity plan there  
+            {
+                DataRow row = dt.Rows[0];
+                response.status = "success";
+                response.activityDetail = row[3].ToString();
+                response.date = row[0].ToString();
+                response.message = "Activity plan successfully retrieved";
+            }
+            else
+            {
+                response.status = "error";
+                response.message = "No activity plan for this date";
+            }
+            sqlCon.Close();
+        }
+    }
 }
 
 public class User
@@ -785,7 +1101,10 @@ public class Result
     public string grain;
     public string dairy;
     public string proteins;
-    public List<Meal> progress = new List<Meal>();
+    public string activityDetail;
+    public string activityPlanEnteredForTomorrow;
+    public List<Meal> mealProgress = new List<Meal>();
+    public List<Activity> activityProgress = new List<Activity>();
 }
 
 public class Meal
@@ -921,5 +1240,88 @@ public class Meal
         }
     }
 
+    }
+
+public class Activity
+{
+    private string date;
+    private string activityDetail;
+    private string completedActivity;
+    private string email;
+    private string startDate;
+    private string endDate;
+
+    public string StartDate
+    {
+        get
+        {
+            return startDate;
+        }
+        set
+        {
+            startDate = value;
+        }
+    }
+
+    public string EndDate
+    {
+        get
+        {
+            return endDate;
+        }
+        set
+        {
+            endDate = value;
+        }
+    }
+
+    public string Date
+    {
+        get
+        {
+            return date;
+        }
+        set
+        {
+            date = value;
+        }
+    }
+
+    public string ActivityDetail
+    {
+        get
+        {
+            return activityDetail;
+        }
+        set
+        {
+            activityDetail = value;
+        }
+    }
+
+    public string Email
+    {
+        get
+        {
+            return email;
+        }
+        set
+        {
+            email = value;
+        }
+    }
+
+    public string CompletedActivity
+
+    {
+        get
+        {
+            return completedActivity;
+        }
+        set
+        {
+            completedActivity = value;
+        }
+    }
 }
 

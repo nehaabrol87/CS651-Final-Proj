@@ -92,7 +92,7 @@ md-sidenav.dal-sidenav {
   z-index: $drawer;
 }
 
-.pointer {
+.pointer,.enabled,.disabled {
   &:hover {
     cursor: pointer;
   }
@@ -169,4 +169,13 @@ div.overlay {
 
 .bold {
   font-weight: bold;
+}
+
+.disabled {
+  opacity : .2;
+}
+
+.status {
+  position: absolute;
+  top:15px;
 }

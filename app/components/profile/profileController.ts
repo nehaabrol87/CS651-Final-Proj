@@ -1,14 +1,15 @@
 import * as _ from 'lodash';
 import { User } from "../../models/User";
 import { Meal } from "../../models/Meal";
+import { Activity } from "../../models/Activity";
 
 export class ProfileController {
 	public isLoggedIn = false;
 	public isSideNavVisible = false;
 	public hideShow = "HIDE";
 	public userDetails: User = new User();
-	public mealDetails: Meal = new Meal();
-	public mealDetailsForToday: Meal = new Meal();
+	public mealDetailsForTomorrow: Meal = new Meal();
+	public activityDetailsForTomorrow: Activity = new Activity();
 	public mealsDown;
 	public fruitsDown;
 	public veggiesDown;
@@ -37,16 +38,32 @@ export class ProfileController {
 	public mealDate: Date ;
 	public isProfileUpdated = false;
 	public isMealPlanSubmittedForTomorrow = false;
-	public isMealPlanSubmittedForToday = false;
-	public startTimer;
+	public isActivityPlanSubmittedForTomorrow = false;
 	public hasError = false;
 	public isSuccessFul = false;
 	public successMsg = " ";
 	public errorMsg = " ";
 	public startErrorTimer;
 	public startSuccessTimer;
-	public requestCanceler: any;
 	public planForSelf = false;
+	public physicalActivity = false;
+	public mealProgressFor8Days: any;
+	public activityProgressFor8Days: any;
+	public round: any;
+	public activityType;
+	public personTypeForActivity;
+
+	public mealsProgress = {
+		'mealsMissed' :7,
+		'mealsCompleted' :0,
+		'mealsIncomplete' :0
+	}
+
+	public activitiesProgress = {
+		'activitiesMissed': 7,
+		'activitiesCompleted': 0,
+		'activitiesIncomplete': 0
+	}
 
   private girlsIntake = {
     'fruit' : '1.5 cups' ,
@@ -122,6 +139,23 @@ export class ProfileController {
 		"peanut butter" :'1 tbsp'
 	};
 
+	private adults = {
+		'briskWalking': "20 minutes of brisk walking every day",
+		'muscleStrenghtening': "30 minutes or more work all major muscle groups (legs, hips, back, abdomen, chest, shoulders, and arms) every day",
+		'jogging': "15  minutes of jogging/running every day"
+	};
+
+	private children = {
+		"briskWalking": "30 or more minutes of physical activity each day",
+		"jogging": "30 or more minutes of physical activity each day",
+		"boneStrenghtening": "20 minutes of rope jumping"
+	}
+  
+  private olderAdults = {
+	  'briskWalking': "10 minutes of brisk walking every day",
+	  'muscleStrenghtening': "10 minutes or more work all major muscle groups (legs, hips, back, abdomen, chest, shoulders, and arms) every day",
+	  'jogging': "10 minutes of jogging/running every day"
+  }
 
 	static $inject = ['$http', 
 	  '$rootScope',
@@ -132,7 +166,9 @@ export class ProfileController {
 	  '$mdDialog',
 	  'progressIndicatorService',
 	  'mealService',
-	  '$q'
+	  '$q',
+	  '$window',
+	  'activityService'
 	  ];
 
 	constructor(private $http, 
@@ -144,11 +180,14 @@ export class ProfileController {
 	  private $mdDialog,
 	  private progressIndicatorService,
 	  private mealService,
-	  private $q
+	  private $q,
+	  private $window,
+	  private activityService
 	  ) {
 
 		this.isLoggedIn = this.localStorageService.get('isLoggedIn') || false;
 		this.userDetails = this.localStorageService.get('userDetails');
+		this.round = $window.Math.round;
 
 		if (!this.isLoggedIn) {
 			$state.go('home');
@@ -234,6 +273,91 @@ export class ProfileController {
 	private goToDefault() {
 		this.default = true;
 		this.meal = false;
+		this.physicalActivity = false;
+	}
+
+	private goToPhysicalActivityForSelf() {
+		var array = this.userDetails.dob.split("/");
+
+		var month = array[0];
+		var day = array[1];
+		var year = array[2];
+		var age = this.getAge(month, day, year);
+
+		this.restoreActivityDefaults();
+    this.personTypeForActivity = this.getPersonTypeFromDob(age);
+		this.physicalActivity = true;
+		this.default = false;
+		this.meal = false;
+		this.planForSelf = true;
+
+		if (this.userDetails.activityPlanEnteredForTomorrow == 'Y') {
+			this.getActivityProgressFor8Days();
+			var payload = {
+				'Email': this.userDetails.userName,
+				'Date': this.getServerFormattedDate(this.getDate(1))
+			};
+			this.progressIndicatorService.showDialog();
+			this.activityService.getActivityPlanForDate(payload)
+				.then(this.onActivityPlanForTomorrowRetrieveSuccess.bind(this),
+				this.onActivityPlanForTomorrowRetrieveFailure.bind(this));
+		}
+	}
+
+	private onActivityPlanForTomorrowRetrieveSuccess(successCb){
+		this.progressIndicatorService.hideDialog();
+		if (successCb.data.status == "success") {
+			this.activityDetailsForTomorrow.activityDetail = successCb.data.activityDetail;
+		} else {
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.showErrorMsg(successCb.data.message);
+		}
+	}
+
+	private onActivityPlanForTomorrowRetrieveFailure(failureCb){
+		this.progressIndicatorService.hideDialog();
+		this.$timeout.cancel(this.startSuccessTimer);
+		this.$timeout.cancel(this.startErrorTimer);
+		this.showErrorMsg(failureCb.data.message);
+	}
+
+	private getAge(month,day,year) {
+		var currentDate = new Date();
+    var currentYear = currentDate.getFullYear();
+    var currentMonth = currentDate.getUTCMonth() + 1;
+    var currentDay = currentDate.getUTCDate();
+    // You need to treat the cases where the year, month or day hasn't arrived yet.
+    var age = currentYear - year;
+      if (currentMonth > month) {
+        return age;
+      } else {
+      if (currentDay >= day) {
+        return age;
+            } else {
+                age--;
+                return age;
+            }
+        }
+	}
+
+	private getPersonTypeFromDob(age){
+		if(age>=18 && age < 60){
+			return "adults";
+		} else 
+		if(age>=60) {
+			return "olderAdults";
+		} else {
+			return "children";
+		}
+	}
+
+	private goToActivityorFamily(){
+		this.physicalActivity = true;
+		this.restoreActivityDefaults();
+		this.default = false;
+		this.meal = false;
+		this.planForSelf = false;
 	}
 
 	private goToMealsForFamily() {
@@ -241,6 +365,7 @@ export class ProfileController {
 		this.personType = "children";
 		this.displayIntakeData(this.personType);
 		this.planForSelf = false;
+		this.physicalActivity = false;
 		this.default = false;
 		this.meal = true;
 	}
@@ -253,36 +378,31 @@ export class ProfileController {
 		this.mealDate = this.getDate(1);
 		this.userDetails = this.localStorageService.get('userDetails');
 		this.planForSelf = true;
+		this.physicalActivity = false;
 		this.default = false;
 		this.meal = true;
-		this.getProgressFor7Days();
-
-		payload1 = {
-			'Email': this.userDetails.userName,
-			'Date': this.getServerFormattedDate(new Date())
-		}
-		this.mealService.getMealPlanForToday(payload1)
-			.then(this.onMealPlanForTodayRetrieveSuccess.bind(this), this.onMealPlanForTodayRetrieveFailure.bind(this));
 
 		if(this.userDetails.mealPlanEnteredForTomorrow == 'Y') {
+			this.getMealProgressFor8Days();
 			payload2 = {
         'Email' : this.userDetails.userName,
         'Date': this.getServerFormattedDate(this.getDate(1))
 			};
 			this.progressIndicatorService.showDialog();
-			this.mealService.getMealPlan(payload2)
-				.then(this.onMealPlanRetrieveSuccess.bind(this), this.onMealPlanRetrieveFailure.bind(this));
+			this.mealService.getMealPlanForDate(payload2)
+				.then(this.onMealPlanForTomorrowRetrieveSuccess.bind(this),
+				      this.onMealPlanForTomorrowRetrieveFailure.bind(this));
 		}
 	}
 
-	private onMealPlanRetrieveSuccess(successCb){
+	private onMealPlanForTomorrowRetrieveSuccess(successCb) {
 	  if(successCb.data.status == "success"){
 		  this.progressIndicatorService.hideDialog();
-		  this.mealDetails.fruit = successCb.data.fruit;
-		  this.mealDetails.veggies = successCb.data.veggies;
-		  this.mealDetails.grains = successCb.data.grain;
-		  this.mealDetails.proteins = successCb.data.proteins;
-		  this.mealDetails.dairy = successCb.data.dairy;
+		  this.mealDetailsForTomorrow.fruit = successCb.data.fruit;
+		  this.mealDetailsForTomorrow.veggies = successCb.data.veggies;
+		  this.mealDetailsForTomorrow.grains = successCb.data.grain;
+		  this.mealDetailsForTomorrow.proteins = successCb.data.proteins;
+		  this.mealDetailsForTomorrow.dairy = successCb.data.dairy;
 	  } else {
 		  this.$timeout.cancel(this.startSuccessTimer);
 		  this.$timeout.cancel(this.startErrorTimer);
@@ -291,86 +411,287 @@ export class ProfileController {
 	  }
 	}
 
-	private onMealPlanRetrieveFailure(failureCb) {
+	private onMealPlanForTomorrowRetrieveFailure(failureCb) {
 		this.$timeout.cancel(this.startSuccessTimer);
 		this.$timeout.cancel(this.startErrorTimer);
 		this.progressIndicatorService.hideDialog();
 		this.showErrorMsg(failureCb.data.message);
 	}
 
-	private onMealPlanForTodayRetrieveSuccess(successCb){
-		if (successCb.data.status == "success") {
-			this.isMealPlanSubmittedForToday = true;
-			this.mealDetailsForToday.fruit = successCb.data.fruit;
-			this.mealDetailsForToday.veggies = successCb.data.veggies;
-			this.mealDetailsForToday.grains = successCb.data.grain;
-			this.mealDetailsForToday.proteins = successCb.data.proteins;
-			this.mealDetailsForToday.dairy = successCb.data.dairy;
-		} else {
-			this.isMealPlanSubmittedForToday = false
-		}
-	}
-
-	private onMealPlanForTodayRetrieveFailure(failureCb){
-		this.isMealPlanSubmittedForToday = false;
-	}
-
-	private emailMealPlan() {
-		var payload = {
-			'Email': this.userDetails.userName,
-			'Fruits' : this.mealDetails.fruit,
-			'Veggies' : this.mealDetails.veggies,
-			'Proteins' : this.mealDetails.proteins,
-			'Grains' : this.mealDetails.grains,
-			'Dairy' :this.mealDetails.dairy,
-			'Date': this.getServerFormattedDate(this.getDate(1))
-		};
-		this.progressIndicatorService.showDialog();
-		this.mealService.sendMealPlanByMail(payload)
-			.then(this.onSendEmailSuccess.bind(this), this.onSendEmailFailure.bind(this));
-	}
-
-	private onSendEmailSuccess(successCb) {
-		this.progressIndicatorService.hideDialog();
-		if(successCb.data.status == "success"){
-			this.$timeout.cancel(this.startSuccessTimer);
-			this.$timeout.cancel(this.startErrorTimer);
-			this.progressIndicatorService.hideDialog();
-			this.showSuccessMsg(successCb.data.message);
-		} else {
-			this.$timeout.cancel(this.startSuccessTimer);
-			this.$timeout.cancel(this.startErrorTimer);
-			this.progressIndicatorService.hideDialog();
-			this.showErrorMsg(successCb.data.message);
-		}
-	}
-
-	private onSendEmailFailure(failureCb) {
-		this.progressIndicatorService.hideDialog();
-		this.$timeout.cancel(this.startSuccessTimer);
-		this.$timeout.cancel(this.startErrorTimer);
-		this.progressIndicatorService.hideDialog();
-		this.showErrorMsg(failureCb.data.message);
-	}
-
-	private getProgressFor7Days() {
+	private getMealProgressFor8Days() {
 		var payload = {
 			'Email' : this.userDetails.userName,
 			'StartDate' :this.getServerFormattedDate(this.getDate(-7)),
-			'EndDate' : this.getServerFormattedDate(this.getDate(-1))
+			'EndDate' : this.getServerFormattedDate(this.getDate(0))
 		}
-		this.mealService.getProgressFor7Days(payload)
+		this.mealService.getMealProgressFor8Days(payload)
 			.then(this.onProgressRetrieveSuccess.bind(this), this.onProgressRetrieveFailure.bind(this));
 	}
 
 	private onProgressRetrieveSuccess(successCb){
+		if(successCb.data.status == "success"){
+			this.mealProgressFor8Days = successCb.data.mealProgress;
+			this.updateOverAllMealProgress();
+		} else {
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.showErrorMsg(successCb.data.message);
+		}
+	}
 
+	private onProgressRetrieveFailure(failureCb) {
+		this.$timeout.cancel(this.startSuccessTimer);
+		this.$timeout.cancel(this.startErrorTimer);
+		this.showErrorMsg(failureCb.data.message);
+	}
+
+	private getActivityProgressFor8Days() {
+		var payload = {
+			'Email': this.userDetails.userName,
+			'StartDate': this.getServerFormattedDate(this.getDate(-7)),
+			'EndDate': this.getServerFormattedDate(this.getDate(0))
+		}
+		this.activityService.getActivityProgressFor8Days(payload)
+			.then(this.onActivityProgressRetrieveSuccess.bind(this), this.onActivityProgressRetrieveFailure.bind(this));
+	}
+
+	private onActivityProgressRetrieveSuccess(successCb) {
+		if (successCb.data.status == "success") {
+			this.activityProgressFor8Days = successCb.data.activityProgress;
+			this.updateOverAllActivityProgress();
+		} else {
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.showErrorMsg(successCb.data.message);
+		}
+	}
+
+	private onActivityProgressRetrieveFailure(failureCb) {
+		this.$timeout.cancel(this.startSuccessTimer);
+		this.$timeout.cancel(this.startErrorTimer);
+		this.showErrorMsg(failureCb.data.message);
+	}
+
+	private getPercentCompletion(count){
+		return Math.round((count / 7) * 100);
+	}
+
+	private updateOverAllMealProgress(){
+		this.mealsProgress.mealsCompleted = this.getMealsCompleted();
+		this.mealsProgress.mealsIncomplete = this.getMealsIncomplete();
+		this.mealsProgress.mealsMissed = 7 -(this.mealsProgress.mealsCompleted + this.mealsProgress.mealsIncomplete);
+	}
+
+	private updateOverAllActivityProgress(){
+		this.activitiesProgress.activitiesCompleted = this.getActivitiesCompleted();
+		this.activitiesProgress.activitiesIncomplete = this.getActivitiesIncomplete();
+		this.activitiesProgress.activitiesMissed = 7 - (this.activitiesProgress.activitiesCompleted + this.activitiesProgress.activitiesIncomplete);
+	}
+
+	private getMealsCompleted(){
+		var count = 0;
+		var todaysDate = this.getServerFormattedDate(new Date());
+		todaysDate = todaysDate + " 12:00:00 AM";
+
+		_.each(this.mealProgressFor8Days,(meal)=>{
+			if (meal['Date'] != todaysDate && meal['CompletedDiet'] == "Y") {
+				count = count+ 1;
+			}
+		});
+		return count;
+	}
+
+	private getMealsIncomplete() {
+		var count = 0;
+		var todaysDate = this.getServerFormattedDate(new Date());
+		todaysDate = todaysDate + " 12:00:00 AM";
+
+		_.each(this.mealProgressFor8Days, (meal) => {
+			if (meal['Date'] != todaysDate && meal['CompletedDiet'] == "N") {
+				count = count + 1;
+			}
+		});
+		return count;
+	}
+
+	private wasMealPlanEntered(daysAgo) {
+		var mealEntered;
+		var mealDate = this.getServerFormattedDate(this.getDate(daysAgo));
+
+		mealDate = mealDate + " 12:00:00 AM";
+		mealEntered = <Meal>_.findWhere(this.mealProgressFor8Days, { 'Date': mealDate });
+
+		return mealEntered;
+	}
+
+	private wasMealPlanCompleted(daysAgo) {
+		var mealStatus ={};
+		var mealDate = this.getServerFormattedDate(this.getDate(daysAgo));
+
+		mealDate = mealDate + " 12:00:00 AM";
+		mealStatus = <Meal>_.findWhere(this.mealProgressFor8Days, { 'Date': mealDate });
+
+		if (mealStatus != undefined) {
+			return mealStatus['CompletedDiet'] == 'Y' ? true : false;
+		} else {
+			return false;
+		}	
+	}
+
+	private wasActivityPlanEntered(daysAgo) {
+		var activityEntered;
+		var activityDate = this.getServerFormattedDate(this.getDate(daysAgo));
+
+		activityDate = activityDate + " 12:00:00 AM";
+		activityEntered = <Activity>_.findWhere(this.activityProgressFor8Days, { 'Date': activityDate });
+
+		return activityEntered;
+	}
+
+	private wasActivityPlanCompleted(daysAgo) {
+		var activityStatus = {};
+		var activityDate = this.getServerFormattedDate(this.getDate(daysAgo));
+
+		activityDate = activityDate + " 12:00:00 AM";
+		activityStatus = <Activity>_.findWhere(this.activityProgressFor8Days, { 'Date': activityDate });
+
+		if (activityStatus != undefined) {
+			return activityStatus['CompletedActivity'] == 'Y' ? true : false;
+		} else {
+			return false;
+		}
+	}
+
+	private getActivitiesCompleted() {
+		var count = 0;
+		var todaysDate = this.getServerFormattedDate(new Date());
+		todaysDate = todaysDate + " 12:00:00 AM";
+
+		_.each(this.activityProgressFor8Days, (activity) => {
+			if (activity['Date'] != todaysDate && activity['CompletedActivity'] == "Y") {
+				count = count + 1;
+			}
+		});
+		return count;
+	}
+
+	private getActivitiesIncomplete() {
+		var count = 0;
+		var todaysDate = this.getServerFormattedDate(new Date());
+		todaysDate = todaysDate + " 12:00:00 AM";
+
+		_.each(this.activityProgressFor8Days, (activity) => {
+			if (activity['Date'] != todaysDate && activity['CompletedActivity'] == "N") {
+				count = count + 1;
+			}
+		});
+		return count;
+	}
+
+	private showActivityDetailsPopup(daysAgo) {
+		var activityDate = this.getServerFormattedDate(this.getDate(daysAgo));
+		var activityStatus = this.getActivityProgressForDate(daysAgo);
+		var userDetails = this.userDetails;
+		var activitiesProgress = this.activitiesProgress;
+
+		this.$mdDialog.show({
+			templateUrl: 'components/activityDetails/activityDetails.html',
+			controller: 'ActivityDetailsController',
+			clickOutsideToClose: true,
+			bindToController: true,
+			controllerAs: 'vm',
+			locals: {
+				activityStatus,
+				activityDate,
+				userDetails,
+				activitiesProgress
+			}
+		});
+	}
+
+	private showMealDetailsPopup(daysAgo) {
+		var mealDate = this.getServerFormattedDate(this.getDate(daysAgo));
+		var mealStatus= this.getMealProgressForDate(daysAgo);
+		var userDetails = this.userDetails;
+		var mealsProgress = this.mealsProgress;
+
+		this.$mdDialog.show({
+			templateUrl: 'components/mealDetails/mealDetails.html',
+			controller: 'MealDetailsController',
+			clickOutsideToClose : true,
+			bindToController: true,
+			controllerAs: 'vm',
+			locals: {
+				mealStatus,
+				mealDate,
+				userDetails,
+			  mealsProgress
+			}
+		});
+	}
+
+	private showMealDetailsForTomorrowPopup(daysAgo) {
+		var mealDate = this.getServerFormattedDate(this.getDate(daysAgo));
+		var mealStatus = this.mealDetailsForTomorrow;
+		var userDetails = this.userDetails;
+
+		this.$mdDialog.show({
+			templateUrl: 'components/mealDetailsForTomorrow/mealDetailsForTomorrow.html',
+			controller: 'MealDetailsForTomorrowController',
+			clickOutsideToClose: true,
+			bindToController: true,
+			controllerAs: 'vm',
+			locals: {
+				mealStatus,
+				mealDate,
+				userDetails
+			}
+		});
+	}
+
+
+	private showActivityDetailsForTomorrowPopup(daysAgo) {
+		var activityDate = this.getServerFormattedDate(this.getDate(daysAgo));
+		var activityStatus = this.activityDetailsForTomorrow;
+		var userDetails = this.userDetails;
+
+		this.$mdDialog.show({
+			templateUrl: 'components/activityDetailsForTomorrow/activityDetailsForTomorrow.html',
+			controller: 'ActivityDetailsForTomorrowController',
+			clickOutsideToClose: true,
+			bindToController: true,
+			controllerAs: 'vm',
+			locals: {
+				activityStatus,
+				activityDate,
+				userDetails
+			}
+		});
+	}
+
+	private getMealProgressForDate(daysAgo){
+		var mealStatus = {};
+		var mealDate = this.getServerFormattedDate(this.getDate(daysAgo));
+
+		mealDate = mealDate + " 12:00:00 AM";
+
+		mealStatus = <Meal>_.findWhere(this.mealProgressFor8Days, { 'Date': mealDate });
+
+		return mealStatus;
+	}
+
+	private getActivityProgressForDate(daysAgo) {
+		var activityStatus = {};
+		var activityDate = this.getServerFormattedDate(this.getDate(daysAgo));
+
+		activityDate = activityDate + " 12:00:00 AM";
+
+		activityStatus = <Activity>_.findWhere(this.activityProgressFor8Days, { 'Date': activityDate });
+
+		return activityStatus;
 	}
  
 
-	private onProgressRetrieveFailure(failureCb){
-
-	}
 	private restoreDefaults(){
 		this.fruitValue = "";
 		this.proteinsValue = "";
@@ -417,7 +738,8 @@ export class ProfileController {
 		var payload;
 		if (this.fruitValue.length == 0 || this.grainsValue.length == 0 || this.veggiesValue.length == 0
 			|| this.proteinsValue.length == 0 || this.dairyValue.length == 0) {
-			this.$timeout.cancel(this.startTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.$timeout.cancel(this.startSuccessTimer);
 			this.showErrorMsg("You need to select at least one food item from each group");
 		} else {
 			payload = {
@@ -548,4 +870,62 @@ export class ProfileController {
 			this.hideShow = "SHOW";
 		}
 	}
-}  
+
+	private submitActivityPlan() {
+		var payload;
+		if(this.activityType == undefined) {
+			this.$timeout.cancel(this.startErrorTimer);
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.showErrorMsg("You need to select at least one physical activity");
+		} else {
+			var activity;
+			if(this.personTypeForActivity == 'adults'){
+				activity = this.adults[this.activityType];
+			} else if (this.personTypeForActivity == 'children') {
+				activity = this.children[this.activityType];
+			} else if (this.personTypeForActivity == 'olderAdults') {
+				activity = this.olderAdults[this.activityType];
+			}
+			payload = {
+				'Date': this.getServerFormattedDate(this.getDate(1)),
+				'CompletedActivity': 'N',
+				'ActivityDetail': this.activityType + ": " + activity,
+				'Email': this.userDetails.userName
+			};
+			this.progressIndicatorService.showDialog();
+			this.activityService.submitActivityPlan(payload)
+				.then(this.onActivityPlanSubmitSuccess.bind(this), this.onActivityPlanSubmitFailure.bind(this));
+		}
+	}
+
+	private onActivityPlanSubmitSuccess(successCb){
+		this.progressIndicatorService.hideDialog();
+		if(successCb.data.status == "success"){
+			this.isActivityPlanSubmittedForTomorrow = true;
+			this.userDetails = this.localStorageService.get('userDetails');
+			this.userDetails.activityPlanEnteredForTomorrow = 'Y';
+			this.localStorageService.set('userDetails', this.userDetails);
+			this.showSuccessMsg(successCb.data.message);
+			this.restoreActivityDefaults();
+			this.$state.go('profile');
+			this.goToPhysicalActivityForSelf();
+		} else {
+			this.$timeout.cancel(this.startSuccessTimer);
+			this.$timeout.cancel(this.startErrorTimer);
+			this.showErrorMsg(successCb.data.message);
+		}
+
+	}
+
+	private onActivityPlanSubmitFailure(failureCb){
+		this.progressIndicatorService.hideDialog();
+		this.$timeout.cancel(this.startSuccessTimer);
+		this.$timeout.cancel(this.startErrorTimer);
+		this.showErrorMsg(failureCb.data.message);
+	}
+
+	private restoreActivityDefaults(){
+		this.activityType = "";
+		this.personTypeForActivity = "";
+	}
+}

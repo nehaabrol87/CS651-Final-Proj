@@ -44,6 +44,6 @@
     <div class="icon_small_text_green">{{profile.dairyValue}}</div>
   </div>
 </div>
-<md-button ng-if="profile.userDetails.mealPlanEnteredForTomorrow == 'N'" class=" md-raised md-primary" ng-click="profile.submitMealPlan()" ng-disabled="profile.isMealPlanSubmitted">Submit Meal Plan</md-button>
+<md-button ng-if="profile.userDetails.mealPlanEnteredForTomorrow == 'N'" class=" md-raised md-primary" ng-click="profile.submitMealPlan()" ng-disabled="profile.isMealPlanSubmittedForTomorrow">Submit Meal Plan</md-button>
 <div class="error" ng-if="profile.hasError">{{profile.errorMsg}}</div>
 <div class="success" ng-if="profile.isSuccessFul">{{profile.successMsg}}</div>

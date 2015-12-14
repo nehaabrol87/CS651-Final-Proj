@@ -14,11 +14,17 @@ import { SignUpController } from './components/signUp/signUpController';
 import { LoginController } from "./components/login/loginController";
 import { ProfileController } from "./components/profile/profileController";
 import { ActivateController } from "./components/activate/activateController";
+import { MealDetailsController } from "./components/mealDetails/mealDetailsController";
+import { MealDetailsForTomorrowController } from "./components/mealDetailsForTomorrow/mealDetailsForTomorrowController";
+import { ActivityDetailsForTomorrowController } from "./components/activityDetailsForTomorrow/activityDetailsForTomorrowController";
+import { ActivityDetailsController } from "./components/activityDetails/activityDetailsController";
+
 
 //Services
 import { UserService }  from "./services/userService";
 import { ProgressIndicatorService } from "./services/progressIndicatorService";
 import { MealService } from './services/mealService';
+import { ActivityService } from './services/activityService';
 
 //Directives
 import { UserInfoPanel } from "./components/userInfoPanel/userInfoPanel";
@@ -39,11 +45,16 @@ app.controller('SignUpController', SignUpController);
 app.controller('LoginController', LoginController);
 app.controller('ProfileController', ProfileController);
 app.controller('ActivateController', ActivateController);
+app.controller('MealDetailsController', MealDetailsController);
+app.controller('MealDetailsForTomorrowController', MealDetailsForTomorrowController);
+app.controller('ActivityDetailsForTomorrowController', ActivityDetailsForTomorrowController);
+app.controller('ActivityDetailsController', ActivityDetailsController);
 
 //Services
 app.service('progressIndicatorService', ProgressIndicatorService);
 app.service('userService', UserService);
 app.service('mealService', MealService);
+app.service('activityService', ActivityService);
 
 //Directives
 app.directive('userInfoPanel', UserInfoPanel);

@@ -1,0 +1,48 @@
+<md-dialog>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <img style="padding-right:2px; width:24px; height:24px;" ng-if="!vm.mealStatus" src="img/icons/profile/general/question.png">
+      <img style="padding-right:2px; width:24px; height:24px;" ng-if="vm.mealStatus.CompletedDiet == 'Y'" src="img/icons/profile/general/correct.png">
+      <img style="padding-right:2px; width:24px; height:24px;" ng-if="vm.mealStatus.CompletedDiet == 'N'" src="img/icons/profile/general/cross.png">
+      <h2>Meal Details for {{vm.mealDate}} </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" type="button" ng-click="vm.closeDialog()">
+        <img src="img/icons/white/24X24/24x24-close-delete.png" aria-label="Close dialog" />
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="width:300px">
+    <div ng-if="!vm.mealStatus">No meals planned for this date</div>
+    <div ng-if="vm.mealStatus">
+      <div layout="column">
+        <div layout="row" style="padding-bottom:10px;">
+          <div class="bold" style="padding-right:5px; min-width:70px;">Fruit</div>
+          <div class="bold" style="color:green;">{{vm.mealStatus.Fruits}}</div>
+        </div>
+        <div layout="row" style="padding-bottom:10px;">
+          <div class="bold" style="padding-right:5px; min-width:70px;">Veggies</div>
+          <div class="bold" style="color:green;">{{vm.mealStatus.Veggies}}</div>
+        </div>
+        <div layout="row" style="padding-bottom:10px;">
+          <div class="bold" style="padding-right:5px; min-width:70px;">Grains</div>
+          <div class="bold" style="color:green;">{{vm.mealStatus.Grains}}</div>
+        </div>
+        <div layout="row" style="padding-bottom:10px;">
+          <div class="bold" style="padding-right:5px; min-width:70px;">Proteins</div>
+          <div class="bold" style="color:green;">{{vm.mealStatus.Proteins}}</div>
+        </div>
+        <div layout="row" style="padding-bottom:10px;">
+          <div class="bold" style="padding-right:5px; min-width:70px;">Dairy</div>
+          <div class="bold" style="color:green;">{{vm.mealStatus.Dairy}}</div>
+        </div>
+        <md-button ng-if="vm.mealStatus.CompletedDiet == 'N'" class="md-raised md-primary dal-button" ng-click="vm.submitDietCompletion()" ng-disabled="vm.isSubmitMealPlanButtonDisabled">Mark diet as completed
+        </md-button>
+        <div ng-if="vm.requestOut" class="overlay shady"></div>
+        <div ng-if="vm.requestOut" class="overlay" layout="row" layout-align="center center">
+         <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div class="error" ng-if="vm.hasError">{{vm.errorMsg}}</div>
+        <div class="success" ng-if="vm.isSuccessFul">{{vm.successMsg}}</div>
+      </div>
+  </md-dialog-content>
+</md-dialog>

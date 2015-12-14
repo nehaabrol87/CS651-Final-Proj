@@ -31,22 +31,40 @@ public interface IService
     Result submitMealPlan(Meal request);
 
     [OperationContract]
-    [WebInvoke(UriTemplate = "getMealPlan/{request}", Method = "POST")]
-    Result getMealPlan(Meal request);
-
-    [OperationContract]
-    [WebInvoke(UriTemplate = "getMealPlanForToday/{request}", Method = "POST")]
-    Result getMealPlanForToday(Meal request);
+    [WebInvoke(UriTemplate = "getMealPlanForDate/{request}", Method = "POST")]
+    Result getMealPlanForDate(Meal request);
 
     [OperationContract]
     [WebInvoke(UriTemplate = "sendMealPlanByMail/{request}", Method = "POST")]
     Result sendMealPlanByMail(Meal request);
 
     [OperationContract]
-    [WebInvoke(UriTemplate = "getProgressFor7Days/{request}", Method = "POST")]
-    Result getProgressFor7Days(Meal request);
+    [WebInvoke(UriTemplate = "getMealProgressFor8Days/{request}", Method = "POST")]
+    Result getMealProgressFor8Days(Meal request);
 
+    [OperationContract]
+    [WebInvoke(UriTemplate = "submitDietCompletion/{request}", Method = "POST")]
+    Result submitDietCompletion(Meal request);
 
+    [OperationContract]
+    [WebInvoke(UriTemplate = "submitActivityPlan/{request}", Method = "POST")]
+    Result submitActivityPlan(Activity request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "getActivityPlanForDate/{request}", Method = "POST")]
+    Result getActivityPlanForDate(Activity request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "sendActivityPlanByMail/{request}", Method = "POST")]
+    Result sendActivityPlanByMail(Activity request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "getActivityProgressFor8Days/{request}", Method = "POST")]
+    Result getActivityProgressFor8Days(Activity request);
+
+    [OperationContract]
+    [WebInvoke(UriTemplate = "submitActivityCompletion/{request}", Method = "POST")]
+    Result submitActivityCompletion(Activity request);
 }
 
 internal class WebInvokeAttribute : Attribute
