@@ -2,6 +2,7 @@
 
 ## Tools / Frameworks Used
  - Angular 1.4.0-rc.1
+ - Angular Materials Design
  - TypeScript 1.5.0-alpha
  - Angular2 Router / UI-Router 
  - Gulp
@@ -48,12 +49,14 @@
 
   #Web Application Service(Server Side)
 
-  Is the Web Service for sending emails daily to users at 9am
+  Is the Web Service for sending emails daily to users at 9am(Ran into installation issues.Could not complete testing)
 
   a)Installing/Starting the service 
   (InstallUtil /i E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe)
+  
   b)Reference
-    http://www.aspsnippets.com/Articles/Simple-Windows-Service-that-runs-periodically-and-once-a-day-at-specific-time-using-C-and-VBNet.aspx
+   http://www.aspsnippets.com/Articles/Simple-Windows-Service-that-runs-periodically-and-once-a-day-at-specific-time-using-C-and-VBNet
+   aspx
 
 
   #Database Healthy Humans
