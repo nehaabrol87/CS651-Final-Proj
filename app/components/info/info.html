@@ -15,7 +15,7 @@
   </div>
 </div>
 <md-content layout="column" style="padding:10px;">
-   <ul>
+  <ul>
     <h2 style="color:blueviolet;;">Github repo</h2>
     <a href="https://github.com/nehaabrol87/CS651-Final-Proj">click for github repo</a>
     <span>Instructions to scaffold the app(client side are in ReadME).Repo has client side code in app folder and Server side code in WCFService and WindowsServiceToSendMails </span>
@@ -71,28 +71,35 @@
     <div layout="row">
       <div>
         <li style="padding-bottom:15px;"><span class="bold">Client Side</span>
-          <div>Angular 1.4.0-rc.1</div>
-          <div>TypeScript 1.5.0-alpha</div>
-          <div>Angular2 Router / UI-Router</div>
-          <div>Gulp</div>
-           <div>Jspm for package management</div>
-          <div> (Node modules are only used for gulp plugins)</div>
-          <div>Express.js - Used as a development server with proxy</div>
+          <ul>
+            <li>Angular 1.4.0-rc.1</li>
+            <li>TypeScript 1.5.0-alpha</li>
+            <li>Angular2 Router / UI-Router</li>
+            <li>Gulp</li>
+            <li>Jspm for package management</li>
+            <li> (Node modules are only used for gulp plugins)</li>
+            <li>Express.js - Used as a development server with proxy</li>
+          </ul>
         </li>
       </div>
-     <div>
+      <div>
         <li style="padding-bottom:15px;"><span class="bold">Server Side</span>
-          <div>WCF service for server side code</div>
-          <div>Global.asax file to allow cross domain requests(Node JS on 8080)</div>
-          <div>Web application service for sending emails daily at 9am(reminders)</div>
+          <ul>          
+            <li>WCF service for server side code(Host on IIS) http://localhost/finalservice/Service.svc/
+            </li>
+            <li>Global.asax file to allow cross domain requests(Node JS on 8080)</li>
+            <li>Web application service for sending emails daily at 9am(reminders) I was running into installation issues so was not able to test this</li>
+          </ul>
         </li>
       </div>
       <div>
         <li style="padding-bottom:15px;"><span class="bold">Database</span>
-          <div>HealthyHumans Database has following 3 tables</div>
-          <div>Users(User Profile)</div>
-          <div>Meals(Meal information for user)</div>
-          <div>Activity(Activity information for user)</div>
+          <ul>
+            <li>HealthyHumans Database has following 3 tables</li>
+            <li>Users(User Profile)</li>
+            <li>Meals(Meal information for user)</li>
+            <li>Activity(Activity information for user)</li>
+          </ul>
         </li>
       </div>
     </div>
