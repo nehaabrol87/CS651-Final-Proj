@@ -18,7 +18,8 @@ import { MealDetailsController } from "./components/mealDetails/mealDetailsContr
 import { MealDetailsForTomorrowController } from "./components/mealDetailsForTomorrow/mealDetailsForTomorrowController";
 import { ActivityDetailsForTomorrowController } from "./components/activityDetailsForTomorrow/activityDetailsForTomorrowController";
 import { ActivityDetailsController } from "./components/activityDetails/activityDetailsController";
-
+import { BmiController } from "./components/bmi/bmiController";
+import { InfoController } from "./components/info/infoController";
 
 //Services
 import { UserService }  from "./services/userService";
@@ -29,6 +30,7 @@ import { ActivityService } from './services/activityService';
 //Directives
 import { UserInfoPanel } from "./components/userInfoPanel/userInfoPanel";
 import { UpdateProfile } from "./components/updateProfile/updateProfile";
+import { HealthTips } from "./components/healthTips/healthTips";
 
 
 import applicationConfig from './applicationConfig';
@@ -49,6 +51,8 @@ app.controller('MealDetailsController', MealDetailsController);
 app.controller('MealDetailsForTomorrowController', MealDetailsForTomorrowController);
 app.controller('ActivityDetailsForTomorrowController', ActivityDetailsForTomorrowController);
 app.controller('ActivityDetailsController', ActivityDetailsController);
+app.controller('BmiController', BmiController);
+app.controller('InfoController', InfoController);
 
 //Services
 app.service('progressIndicatorService', ProgressIndicatorService);
@@ -59,3 +63,4 @@ app.service('activityService', ActivityService);
 //Directives
 app.directive('userInfoPanel', UserInfoPanel);
 app.directive('updateProfile', UpdateProfile);
+app.directive('healthTips', HealthTips);

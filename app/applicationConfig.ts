@@ -19,6 +19,18 @@ var applicationConfig = function($stateProvider: ng.ui.IStateProvider, $urlRoute
      controller: 'ActivateController as activate'
     })
 
+    .state('bmi', {
+      url: '/bmi',
+      templateUrl: 'components/bmi/bmi.html',
+      controller: 'BmiController as bmi'
+    })
+
+    .state('info', {
+      url: '/info',
+      templateUrl: 'components/info/info.html',
+      controller: 'InfoController as info'
+    })
+
   $urlRouterProvider.otherwise('/home');
 
   setButtonsTheme($mdThemingProvider);

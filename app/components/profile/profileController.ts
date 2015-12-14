@@ -270,6 +270,10 @@ export class ProfileController {
 		this.$state.go('home');
 	}
 
+	private goToInfo() {
+		this.$state.go('info');
+	}
+
 	private goToDefault() {
 		this.default = true;
 		this.meal = false;
@@ -927,5 +931,9 @@ export class ProfileController {
 	private restoreActivityDefaults(){
 		this.activityType = "";
 		this.personTypeForActivity = "";
+	}
+
+	private goToBmiCalc(){
+		this.$state.go('bmi');
 	}
 }

@@ -1,0 +1,69 @@
+<div layout='row' class="homepager__header" style="margin-bottom: 0px;" layout-align="space-between center">
+  <img src="img\icons\home.png" title="home" class="homepage__header-logo" ng-click="bmi.goToHome()">
+  <div> Welcome to Healthy Humans</div>
+  <div layout="row">
+    <div layout='row' class="profile__userinfo" layout="row" layout-align="center center" style="min-height:100px">
+      <div class="profile__username">{{bmi.userDetails.firstName}}</div>
+      <div>
+        <img ng-src='img/icons/user.png' class="profile__user-logo" />
+      </div>
+      <div>
+        <user-info-panel class='profile__user-info-panel'></user-info-panel>
+      </div>
+    </div>
+    <div> <img src="img\icons\info.png" ng-click="bmi.goToInfo()" title="info" class="homepage__info-logo"></div>
+  </div>
+</div>
+<div layout="column" flex layout-align="start center">
+  <div layout="row">
+    <img src="img\icons\back.jpg" title="Back to Defaults" class="homepage__header-logo" ng-click="bmi.goToProfile()">
+    <h2 style="color:black;">All About BMI
+  </h2>
+  </div>
+  <div layout="row">
+    <img src="img/icons/profile/general/bmiHome.png" style="min-width :100px; margin-top:-10px;" width="100px" height="100px">
+    <div><span class="bold">BMI</span> is a number based on your weight and height. In general, the higher the number, the more body fat a person has. BMI is often used as a screening tool to decide if your weight might be putting you at risk for health problems such as heart disease, diabetes, and cancer. Body mass index (BMI) is a measure of body fat based on your weight in relation to your height, and applies to most adult men and women aged 20 and over. For children aged 2 and over, BMI percentile is the best assessment of body fat.
+    </div>
+  </div>
+  <div layout="column">
+    <form name="bmiForm" ng-submit="bmi.calcBmi(bmiForm)" novalidate class="profile__update-profile-form">
+      <div layout="row">
+        <md-input-container style="width:40%;">
+          <label>Height (Ft)</label>
+          <input name="height_ft" ng-model="bmi.bmiRequest.height_ft" maxlength="1" type="number" required>
+          <div ng-messages="bmiForm.height_ft.$error">
+            <div ng-if='bmiForm.height_ft.$touched && bmiForm.height_ft.$error.required' ng-message="required">Required</div>
+            <div ng-if='bmiForm.height_ft.$touched && bmiForm.height_ft.$error.number' ng-message="number">Number Only</div>
+            <div ng-if='bmiForm.height_ft.$touched && bmiForm.height_ft.$error.maxlength' ng-message="maxlength">Max 1 no</div>
+          </div>
+        </md-input-container>
+        <md-input-container style="width:40%;">
+          <label>Height (Inches)</label>
+          <input name="height_in" ng-model="bmi.bmiRequest.height_in" maxlength="2" type="number" required>
+          <div ng-messages="bmiForm.height_in.$error">
+            <div ng-if='bmiForm.height_in.$touched && bmiForm.height_in.$error.required' ng-message="required">Required</div>
+            <div ng-if='bmiForm.height_in.$touched && bmiForm.height_in.$error.number' ng-message="number">Number Only</div>
+            <div ng-if='bmiForm.height_in.$touched && bmiForm.height_in.$error.maxlength' ng-message="maxlength">Max 2 nos</div>
+          </div>
+        </md-input-container>
+      </div>
+      <md-input-container>
+        <label>Weight in Lbs</label>
+        <input name="weight" ng-model="bmi.bmiRequest.weight" maxlength="5" type="number" required>
+        <div ng-messages="bmiForm.weight.$error">
+          <div ng-if='bmiForm.weight.$touched && bmiForm.weight.$error.required' ng-message="required">Required</div>
+          <div ng-if='bmiForm.weight.$touched && bmiForm.weight.$error.number' ng-message="number">Number Only</div>
+          <div ng-if='bmiForm.weight.$touched && bmiForm.weight.$error.maxlength' ng-message="maxlength">Max 5 nos</div>
+        </div>
+      </md-input-container>
+      <div layout="row">
+        <md-button class="md-raised md-primary dal-button" ng-disabled="bmi.disableButton">Calculate BMI
+        </md-button>
+        <div class="bold" style="padding-top:15px;">{{bmi.actualBmi}}</div>
+      </div>
+      </md-content>
+    </form>
+    <br>
+    <br>
+    <img src="img/icons/profile/general/bmiChart.gif" style="min-width :400px; margin-top:-20px;" width="400px" height="300px">
+  </div>

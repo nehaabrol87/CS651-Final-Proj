@@ -226,6 +226,10 @@ export class HomepageController {
     this.$state.go('profile');
   }
 
+  private goToInfo() {
+    this.$state.go('info');
+  }
+
   private login() {
     this.$mdDialog.show({
       templateUrl: 'components/login/login.html',

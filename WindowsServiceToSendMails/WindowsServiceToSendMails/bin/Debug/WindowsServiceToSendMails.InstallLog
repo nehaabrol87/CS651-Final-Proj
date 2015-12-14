@@ -1,0 +1,171 @@
+﻿Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing service SimpleService...
+Creating EventLog source SimpleService in log Application...
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Restoring event log to previous state for source SimpleService.
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing service SimpleService...
+Creating EventLog source SimpleService in log Application...
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Restoring event log to previous state for source SimpleService.
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing service SimpleService...
+Creating EventLog source SimpleService in log Application...
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Restoring event log to previous state for source SimpleService.
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing service SimpleService...
+Creating EventLog source SimpleService in log Application...
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Restoring event log to previous state for source SimpleService.
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing service Service1...
+Creating EventLog source Service1 in log Application...
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Restoring event log to previous state for source Service1.
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Installing assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 
+Rolling back assembly 'E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe'.
+Affected parameters are:
+   i = 
+   logfile = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.InstallLog
+   assemblypath = E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+   logtoconsole = 

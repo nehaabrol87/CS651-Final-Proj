@@ -1,0 +1,8 @@
+E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe.config
+E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\obj\Debug\WindowsServiceToSendMails.csprojResolveAssemblyReference.cache
+E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\obj\Debug\WindowsServiceToSendMails.ProjectInstaller.resources
+E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\obj\Debug\WindowsServiceToSendMails.csproj.GenerateResource.Cache
+E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe
+E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.pdb
+E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\obj\Debug\WindowsServiceToSendMails.exe
+E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\obj\Debug\WindowsServiceToSendMails.pdb
