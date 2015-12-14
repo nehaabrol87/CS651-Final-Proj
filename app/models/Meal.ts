@@ -4,6 +4,7 @@ export class Meal {
   public grains: string;
   public dairy: string;
   public proteins: string;
+  public completedDiet: string;
 
   constructor() {
     this.fruit = "";
@@ -11,5 +12,6 @@ export class Meal {
     this.grains = "";
     this.proteins = "";
     this.dairy = "";
+    this.completedDiet = "";
   }
 }

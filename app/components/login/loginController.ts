@@ -62,6 +62,7 @@ export class LoginController {
       this.userDetails.height_in = successCb.data.height_in;
       this.userDetails.weight = successCb.data.weight;
       this.userDetails.personType = successCb.data.personType;
+      this.userDetails.activityPlanEnteredForTomorrow = successCb.data.activityPlanEnteredForTomorrow;
       this.localStorageService.set('userDetails', this.userDetails);
       this.localStorageService.set('isLoggedIn', this.isLoggedIn);
       this.$state.go('profile');

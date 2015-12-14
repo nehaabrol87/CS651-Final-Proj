@@ -4,104 +4,116 @@
 </div>
 <div layout="row">
   <div layout="column">
-    <div style="padding-right :10px">
-      <h4 style="color:blueviolet">You have the following diet planned for tomorrow i.e.{{profile.getServerFormattedDate(profile.mealDate)}}
+    <div style="padding-right :50px">
+      <h4 style="color:blueviolet">Diet planned for tomorrow
     </h4>
-      <div layout="column">
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Fruit</div>
-          <div class="bold" style="color:green;">{{profile.mealDetails.fruit}}</div>
-        </div>
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Veggies</div>
-          <div class="bold" style="color:green;">{{profile.mealDetails.veggies}}</div>
-        </div>
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Grains</div>
-          <div class="bold" style="color:green;">{{profile.mealDetails.grains}}</div>
-        </div>
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Proteins</div>
-          <div class="bold" style="color:green;">{{profile.mealDetails.proteins}}</div>
-        </div>
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Dairy</div>
-          <div class="bold" style="color:green;">{{profile.mealDetails.dairy}}</div>
-        </div>
-        <md-button class=" md-raised md-primary" ng-click="profile.emailMealPlan()">
-          Email Meal Plan
-        </md-button>
-        <div class="error" ng-if="profile.hasError">{{profile.errorMsg}}</div>
-        <div class="success" ng-if="profile.isSuccessFul">{{profile.successMsg}}</div>
+      <div layout="column" style="position:relative;">
+        <img class="pointer" src="img/icons/profile/general/tomorrow.png" width="200px" height="200px" ng-click="profile.showMealDetailsForTomorrowPopup(1)">
+        <p class="bold" style="padding-left:50px;">{{profile.getServerFormattedDate(profile.getDate(1))}}</p>
       </div>
     </div>
-    <div ng-if="profile.isMealPlanSubmittedForToday" style="padding-right :10px">
-      <h4 style="color:blueviolet">You have the following diet planned for today i.e. {{profile.getServerFormattedDate(profile.getDate(0))}}</h4>
-      <div layout="column">
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Fruit</div>
-          <div class="bold" style="color:green;">{{profile.mealDetailsForToday.fruit}}</div>
-        </div>
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Veggies</div>
-          <div class="bold" style="color:green;">{{profile.mealDetailsForToday.veggies}}</div>
-        </div>
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Grains</div>
-          <div class="bold" style="color:green;">{{profile.mealDetailsForToday.grains}}</div>
-        </div>
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Proteins</div>
-          <div class="bold" style="color:green;">{{profile.mealDetailsForToday.proteins}}</div>
-        </div>
-        <div layout="row" style="padding-bottom:10px;">
-          <div class="bold" style="padding-right:5px; min-width:70px;">Dairy</div>
-          <div class="bold" style="color:green;">{{profile.mealDetailsForToday.dairy}}</div>
-        </div>
-        <md-button class=" md-raised md-primary" ng-click="profile.completeYesterdaysDiet()">
-          Click to mark yesterday's diet completion
-        </md-button>
-        <div class="error" ng-if="profile.hasError">{{profile.errorMsg}}</div>
-        <div class="success" ng-if="profile.isSuccessFul">{{profile.successMsg}}</div>
-      </div>
-    </div>
-    <h4 ng-if="!profile.isMealPlanSubmittedForToday" style="padding-right :10px;color:blueviolet;">
-       Sorry no meals planned for today!!!
-     </h4>
   </div>
-  <div style="padding-right :10px">
-    <h4 style="color:blueviolet">Progress Tracker for past 7 days(Click Icon to know more)</h4>
+  <div style="padding-right :50px">
+    <h4 style="color:blueviolet">Click Icon to see meal plan for corresponding date</h4>
     <div layout="column">
       <div layout="row">
-        <div layout="column">
-          <img class = "pointer" src="img/icons/profile/general/day1.png" width="100px" height="100px">
+        <div layout="column" style="position:relative;">
+          <img ng-if="!profile.wasMealPlanEntered(-7) && !profile.wasMealPlanCompleted(-7)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-7) && !profile.wasMealPlanCompleted(-7)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-7) && profile.wasMealPlanCompleted(-7)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img src="img/icons/profile/general/day1.png" width="100px" height="100px" ng-class="{
+          'disabled' : !profile.wasMealPlanEntered(-7), 
+          'enabled' : profile.wasMealPlanEntered(-7)}" ng-click="profile.showMealDetailsPopup(-7)">
           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-7))}}</p>
         </div>
-        <div layout="column">
-          <img class = "pointer" src="img/icons/profile/general/day2.png" width="100px" height="100px">
-           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-6))}}</p>
+        <div layout="column" style="position:relative;">
+          <img ng-if="!profile.wasMealPlanEntered(-6) && !profile.wasMealPlanCompleted(-6)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-6) && !profile.wasMealPlanCompleted(-6)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-6) && profile.wasMealPlanCompleted(-6)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img src="img/icons/profile/general/day2.png" width="100px" height="100px" ng-class="{
+          'disabled' : !profile.wasMealPlanEntered(-6), 
+          'enabled' : profile.wasMealPlanEntered(-6)}" ng-click="profile.showMealDetailsPopup(-6)">
+          <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-6))}}</p>
         </div>
-         <div layout="column">
-          <img class = "pointer" src="img/icons/profile/general/day3.png" width="100px" height="100px">
-           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-5))}}</p>
+        <div layout="column" style="position:relative;">
+          <img ng-if="!profile.wasMealPlanEntered(-5) && !profile.wasMealPlanCompleted(-5)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-5) && !profile.wasMealPlanCompleted(-5)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-5) && profile.wasMealPlanCompleted(-5)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img src="img/icons/profile/general/day3.png" width="100px" height="100px" ng-class="{
+          'disabled' : !profile.wasMealPlanEntered(-5), 
+          'enabled' : profile.wasMealPlanEntered(-5)}" ng-click="profile.showMealDetailsPopup(-5)">
+          <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-5))}}</p>
         </div>
-         <div layout="column">
-          <img class="pointer"src="img/icons/profile/general/day4.png" width="100px" height="100px">
-           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-4))}}</p>
+        <div layout="column" style="position:relative;">
+          <img ng-if="!profile.wasMealPlanEntered(-4) && !profile.wasMealPlanCompleted(-4)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-4) && !profile.wasMealPlanCompleted(-4)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-4) && profile.wasMealPlanCompleted(-4)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img src="img/icons/profile/general/day4.png" width="100px" height="100px" ng-class="{
+          'disabled' : !profile.wasMealPlanEntered(-4), 
+          'enabled' : profile.wasMealPlanEntered(-4)}" ng-click="profile.showMealDetailsPopup(-4)">
+          <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-4))}}</p>
         </div>
       </div>
       <div layout="row">
-         <div layout="column">
-          <img class="pointer" src="img/icons/profile/general/day5.png" width="100px" height="100px">
-           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-3))}}</p>
+        <div layout="column" style="position:relative;">
+          <img ng-if="!profile.wasMealPlanEntered(-3) && !profile.wasMealPlanCompleted(-3)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-3) && !profile.wasMealPlanCompleted(-3)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-3) && profile.wasMealPlanCompleted(-3)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img src="img/icons/profile/general/day5.png" width="100px" height="100px" ng-class="{
+          'disabled' : !profile.wasMealPlanEntered(-3), 
+          'enabled' : profile.wasMealPlanEntered(-3)}" ng-click="profile.showMealDetailsPopup(-3)">
+          <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-3))}}</p>
         </div>
-         <div layout="column">
-          <img class="pointer" src="img/icons/profile/general/day6.png" width="100px" height="100px">
-           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-2))}}</p>
+        <div layout="column" style="position:relative;">
+          <img ng-if="!profile.wasMealPlanEntered(-2) && !profile.wasMealPlanCompleted(-2)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-2) && !profile.wasMealPlanCompleted(-2)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-2) && profile.wasMealPlanCompleted(-2)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img src="img/icons/profile/general/day6.png" width="100px" height="100px" ng-class="{
+          'disabled' : !profile.wasMealPlanEntered(-2), 
+          'enabled' : profile.wasMealPlanEntered(-2)}" ng-click="profile.showMealDetailsPopup(-2)">
+          <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-2))}}</p>
         </div>
-         <div layout="column">
-          <img class="pointer" src="img/icons/profile/general/day7.png" width="100px" height="100px">
-           <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-1))}}</p>
+        <div layout="column" style="position:relative;">
+          <img ng-if="!profile.wasMealPlanEntered(-1) && !profile.wasMealPlanCompleted(-1)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-1) && !profile.wasMealPlanCompleted(-1)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(-1) && profile.wasMealPlanCompleted(-1)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img src="img/icons/profile/general/day7.png" width="100px" height="100px" ng-class="{
+          'disabled' : !profile.wasMealPlanEntered(-1), 
+          'enabled' : profile.wasMealPlanEntered(-1)}" ng-click="profile.showMealDetailsPopup(-1)">
+          <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(-1))}}</p>
+        </div>
+        <div layout="column" style="position:relative;">
+          <img ng-if="!profile.wasMealPlanEntered(0) && !profile.wasMealPlanCompleted(0)" title="No meal plan entered for this day" class="status" src="img/icons/profile/general/question.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(0) && !profile.wasMealPlanCompleted(0)" title="Meal plan not completed" class="status" src="img/icons/profile/general/cross.png" width="24px" height="24px">
+          <img ng-if="profile.wasMealPlanEntered(0) && profile.wasMealPlanCompleted(0)" title="Diet completed" class="status" src="img/icons/profile/general/correct.png" width="24px" height="24px">
+          <img src="img/icons/profile/general/today.png" width="100px" height="100px" ng-class="{
+          'disabled' : !profile.wasMealPlanEntered(0), 
+          'enabled' : profile.wasMealPlanEntered(0)}" ng-click="profile.showMealDetailsPopup(0)">
+          <p class="bold" style="padding-left:15px;">{{profile.getServerFormattedDate(profile.getDate(0))}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div layout="column">
+    <div style="padding-right :50px">
+      <h4 style="color:blueviolet">Progress Tracker for past 7 days(excluding today)
+    </h4>
+      <div layout="column" style="position:relative;">
+        <div layout="row">
+          <p class="bold" style="margin-top: 5px">Meals Completed
+          </p>
+          <HR style="height:10px;" COLOR="green" width="150px"></HR>
+          <p class ="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsCompleted/7* 100)}} %</p>
+        </div>
+        <div layout="row">
+          <p class="bold" style="margin-top: 5px">Meals Incomplete</p>
+          <HR style="height:10px;" COLOR="blue" width="150px"></HR>
+          <p class ="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsIncomplete/7* 100)}} %</p>
+        </div>
+        <div layout="row">
+          <p class="bold" style="padding-right:30px;margin-top: 5px">Meals Missed</p>
+          <HR style="height:10px;" COLOR="red" width="150px"></HR>
+           <p class ="bold" style="margin-top: 5px">{{profile.round(profile.mealsProgress.mealsMissed/7* 100)}} %</p>
         </div>
       </div>
     </div>

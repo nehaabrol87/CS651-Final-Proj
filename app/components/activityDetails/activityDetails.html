@@ -1,0 +1,32 @@
+<md-dialog>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <img style="padding-right:2px; width:24px; height:24px;" ng-if="!vm.activityStatus" src="img/icons/profile/general/question.png">
+      <img style="padding-right:2px; width:24px; height:24px;" ng-if="vm.activityStatus.CompletedActivity == 'Y'" src="img/icons/profile/general/correct.png">
+      <img style="padding-right:2px; width:24px; height:24px;" ng-if="vm.activityStatus.CompletedActivity == 'N'" src="img/icons/profile/general/cross.png">
+      <h2>Activity Details for {{vm.activityDate}} </h2>
+      <span flex></span>
+      <md-button class="md-icon-button" type="button" ng-click="vm.closeDialog()">
+        <img src="img/icons/white/24X24/24x24-close-delete.png" aria-label="Close dialog" />
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content style="width:300px">
+    <div ng-if="!vm.activityStatus">No meals planned for this date</div>
+    <div ng-if="vm.activityStatus">
+      <div layout="column">
+        <div layout="row" style="padding-bottom:10px;">
+          <div class="bold" style="padding-right:5px; min-width:70px;">Fruit</div>
+          <div class="bold" style="color:green;">{{vm.activityStatus.Fruits}}</div>
+        </div>
+        <md-button ng-if="vm.activityStatus.CompletedActivity == 'N'" class="md-raised md-primary dal-button" ng-click="vm.submitActivityCompletion()" ng-disabled="vm.isSubmitActivityPlanButtonDisabled">Mark activity as completed
+        </md-button>
+        <div ng-if="vm.requestOut" class="overlay shady"></div>
+        <div ng-if="vm.requestOut" class="overlay" layout="row" layout-align="center center">
+          <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <div class="error" ng-if="vm.hasError">{{vm.errorMsg}}</div>
+        <div class="success" ng-if="vm.isSuccessFul">{{vm.successMsg}}</div>
+      </div>
+  </md-dialog-content>
+</md-dialog>

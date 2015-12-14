@@ -14,6 +14,7 @@ export class User {
   public height_ft: number;
   public weight: number;
   public mealPlanEnteredForTomorrow: string;
+  public activityPlanEnteredForTomorrow: string;
   public personType: string;
 
   constructor() {
@@ -27,6 +28,7 @@ export class User {
     this.token = "";
     this.gender = "M";
     this.mealPlanEnteredForTomorrow = "";
+    this.activityPlanEnteredForTomorrow = "";
     this.personType = "";
   }
 }

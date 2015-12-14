@@ -9,20 +9,20 @@ export class MealService {
    return this.$http.post('http://localhost/finalservice/Service.svc/submitMealPlan', meal)
   }
 
-  public getMealPlan(meal) {
-    return this.$http.post('http://localhost/finalservice/Service.svc/getMealPlan', meal);
-  }
-
-  public getMealPlanForToday(meal) {
-    return this.$http.post('http://localhost/finalservice/Service.svc/getMealPlanForToday', meal);
+  public getMealPlanForDate(meal) {
+    return this.$http.post('http://localhost/finalservice/Service.svc/getMealPlanForDate', meal);
   }
 
   public sendMealPlanByMail(meal) {
     return this.$http.post('http://localhost/finalservice/Service.svc/sendMealPlanByMail', meal);
   }
 
-  public getProgressFor7Days(meal){
-    return this.$http.post('http://localhost/finalservice/Service.svc/getProgressFor7Days', meal);
+  public getMealProgressFor8Days(meal){
+    return this.$http.post('http://localhost/finalservice/Service.svc/getMealProgressFor8Days', meal);
+  }
+
+  public submitDietCompletion(meal) {
+    return this.$http.post('http://localhost/finalservice/Service.svc/submitDietCompletion', meal);
   }
 
 }
