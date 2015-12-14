@@ -40,7 +40,10 @@
 
   Is the Web Service for fetching data from database (Healthy humans) and serving the website.
 
-  a)It has "Allow cross origin requests so if it is hosted on IIS (localhost) and website is run on localhost:8080 it can cater requests".Global asax and Web Config are important files
+  a)Host the webservice on IIS : http://localhost/finalservice/Service.svc/
+   (Better to keep same name so that you do not have to change reference in services folder for each service)
+
+  b)It has "Allow cross origin requests so if it is hosted on IIS (localhost) and website is run on localhost:8080 it can cater requests".Global asax and Web Config are important files
 
 
   #Web Application Service(Server Side)
