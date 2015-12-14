@@ -1,0 +1,100 @@
+<div layout='row' class="homepager__header" layout-align="space-between center">
+  <img src="img\icons\home.png" title="home" class="homepage__header-logo" ng-click="info.goToHome()">
+  <div> Welcome to Healthy Humans</div>
+  <div layout="row">
+    <div ng-if="info.isLoggedIn" layout='row' class="profile__userinfo" layout="row" layout-align="center center" style="min-height:100px">
+      <div class="profile__username">{{info.userDetails.firstName}}</div>
+      <div>
+        <img ng-src='img/icons/user.png' class="profile__user-logo" />
+      </div>
+      <div>
+        <user-info-panel class='profile__user-info-panel'></user-info-panel>
+      </div>
+    </div>
+    <div> <img src="img\icons\info.png" title="info" class="homepage__info-logo"></div>
+  </div>
+</div>
+<md-content layout="column" style="padding:10px;">
+   <ul>
+    <h2 style="color:blueviolet;;">Github repo</h2>
+    <a href="https://github.com/nehaabrol87/CS651-Final-Proj">click for github repo</a>
+    <span>Instructions to scaffold the app(client side are in ReadME).Repo has client side code in app folder and Server side code in WCFService and WindowsServiceToSendMails </span>
+  </ul>
+  <ul>
+    <h2 style="color:blueviolet;padding-top:5px;">About Us</h2>
+    <li style="padding-bottom:15px;"><span class="bold">Website</span>
+      <span style="color:blueviolet">This website gives you following 5 options</span>
+      <div style="padding-top :5px; padding-botton:5px;">Calculate Daily meal plan for family from all food groups</div>
+      <div style="padding-botton:5px;">Plan your diet for next day and track progress</div>
+      <div style="padding-botton:5px;">Calculate Daily physical activity requirement for all age groups</div>
+      <div style="padding-botton:5px;">Plan your activity for next day and track progress</div>
+      <div style="padding-botton:5px;">Calculate BMI</div>
+    </li>
+    <li><span class="bold">Pages/routes</span>
+      <div style="padding-top :5px; padding-botton:5px;">
+        <span style="padding-top :5px; padding-botton:5px;" class="bold">Home</span>
+      </div>
+      <div>
+        User needs to fill the sign Up form to create Profile.Email would be sent to activate user Profile
+      </div>
+      <div>
+        User logs in after verifying email account and is redirected to profile page
+      </div>
+      <div style="padding-top :5px; padding-botton:5px;">
+        <span style="padding-top :5px; padding-botton:5px;" class="bold">Profile</span>
+      </div>
+      <div>
+        User needs to fill mandatory information before he can access his above 5 options
+      </div>
+      <div>
+        User can click on any of the 5 options mentioned above
+      </div>
+      <div>
+        User can track progress of his past diets/activity
+      </div>
+      <div>
+        User can email himself plan for tomorrow
+      </div>
+    </li>
+    <li style="padding-top:15px;"><span class="bold">Misc</span>
+      <span style="color:blueviolet">This website provides following extra functionality</span>
+      <div>
+        User can expand drawer on profile/homepage to read useful health tips
+      </div>
+      <div>
+        Web Application service sends the user an emal each morning at 9 am to remind him to log plan for tomorrow
+      </div>
+    </li>
+  </ul>
+  <ul>
+    <h2 style="color:blueviolet;padding-top:150px;">Technical</h2>
+    <div layout="row">
+      <div>
+        <li style="padding-bottom:15px;"><span class="bold">Client Side</span>
+          <div>Angular 1.4.0-rc.1</div>
+          <div>TypeScript 1.5.0-alpha</div>
+          <div>Angular2 Router / UI-Router</div>
+          <div>Gulp</div>
+           <div>Jspm for package management</div>
+          <div> (Node modules are only used for gulp plugins)</div>
+          <div>Express.js - Used as a development server with proxy</div>
+        </li>
+      </div>
+     <div>
+        <li style="padding-bottom:15px;"><span class="bold">Server Side</span>
+          <div>WCF service for server side code</div>
+          <div>Global.asax file to allow cross domain requests(Node JS on 8080)</div>
+          <div>Web application service for sending emails daily at 9am(reminders)</div>
+        </li>
+      </div>
+      <div>
+        <li style="padding-bottom:15px;"><span class="bold">Database</span>
+          <div>HealthyHumans Database has following 3 tables</div>
+          <div>Users(User Profile)</div>
+          <div>Meals(Meal information for user)</div>
+          <div>Activity(Activity information for user)</div>
+        </li>
+      </div>
+    </div>
+  </ul>
+</md-content>

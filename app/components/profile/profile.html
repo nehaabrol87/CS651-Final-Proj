@@ -11,7 +11,7 @@
         <user-info-panel class='profile__user-info-panel'></user-info-panel>
       </div>
     </div>
-    <div> <img src="img\icons\info.png" title="info" class="homepage__info-logo"></div>
+    <div> <img src="img\icons\info.png"ng-click="profile.goToInfo()" title="info" class="homepage__info-logo"></div>
   </div>
 </div>
 <main layout="row" ng-cloak flex>
@@ -44,7 +44,7 @@
           <h4>Plan/Track your workouts</h4>
         </div>
         <div class="clickable" style="padding-right:10px;" layout="column" layout-align="center center">
-          <img ng-src="img/icons/profile/general/bmi.png" height="100px" width="100px;">
+          <img ng-src="img/icons/profile/general/bmi.png" height="100px" width="100px;" ng-click="profile.goToBmiCalc()">
           <h4>Calculate Your BMI</h4>
         </div>
       </div>
@@ -61,6 +61,4 @@
     <update-profile user-name="profile.userName" flex layout="row" layout-align="center center"></update-profile>
   </md-content>
 </main>
-<div class="blogs__bar" resizable r-directions="['top']" layout="column" layout-align=" start center">
-  <h2>Drag Up to Read Health Blogs</h2>
-</div>
+<health-tips class="blogs__bar" resizable r-directions="['top']" layout="column" layout-align=" start center"></health-tips>

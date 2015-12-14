@@ -13,6 +13,8 @@
  Assuming you already have NodeJS and npm installed...
  
   ```bash
+
+  #App(Client side)
   # Install gulp, jspm globally
   npm install gulp jspm tsd -g
   
@@ -34,11 +36,22 @@
   
   Open a browser window at http://localhost:8080/#/
 
-  #WCF Service
+  #WCFService(Server Side)
 
   Is the Web Service for fetching data from database (Healthy humans) and serving the website.
 
-  a)It has "Allow cross origin requests so if it is hosted on IIS (localhost) and website is run on localhost:8080 it can cater requests"
+  a)It has "Allow cross origin requests so if it is hosted on IIS (localhost) and website is run on localhost:8080 it can cater requests".Global asax and Web Config are important files
+
+
+  #Web Application Service(Server Side)
+
+  Is the Web Service for sending emails daily to users at 9am
+
+  a)Installing/Starting the service 
+  (InstallUtil /i E:\CS651-Final-Proj\WindowsServiceToSendMails\WindowsServiceToSendMails\bin\Debug\WindowsServiceToSendMails.exe)
+  b)Reference
+    http://www.aspsnippets.com/Articles/Simple-Windows-Service-that-runs-periodically-and-once-a-day-at-specific-time-using-C-and-VBNet.aspx
+
 
   #Database Healthy Humans
   SQL DB with following tables
@@ -47,3 +60,6 @@
   and make sure User Mapping for Healthy Humans has db_owner checkboxed
 
   a)Users (User related information)
+   
+   UserName :nehaabro@bu.edu
+   Password :a
